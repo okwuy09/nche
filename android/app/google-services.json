@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "447256031033",
+    "project_id": "nche-application",
+    "storage_bucket": "nche-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:447256031033:android:c8f339414dd77f33ac42e8",
+        "android_client_info": {
+          "package_name": "com.example.nche"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "447256031033-svrpbps2bifbg5dc8rvo97nqmhb5ubvm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQbe2voRGGC1o7dVNVnRWfura5fj50DGE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "447256031033-svrpbps2bifbg5dc8rvo97nqmhb5ubvm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
