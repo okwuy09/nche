@@ -5,6 +5,8 @@ import 'package:nche/components/colors.dart';
 import 'package:nche/components/home_container.dart';
 import 'package:nche/components/style.dart';
 import 'package:nche/components/tapbar.dart';
+import 'package:nche/model/users.dart';
+import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/ui/homepage/claim_reward.dart';
 import 'package:nche/ui/homepage/direct_message.dart';
 import 'package:nche/ui/homepage/live_incident.dart';
@@ -12,6 +14,7 @@ import 'package:nche/ui/homepage/report_incident.dart';
 import 'package:nche/ui/homepage/reward_screen.dart';
 import 'package:nche/ui/menu/user_profile.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -37,6 +40,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+    var provider = Provider.of<UserData>(context);
 
     return Scaffold(
       backgroundColor: AppColor.darkerYellow,
@@ -60,10 +64,22 @@ class _HomePageState extends State<HomePage> {
                     ),
                     child: Stack(
                       children: [
-                        CircleAvatar(
-                          backgroundColor: AppColor.darkerYellow,
-                          backgroundImage: const AssetImage("assets/musk.jpg"),
-                          maxRadius: 20,
+                        StreamBuilder<Users>(
+                          stream: provider.userProfile(context).asStream(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              var userImage = snapshot.data!.avarter;
+                              return CircleAvatar(
+                                backgroundColor: AppColor.white,
+                                backgroundImage: NetworkImage(userImage!),
+                                maxRadius: 20,
+                                onBackgroundImageError:
+                                    (exception, stackTrace) =>
+                                        Image.asset('assets/avatar.png'),
+                              );
+                            }
+                            return Container();
+                          },
                         ),
                         Positioned(
                           right: -1,

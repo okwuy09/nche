@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:nche/components/alert.dart';
 import 'package:nche/components/progress_indicator.dart';
 import 'package:nche/components/success_sheet.dart';
+import 'package:nche/model/users.dart';
 import 'package:nche/ui/authentication/phoneSignin/phone_otp.dart';
 import 'package:nche/ui/authentication/signin/signin.dart';
 import 'package:nche/ui/homepage/bottom_navbar.dart';
@@ -42,6 +43,20 @@ class Authentication with ChangeNotifier {
           .signInWithCredential(credential)
           .then((value) {
         if (value.user != null) {
+          /// create profile on signup using Phone Number
+          final docUser = FirebaseFirestore.instance
+              .collection('users')
+              .doc(value.user!.uid);
+
+          final user = Users(
+            email: value.user!.email,
+            fullName: value.user!.displayName,
+            id: docUser.id,
+            avarter: value.user!.photoURL,
+          );
+          final json = user.toJson();
+          // create document and write data to firebase
+          docUser.set(json);
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -49,8 +64,11 @@ class Authentication with ChangeNotifier {
             ),
           );
         }
+
         isnloading = false;
         notifyListeners();
+        // Once signed in, return the UserCredential
+        return FirebaseAuth.instance.signInWithCredential(credential);
       });
     } on FirebaseAuthException catch (e) {
       isnloading = false;
@@ -78,13 +96,30 @@ class Authentication with ChangeNotifier {
         verificationCompleted: (credential) async {
           await _firebaseAuth.signInWithCredential(credential).then((value) {
             if (value.user != null) {
+              /// create profile on signup using Phone Number
+              final docUser = FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(value.user!.uid);
+
+              final user = Users(
+                email: value.user!.email,
+                fullName: value.user!.displayName,
+                id: docUser.id,
+                avarter: value.user!.photoURL,
+              );
+              final json = user.toJson();
+              // create document and write data to firebase
+              docUser.set(json);
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (_) => const BottomNavBar(),
                 ),
               );
+              notifyListeners();
             }
+            // Once signed in, return the UserCredential
+            return FirebaseAuth.instance.signInWithCredential(credential);
           });
         },
         // verification Failed
@@ -190,7 +225,7 @@ class Authentication with ChangeNotifier {
   }
 
 // signUp function with firebase
-  Future<String?> signUp({
+  Future signUp({
     required String email,
     required String password,
     required String fullName,
@@ -201,26 +236,41 @@ class Authentication with ChangeNotifier {
       isnloading = true;
       notifyListeners();
       MyIndicator().waiting(context);
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      var _userdata = await _firebaseAuth
+          .createUserWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
-      );
+      )
+          .then((value) {
+        if (value.user != null) {
+          /// create profile on signup using Email and password
+          final docUser = FirebaseFirestore.instance
+              .collection('users')
+              .doc(value.user!.uid);
+          final user = Users(
+              email: email.trim(),
+              fullName: fullName.trim(),
+              id: docUser.id,
+              userName: userName.trim(),
+              avarter:
+                  'https://firebasestorage.googleapis.com/v0/b/nche-application.appspot.com/o/avatar.png?alt=media&token=f70e3f9c-d432-4a03-b047-4ff97a245b52');
+          final json = user.toJson();
+          // create document and write data to firebase
+          docUser.set(json);
 
-      await FirebaseFirestore.instance.collection('users').add({
-        'email': email.trim(),
-        'fullname': fullName.trim(),
-        'username': userName.trim(),
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const BottomNavBar(),
+            ),
+          );
+        }
       });
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const BottomNavBar(),
-        ),
-      );
       isnloading = false;
       notifyListeners();
-      return 'Success';
+      // Once signed in, return the UserCredential
+      return FirebaseAuth.instance.signInWithCredential(_userdata.credential!);
     } on FirebaseAuthException catch (e) {
       isnloading = false;
       notifyListeners();

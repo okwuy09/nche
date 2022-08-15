@@ -3,7 +3,7 @@ import 'package:nche/components/button.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/mytextform.dart';
 import 'package:nche/components/style.dart';
-import 'package:nche/services/provider.dart';
+import 'package:nche/services/provider/authentication.dart';
 import 'package:provider/provider.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -95,7 +95,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                       child: MainButton(
                         borderColor: Colors.transparent,
-                        text: 'RESET PASSWORD',
+                        child: Text(
+                          'RESET PASSWORD',
+                          style: style.copyWith(
+                            fontSize: 14,
+                            color: AppColor.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         backgroundColor: AppColor.primaryColor,
                         onTap: () async {
                           if (_globalFormKey.currentState!.validate()) {

@@ -4,9 +4,11 @@ import 'package:nche/components/button.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/style.dart';
 import 'package:nche/components/success_sheet.dart';
+import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/ui/menu/user_profile.dart';
 import 'package:nche/ui/sos/emergency_contact.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 
 class SOSScreen extends StatefulWidget {
   const SOSScreen({Key? key}) : super(key: key);
@@ -46,9 +48,12 @@ class _SOSScreenState extends State<SOSScreen> {
                           children: [
                             CircleAvatar(
                               backgroundColor: AppColor.darkerYellow,
-                              backgroundImage:
-                                  const AssetImage("assets/musk.jpg"),
+                              backgroundImage: NetworkImage(
+                                Provider.of<UserData>(context).userProfileImage,
+                              ),
                               maxRadius: 20,
+                              onBackgroundImageError: (exception, stackTrace) =>
+                                  Image.asset('assets/avatar.png'),
                             ),
                             Positioned(
                               right: -1,

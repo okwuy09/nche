@@ -36,12 +36,14 @@ dependencies:
   google_maps_flutter: ^2.1.9
   location: ^4.4.0
   flutter_svg: ^1.1.1+1
+  flutter_native_splash: ^2.2.7
 
   #firebase Database
   cloud_firestore: ^3.4.3
   firebase_core: ^1.20.0
   firebase_auth: ^3.6.2
   google_sign_in: ^5.4.0
+  firebase_storage: ^10.3.4
 
 dev_dependencies:
   flutter_test:
@@ -49,8 +51,13 @@ dev_dependencies:
 
   flutter_lints: ^1.0.0
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
+flutter_native_splash:
+  #flutter pub run flutter_native_splash:create
+  #color: "#283547"
+  #image: assets/logos.png
+  background_image: assets/splash.png
+  android: true
+  ios: true
 
 # The following section is specific to Flutter.
 flutter:

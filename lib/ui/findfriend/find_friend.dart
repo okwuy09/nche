@@ -3,9 +3,11 @@ import 'package:nche/components/button.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/style.dart';
 import 'package:nche/model/contact.dart';
+import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/ui/findfriend/mapscreen.dart';
 import 'package:nche/ui/menu/user_profile.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 
 class FindFriend extends StatefulWidget {
   const FindFriend({Key? key}) : super(key: key);
@@ -79,9 +81,12 @@ class _FindFriendState extends State<FindFriend> {
                           children: [
                             CircleAvatar(
                               backgroundColor: AppColor.darkerYellow,
-                              backgroundImage:
-                                  const AssetImage("assets/musk.jpg"),
+                              backgroundImage: NetworkImage(
+                                Provider.of<UserData>(context).userProfileImage,
+                              ),
                               maxRadius: 20,
+                              onBackgroundImageError: (exception, stackTrace) =>
+                                  Image.asset('assets/avatar.png'),
                             ),
                             Positioned(
                               right: -1,
@@ -165,7 +170,7 @@ class _FindFriendState extends State<FindFriend> {
                       child: Center(
                         child: Icon(
                           Icons.location_on,
-                          size: 150,
+                          size: 100,
                           color: AppColor.darkerYellow,
                         ),
                       ),
@@ -302,7 +307,14 @@ class _FindFriendState extends State<FindFriend> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: MainButton(
                   borderColor: Colors.transparent,
-                  text: 'FIND FRIEND',
+                  child: Text(
+                    'FIND FRIEND',
+                    style: style.copyWith(
+                      fontSize: 14,
+                      color: AppColor.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   backgroundColor: AppColor.primaryColor,
                   onTap: () {
                     pushNewScreen(

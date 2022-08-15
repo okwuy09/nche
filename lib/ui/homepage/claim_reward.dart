@@ -296,10 +296,16 @@ class _ClaimRewardState extends State<ClaimReward> {
         padding: const EdgeInsets.only(right: 20, left: 20, bottom: 20, top: 5),
         child: MainButton(
           borderColor: Colors.transparent,
-          text: 'CLAIM REWARD',
+          child: Text(
+            'CLAIM REWARD',
+            style: style.copyWith(
+              fontSize: 14,
+              color: ischecked ? AppColor.black : AppColor.grey,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           backgroundColor:
               ischecked ? AppColor.darkerYellow : AppColor.lightGrey,
-          textColor: ischecked ? AppColor.black : AppColor.grey,
           onTap: () {
             if (ischecked) {
               if (_globalFormKey.currentState!.validate()) {

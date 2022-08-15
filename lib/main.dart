@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/services/provider.dart';
+import 'package:nche/services/provider/authentication.dart';
+import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/ui/authentication/onboarding/onboardingscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:nche/ui/authentication/signin/signin.dart';
@@ -17,6 +18,7 @@ void main() async {
   final showHome = prefs.getBool('showHome') ?? false;
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => Authentication()),
+    ChangeNotifierProvider(create: (_) => UserData()),
   ], child: MyApp(showHome: showHome)));
 }
 

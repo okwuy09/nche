@@ -737,9 +737,15 @@ class _WritePostState extends State<WritePost> {
                                     ),
                                     child: MainButton(
                                       borderColor: Colors.transparent,
-                                      text: 'SAVE',
+                                      child: Text(
+                                        'SAVE',
+                                        style: style.copyWith(
+                                          fontSize: 14,
+                                          color: AppColor.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                       backgroundColor: AppColor.darkerYellow,
-                                      textColor: AppColor.black,
                                       onTap: () {
                                         Navigator.pop(context);
                                       },
@@ -834,7 +840,14 @@ class _WritePostState extends State<WritePost> {
         color: AppColor.white,
         child: MainButton(
           borderColor: Colors.transparent,
-          text: 'POST',
+          child: Text(
+            'POST',
+            style: style.copyWith(
+              fontSize: 14,
+              color: AppColor.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           backgroundColor: AppColor.darkerYellow,
         ),
       ),

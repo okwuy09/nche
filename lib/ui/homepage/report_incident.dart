@@ -436,7 +436,14 @@ class _ReportIncidentState extends State<ReportIncident> {
             const SizedBox(height: 10),
             MainButton(
               borderColor: Colors.transparent,
-              text: 'CONTINUE',
+              child: Text(
+                'CONTINUE',
+                style: style.copyWith(
+                  fontSize: 14,
+                  color: AppColor.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               backgroundColor: AppColor.darkerYellow,
               onTap: () {
                 showModalBottomSheet(
@@ -457,7 +464,14 @@ class _ReportIncidentState extends State<ReportIncident> {
                           const SizedBox(height: 20),
                           MainButton(
                             borderColor: Colors.transparent,
-                            text: 'ATTACH A TOKEN / REWARD',
+                            child: Text(
+                              'ATTACH A TOKEN / REWARD',
+                              style: style.copyWith(
+                                fontSize: 14,
+                                color: AppColor.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                             backgroundColor: const Color(0xffD9FFF8),
                             onTap: () {
                               Navigator.pop(context);
@@ -513,7 +527,14 @@ class _ReportIncidentState extends State<ReportIncident> {
                                           const SizedBox(height: 30),
                                           MainButton(
                                             borderColor: Colors.transparent,
-                                            text: 'ATTACH REWARD',
+                                            child: Text(
+                                              'ATTACH REWARD',
+                                              style: style.copyWith(
+                                                fontSize: 14,
+                                                color: AppColor.black,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
                                             backgroundColor:
                                                 AppColor.darkerYellow,
                                             onTap: () {
@@ -548,7 +569,14 @@ class _ReportIncidentState extends State<ReportIncident> {
                           const SizedBox(height: 20),
                           MainButton(
                             borderColor: Colors.transparent,
-                            text: 'SUBMIT REPORT',
+                            child: Text(
+                              'SUBMIT REPORT',
+                              style: style.copyWith(
+                                fontSize: 14,
+                                color: AppColor.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                             backgroundColor: AppColor.darkerYellow,
                             onTap: () {
                               Navigator.pop(context);
@@ -597,7 +625,14 @@ class _ReportIncidentState extends State<ReportIncident> {
                                         const SizedBox(height: 30),
                                         MainButton(
                                           borderColor: Colors.transparent,
-                                          text: 'MAKE ANOTHER REPORT',
+                                          child: Text(
+                                            'MAKE ANOTHER REPORT',
+                                            style: style.copyWith(
+                                              fontSize: 14,
+                                              color: AppColor.black,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                           backgroundColor:
                                               AppColor.darkerYellow,
                                           onTap: () => Navigator.pop(context),

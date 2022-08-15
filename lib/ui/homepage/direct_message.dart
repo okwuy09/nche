@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/style.dart';
 import 'package:nche/model/chatuser.dart';
-import 'package:nche/model/conversationList.dart';
+import 'package:nche/ui/direct_message/conversationList.dart';
 
 class DirectMessage extends StatefulWidget {
   const DirectMessage({Key? key}) : super(key: key);

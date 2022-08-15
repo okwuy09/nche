@@ -3,8 +3,8 @@ import 'package:nche/components/alert.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/style.dart';
 import 'package:nche/components/mylisttile.dart';
-import 'package:nche/services/provider.dart';
-import 'package:nche/ui/authentication/signup_signin.dart';
+import 'package:nche/services/provider/authentication.dart';
+import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/ui/menu/profile_detail.dart';
 import 'package:nche/ui/menu/terms_condition.dart';
 import 'package:nche/ui/menu/wallet.dart';
@@ -22,7 +22,7 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    var provider = Provider.of<Authentication>(context, listen: true);
+    var provider = Provider.of<Authentication>(context);
     return Scaffold(
       backgroundColor: AppColor.white,
       body: SingleChildScrollView(
@@ -35,50 +35,43 @@ class _UserProfileState extends State<UserProfile> {
                   child: Column(
                     children: [
                       Container(
-                        height: screenSize.height * 0.24,
+                        height: screenSize.height * 0.2,
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         decoration: BoxDecoration(
-                          color: AppColor.brown,
+                          color: AppColor.darkerYellow,
                           borderRadius: BorderRadius.vertical(
-                            bottom: Radius.elliptical(screenSize.width, 80.0),
+                            bottom: Radius.elliptical(screenSize.width, 120.0),
                           ),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.only(top: 40),
                           child: Column(
                             children: [
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: IconButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  icon: Icon(
-                                    Icons.close_outlined,
-                                    color: AppColor.darkerYellow,
-                                    size: 35,
-                                  ),
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                              // Profile Appbar details
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    'Tiana Rosser',
-                                    style: style.copyWith(
-                                      color: AppColor.white,
-                                      fontSize: 18,
+                                  IconButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    icon: Icon(
+                                      Icons.arrow_back,
+                                      color: AppColor.black,
                                     ),
                                   ),
-                                  const SizedBox(height: 3),
+                                  Expanded(child: Container()),
+                                  const SizedBox(width: 15),
                                   Text(
-                                    'User: ADX0032',
+                                    'Account Detail',
                                     style: style.copyWith(
-                                      color: AppColor.white,
-                                      fontSize: 12,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
                                     ),
-                                  )
+                                  ),
+                                  Expanded(flex: 2, child: Container()),
                                 ],
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -87,41 +80,57 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                 ),
                 Positioned(
-                  bottom: 5,
-                  left: screenSize.width / 2.6,
+                  left: screenSize.width / 2.7,
+                  bottom: screenSize.height * 0.04,
                   child: Stack(
                     children: [
-                      Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.transparent),
-                          borderRadius: BorderRadius.circular(130),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(130),
-                          child: Image.asset(
-                            'assets/musk.jpg',
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return ClipRRect(
-                                borderRadius: BorderRadius.circular(130),
-                                child: Image.asset(
-                                  'assets/No_image.png',
-                                ),
-                              );
-                            },
+                      /// Usrs profile picture
+
+                      Stack(
+                        children: [
+                          Container(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: AppColor.darkerYellow,
+                              borderRadius: BorderRadius.circular(100),
+                            ),
                           ),
-                        ),
+                          Positioned(
+                            top: 3.5,
+                            left: 3.5,
+                            child: Container(
+                              height: 93,
+                              width: 93,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(200),
+                                child: Image.network(
+                                  Provider.of<UserData>(context)
+                                      .userProfileImage,
+                                  //color: AppColor.white,
+                                  width: 80,
+                                  height: 80,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (_, error, stackTrace) {
+                                    return Container(color: AppColor.white);
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       Positioned(
-                        right: 10,
-                        top: 5,
+                        right: 12,
+                        top: 10,
                         child: Container(
                           height: 12,
                           width: 12,
                           decoration: BoxDecoration(
-                            color: AppColor.brown,
+                            color: AppColor.darkerYellow,
                             borderRadius: BorderRadius.circular(50),
                           ),
                           child: Container(
@@ -129,8 +138,9 @@ class _UserProfileState extends State<UserProfile> {
                             width: 8,
                             margin: const EdgeInsets.all(2),
                             decoration: BoxDecoration(
-                                color: const Color(0xff00F261),
-                                borderRadius: BorderRadius.circular(50)),
+                              color: const Color(0xff00F261),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
                           ),
                         ),
                       ),
@@ -142,8 +152,8 @@ class _UserProfileState extends State<UserProfile> {
             // profile infor
 
             MyListTile(
-              icon: Icons.person_outline,
-              title: 'Account Info',
+              icon: Icons.account_circle_outlined,
+              title: 'Profile',
               onTap: () {
                 Navigator.push(
                   context,

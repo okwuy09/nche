@@ -7,7 +7,7 @@ import 'package:nche/components/colors.dart';
 import 'package:nche/components/mytextform.dart';
 import 'package:nche/components/social_button.dart';
 import 'package:nche/components/style.dart';
-import 'package:nche/services/provider.dart';
+import 'package:nche/services/provider/authentication.dart';
 import 'package:nche/ui/authentication/phoneSignin/phone_login.dart';
 import 'package:provider/provider.dart';
 
@@ -73,6 +73,7 @@ class _SignUpState extends State<SignUp> {
         automaticallyImplyLeading: false,
         backgroundColor: AppColor.white,
         elevation: 0,
+        toolbarHeight: 50,
         title: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: Icon(
@@ -88,29 +89,35 @@ class _SignUpState extends State<SignUp> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   //
-                  //SizedBox(height: screensize.height * 0.02),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'assets/nche_logo.png',
-                        width: 122,
-                        height: 50,
+                        'assets/nche_icon.png',
+                        width: 70,
+                        height: 70,
                       ),
+                      SizedBox(height: screensize.height * 0.03),
                       Text(
-                        'Welcome, Sign Up',
+                        'Hi There! 👋',
                         style: style.copyWith(
-                          fontSize: 14.0,
+                          fontSize: 24.0,
                           fontWeight: FontWeight.bold,
                         ),
+                      ),
+                      SizedBox(height: screensize.height * 0.02),
+                      Text(
+                        'Welcome, Sign Up To Continue',
+                        style: style.copyWith(color: AppColor.darkerGrey),
                       ),
                     ],
                   ),
 
                   //
-                  SizedBox(height: screensize.height * 0.02),
+                  SizedBox(height: screensize.height * 0.04),
                   Column(
                     children: <Widget>[
                       //
@@ -187,42 +194,43 @@ class _SignUpState extends State<SignUp> {
                       ),
 
                       //
-                      SizedBox(height: screensize.height * 0.01),
-                      MyTextForm(
-                        controller: _confirmPasswordField,
-                        obscureText: _isObscureConfirmPassword,
-                        hintText: 'Confirm password',
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _isObscureConfirmPassword
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: AppColor.grey,
-                          ),
-                          onPressed: () {
-                            setState(
-                              () {
-                                _isObscureConfirmPassword =
-                                    !_isObscureConfirmPassword;
-                              },
-                            );
-                          },
-                        ),
-                        validatior: (value) {
-                          if (_passwordField.text !=
-                              _confirmPasswordField.text) {
-                            return 'The passwords do not match, pls verify*';
-                          }
-                          return null;
-                        },
-                      ),
+                      // SizedBox(height: screensize.height * 0.01),
+                      // MyTextForm(
+                      //   controller: _confirmPasswordField,
+                      //   obscureText: _isObscureConfirmPassword,
+                      //   hintText: 'Confirm password',
+                      //   suffixIcon: IconButton(
+                      //     icon: Icon(
+                      //       _isObscureConfirmPassword
+                      //           ? Icons.visibility
+                      //           : Icons.visibility_off,
+                      //       color: AppColor.grey,
+                      //     ),
+                      //     onPressed: () {
+                      //       setState(
+                      //         () {
+                      //           _isObscureConfirmPassword =
+                      //               !_isObscureConfirmPassword;
+                      //         },
+                      //       );
+                      //     },
+                      //   ),
+                      //   validatior: (value) {
+                      //     if (_passwordField.text !=
+                      //         _confirmPasswordField.text) {
+                      //       return 'The passwords do not match, pls verify*';
+                      //     }
+                      //     return null;
+                      //   },
+                      // ),
 
                       //
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Checkbox(
                             checkColor: AppColor.white,
-                            activeColor: AppColor.black,
+                            activeColor: AppColor.darkerYellow,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
                             ),
@@ -244,13 +252,19 @@ class _SignUpState extends State<SignUp> {
                   ),
 
                   //
-                  SizedBox(height: screensize.height * 0.025),
+                  SizedBox(height: screensize.height * 0.02),
                   MainButton(
                     backgroundColor:
                         ischecked ? AppColor.primaryColor : AppColor.lightGrey,
                     borderColor: Colors.transparent,
-                    textColor: ischecked ? AppColor.black : AppColor.darkerGrey,
-                    text: 'SIGN UP',
+                    child: Text(
+                      'SIGN UP',
+                      style: style.copyWith(
+                        fontSize: 14,
+                        color: ischecked ? AppColor.black : AppColor.darkerGrey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     onTap: () async {
                       if (ischecked) {
                         if (_formkey.currentState!.validate()) {
@@ -269,7 +283,7 @@ class _SignUpState extends State<SignUp> {
                   ),
 
                   //
-                  SizedBox(height: screensize.height * 0.02),
+                  SizedBox(height: screensize.height * 0.03),
                   Row(
                     children: [
                       const Expanded(
@@ -289,7 +303,7 @@ class _SignUpState extends State<SignUp> {
                   //
                   Padding(
                     padding: EdgeInsets.symmetric(
-                        vertical: screensize.height * 0.02),
+                        vertical: screensize.height * 0.03),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

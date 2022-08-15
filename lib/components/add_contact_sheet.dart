@@ -85,7 +85,14 @@ handleAddContact(
               const SizedBox(height: 30),
               MainButton(
                 borderColor: Colors.transparent,
-                text: 'ADD CONTACT',
+                child: Text(
+                  'ADD CONTACT',
+                  style: style.copyWith(
+                    fontSize: 14,
+                    color: AppColor.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 backgroundColor: AppColor.primaryColor,
                 onTap: onTap,
               ),
@@ -99,7 +106,14 @@ handleAddContact(
                 ),
                 child: MainButton(
                   borderColor: Colors.transparent,
-                  text: 'CANCEL',
+                  child: Text(
+                    'CANCEL',
+                    style: style.copyWith(
+                      fontSize: 14,
+                      color: AppColor.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   backgroundColor: AppColor.lightGrey,
                   onTap: () => Navigator.pop(context),
                 ),

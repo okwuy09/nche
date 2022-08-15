@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:nche/components/button.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/style.dart';
-import 'package:nche/services/provider.dart';
+import 'package:nche/services/provider/authentication.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:nche/ui/authentication/phoneSignin/phone_otp.dart';
 import 'package:provider/provider.dart';
 
 class PhoneLogin extends StatefulWidget {
@@ -78,23 +79,25 @@ class _PhoneLoginState extends State<PhoneLogin> {
                         cursorColor: AppColor.black,
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: AppColor.lightGrey,
+                          fillColor: AppColor.white,
                           focusedErrorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(6.0),
                             borderSide: BorderSide(
-                              color: AppColor.primaryColor,
+                              color: AppColor.red,
                             ),
                           ),
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 10.0),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(6.0),
                             borderSide: BorderSide(
-                              color: AppColor.primaryColor,
+                              color: AppColor.darkerGrey,
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(6.0),
                             borderSide: BorderSide(
-                              color: AppColor.lightGrey,
+                              color: AppColor.grey,
                             ),
                           ),
                           hintText: 'Phone Number',
@@ -119,7 +122,14 @@ class _PhoneLoginState extends State<PhoneLogin> {
                       padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                       child: MainButton(
                         borderColor: Colors.transparent,
-                        text: 'GENERATE OTP',
+                        child: Text(
+                          'GENERATE OTP',
+                          style: style.copyWith(
+                            fontSize: 14,
+                            color: AppColor.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         backgroundColor: AppColor.primaryColor,
                         onTap: () async {
                           if (_globalFormKey.currentState!.validate()) {

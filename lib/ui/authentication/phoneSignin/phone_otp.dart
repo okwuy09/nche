@@ -7,7 +7,7 @@ import 'package:nche/components/button.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/progress_indicator.dart';
 import 'package:nche/components/style.dart';
-import 'package:nche/services/provider.dart';
+import 'package:nche/services/provider/authentication.dart';
 import 'package:nche/ui/homepage/bottom_navbar.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
@@ -116,13 +116,13 @@ class _OTPAuthenticationState extends State<OTPAuthentication> {
                         textFieldAlignment: MainAxisAlignment.spaceAround,
                         fieldWidth: 40,
                         otpFieldStyle: OtpFieldStyle(
-                          focusBorderColor: AppColor.primaryColor,
-                          borderColor: Colors.transparent,
-                          enabledBorderColor: Colors.transparent,
-                          backgroundColor: AppColor.lightGrey,
+                          focusBorderColor: AppColor.darkerGrey,
+                          borderColor: AppColor.grey,
+                          enabledBorderColor: AppColor.grey,
+                          backgroundColor: AppColor.white,
                         ),
                         fieldStyle: FieldStyle.box,
-                        outlineBorderRadius: 12,
+                        outlineBorderRadius: 6,
                         style: style.copyWith(fontSize: 24),
                         onChanged: (pin) {
                           // print("Changed: " + pin);
@@ -177,7 +177,14 @@ class _OTPAuthenticationState extends State<OTPAuthentication> {
                       padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                       child: MainButton(
                         borderColor: Colors.transparent,
-                        text: 'VERIFY OTP',
+                        child: Text(
+                          'VERIFY OTP',
+                          style: style.copyWith(
+                            fontSize: 14,
+                            color: AppColor.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         backgroundColor: AppColor.primaryColor,
                         onTap: () async {
                           try {

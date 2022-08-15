@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/style.dart';
-import 'package:nche/model/chat_detail_page.dart';
+import 'package:nche/ui/direct_message/chat_detail_page.dart';
 
 class ConversationList extends StatefulWidget {
   String name;

@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/style.dart';
+import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/ui/Feed/feed.dart';
 import 'package:nche/ui/Feed/saved_feed.dart';
 import 'package:nche/ui/menu/user_profile.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 
 class MyTapBar extends StatefulWidget {
   const MyTapBar({Key? key}) : super(key: key);
@@ -20,6 +22,7 @@ class _MyTapBarState extends State<MyTapBar> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: AppColor.white,
         body: Column(
           children: [
             Padding(
@@ -40,9 +43,12 @@ class _MyTapBarState extends State<MyTapBar> {
                           children: [
                             CircleAvatar(
                               backgroundColor: AppColor.darkerYellow,
-                              backgroundImage:
-                                  const AssetImage("assets/musk.jpg"),
+                              backgroundImage: NetworkImage(
+                                Provider.of<UserData>(context).userProfileImage,
+                              ),
                               maxRadius: 20,
+                              onBackgroundImageError: (exception, stackTrace) =>
+                                  Image.asset('assets/avatar.png'),
                             ),
                             Positioned(
                               right: -1,

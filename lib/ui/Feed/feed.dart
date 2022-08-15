@@ -39,6 +39,7 @@ class _FeedState extends State<Feed> {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: AppColor.white,
       floatingActionButton: Stack(
         children: [
           SpeedDial(

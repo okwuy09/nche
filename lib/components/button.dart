@@ -1,20 +1,19 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:nche/components/style.dart';
 
 class MainButton extends StatelessWidget {
   final Function()? onTap;
   final Color? backgroundColor;
-  final Color? textColor;
-  final String text;
+  final Widget child;
   Color borderColor = Colors.transparent;
   MainButton(
       {Key? key,
       this.onTap,
       this.backgroundColor,
-      this.textColor,
       required this.borderColor,
-      required this.text})
+      required this.child})
       : super(key: key);
 
   @override
@@ -28,14 +27,7 @@ class MainButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(6.0)),
         height: 49.0,
         child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              fontSize: 14,
-              color: textColor,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          child: child,
         ),
       ),
     );

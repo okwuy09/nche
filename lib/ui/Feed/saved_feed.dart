@@ -34,6 +34,7 @@ class _SaveFeedState extends State<SaveFeed> {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: AppColor.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -43,7 +44,7 @@ class _SaveFeedState extends State<SaveFeed> {
               const SizedBox(height: 5),
               Container(
                 width: screenSize.width,
-                margin: const EdgeInsets.only(bottom: 5),
+                margin: const EdgeInsets.only(bottom: 10),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 decoration: BoxDecoration(

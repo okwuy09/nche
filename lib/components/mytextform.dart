@@ -26,44 +26,45 @@ class MyTextForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        style: style.copyWith(fontWeight: FontWeight.w500),
-        obscureText: obscureText,
-        autofillHints: autofillHints,
-        cursorColor: Colors.black54,
-        keyboardType: keyboardType,
-        controller: controller,
-        onChanged: onChanged,
-        validator: validatior,
-        decoration: InputDecoration(
-          fillColor: AppColor.lightGrey,
-          filled: true,
-          hintText: hintText,
-          hintStyle: style.copyWith(color: AppColor.darkerGrey),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
-            borderSide: BorderSide(
-              color: AppColor.red,
-              width: 2.0,
-            ),
+      style: style.copyWith(fontWeight: FontWeight.w400),
+      obscureText: obscureText,
+      autofillHints: autofillHints,
+      cursorColor: Colors.black54,
+      keyboardType: keyboardType,
+      controller: controller,
+      onChanged: onChanged,
+      validator: validatior,
+      decoration: InputDecoration(
+        fillColor: AppColor.white,
+        filled: true,
+        hintText: hintText,
+        hintStyle: style.copyWith(color: AppColor.darkerGrey),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(6.0),
+          borderSide: BorderSide(
+            color: AppColor.red,
           ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
-            borderSide: BorderSide(
-              color: AppColor.red,
-              width: 2.0,
-            ),
+        ),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(6.0),
+          borderSide: BorderSide(
+            color: AppColor.red,
           ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
-            borderSide: BorderSide(
-              color: AppColor.darkerYellow,
-            ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(6.0),
+          borderSide: BorderSide(
+            color: AppColor.darkerGrey,
           ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
-            borderSide: const BorderSide(color: Colors.transparent),
-          ),
-          suffixIcon: suffixIcon,
-        ));
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(6.0),
+          borderSide: BorderSide(color: AppColor.grey),
+        ),
+        suffixIcon: suffixIcon,
+      ),
+    );
   }
 }

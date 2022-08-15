@@ -4,7 +4,7 @@ import 'package:nche/components/colors.dart';
 import 'package:nche/components/mytextform.dart';
 import 'package:nche/components/social_button.dart';
 import 'package:nche/components/style.dart';
-import 'package:nche/services/provider.dart';
+import 'package:nche/services/provider/authentication.dart';
 import 'package:nche/ui/authentication/onboarding/onboardingscreen.dart';
 import 'package:nche/ui/authentication/phoneSignin/phone_login.dart';
 import 'package:nche/ui/authentication/signin/forgot_password.dart';
@@ -46,6 +46,7 @@ class _SignInState extends State<SignIn> {
         automaticallyImplyLeading: false,
         backgroundColor: AppColor.white,
         elevation: 0,
+        toolbarHeight: 50,
         title: IconButton(
           onPressed: () async {
             final prefs = await SharedPreferences.getInstance();
@@ -71,74 +72,33 @@ class _SignInState extends State<SignIn> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  //SizedBox(height: screensize.height * 0.02),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'assets/nche_logo.png',
-                        width: 122,
-                        height: 50,
+                        'assets/nche_icon.png',
+                        width: 70,
+                        height: 70,
                       ),
+                      SizedBox(height: screensize.height * 0.03),
                       Text(
-                        'Welcome, Sign In',
+                        'Hi There! 👋',
                         style: style.copyWith(
-                          fontSize: 14.0,
+                          fontSize: 24.0,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      SizedBox(height: screensize.height * 0.02),
+                      Text(
+                        'Welcome Back, Sign In To Your Account',
+                        style: style.copyWith(color: AppColor.darkerGrey),
+                      ),
                     ],
                   ),
 
-                  SizedBox(height: screensize.height * 0.01),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          onTap: () async =>
-                              await provider.signInWithGoogle(context: context),
-                          child: const SocialButton(
-                            assetUrl: 'assets/google_icon.png',
-                            title: 'Google',
-                          ),
-                        ),
-                        Expanded(child: Container()),
-                        InkWell(
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const PhoneLogin(),
-                            ),
-                          ),
-                          child: const SocialButton(
-                            assetUrl: 'assets/call_add.png',
-                            title: 'Phone no.',
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-
-                  Row(
-                    children: [
-                      const Expanded(
-                        child: Divider(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: Text(
-                          'OR',
-                          style: style.copyWith(fontSize: 13),
-                        ),
-                      ),
-                      const Expanded(child: Divider()),
-                    ],
-                  ),
-
-                  SizedBox(height: screensize.height * 0.03),
+                  SizedBox(height: screensize.height * 0.04),
                   Column(
                     children: <Widget>[
                       // Email address field for login
@@ -208,11 +168,18 @@ class _SignInState extends State<SignIn> {
                   ),
 
                   //
-                  SizedBox(height: screensize.height * 0.22),
+                  SizedBox(height: screensize.height * 0.06),
                   MainButton(
                     backgroundColor: AppColor.primaryColor,
                     borderColor: Colors.transparent,
-                    text: 'SIGN IN',
+                    child: Text(
+                      'SIGN IN',
+                      style: style.copyWith(
+                        fontSize: 14,
+                        color: AppColor.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     onTap: () async {
                       if (_formkey.currentState!.validate()) {
                         await provider.signIn(
@@ -229,25 +196,72 @@ class _SignInState extends State<SignIn> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Don\' have account?',
+                        'Don\'t have account?',
                         style: style.copyWith(
                             fontSize: 14, color: const Color(0xff4f4f4f)),
                       ),
                       TextButton(
-                          onPressed: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const SignUp(),
-                                ),
-                              ),
-                          child: Text(
-                            'Sign Up',
-                            style: style.copyWith(
-                                fontSize: 14, fontWeight: FontWeight.bold),
-                          ))
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const SignUp(),
+                          ),
+                        ),
+                        child: Text(
+                          'Sign Up',
+                          style: style.copyWith(
+                              fontSize: 14, fontWeight: FontWeight.bold),
+                        ),
+                      )
                     ],
-                  )
-                  //
+                  ),
+                  SizedBox(height: screensize.height * 0.06),
+                  Row(
+                    children: [
+                      const Expanded(
+                        child: Divider(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Text(
+                          'OR',
+                          style: style.copyWith(fontSize: 13),
+                        ),
+                      ),
+                      const Expanded(child: Divider()),
+                    ],
+                  ),
+                  // aternative signIn
+                  SizedBox(height: screensize.height * 0.02),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () async =>
+                              await provider.signInWithGoogle(context: context),
+                          child: const SocialButton(
+                            assetUrl: 'assets/google_icon.png',
+                            title: 'Google',
+                          ),
+                        ),
+                        Expanded(child: Container()),
+                        InkWell(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const PhoneLogin(),
+                            ),
+                          ),
+                          child: const SocialButton(
+                            assetUrl: 'assets/call_add.png',
+                            title: 'Phone no.',
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

@@ -67,7 +67,14 @@ handleSuccessfullOperation({
             const SizedBox(height: 20),
             MainButton(
               borderColor: Colors.transparent,
-              text: 'CONTINUE',
+              child: Text(
+                'CONTINUE',
+                style: style.copyWith(
+                  fontSize: 14,
+                  color: AppColor.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               backgroundColor: AppColor.darkerYellow,
               onTap: onTap,
             ),

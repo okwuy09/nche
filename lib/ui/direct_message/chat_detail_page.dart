@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/date.dart';
 import 'package:nche/components/style.dart';
-import 'package:nche/model/chat_message.dart';
+import 'package:nche/ui/direct_message/chat_message.dart';
 
 class ChatDetailPage extends StatefulWidget {
   const ChatDetailPage({Key? key}) : super(key: key);

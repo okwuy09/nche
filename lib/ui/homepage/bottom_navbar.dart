@@ -19,6 +19,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   PersistentTabController? _controller;
 
   //bool? _hideNavBar;
+
   @override
   void initState() {
     super.initState();

@@ -2,24 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/style.dart';
 
-class MyListTile extends StatelessWidget {
+class UserInforTile extends StatelessWidget {
   final IconData icon;
   final String title;
+  final String subTitle;
   final Function()? onTap;
-  const MyListTile({
+  const UserInforTile({
     Key? key,
     required this.icon,
     required this.title,
-    required this.onTap,
+    this.onTap,
+    required this.subTitle,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      visualDensity: VisualDensity.comfortable,
       onTap: onTap,
+      contentPadding: const EdgeInsets.only(left: 20, right: 20),
       title: Text(
         title,
         style: style,
+      ),
+      subtitle: Text(
+        subTitle,
+        style: style.copyWith(
+          fontSize: 10,
+          color: AppColor.grey,
+        ),
       ),
       leading: Container(
         height: 35,

@@ -61,9 +61,15 @@ class _RewardScreenState extends State<RewardScreen> {
                         SizedBox(height: screenSize.height * 0.04),
                         MainButton(
                           borderColor: Colors.transparent,
-                          text: 'ISSUE OUT A REWARD',
+                          child: Text(
+                            'ISSUE OUT A REWARD',
+                            style: style.copyWith(
+                              fontSize: 14,
+                              color: const Color(0xff188A8A),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           backgroundColor: const Color(0xffD9FFF8),
-                          textColor: const Color(0xff188A8A),
                           onTap: () {},
                         ),
                         const SizedBox(height: 10),

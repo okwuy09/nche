@@ -126,7 +126,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     ),
                     child: MainButton(
                       borderColor: Colors.transparent,
-                      text: 'GET STARTED',
+                      child: Text(
+                        'GET STARTED',
+                        style: style.copyWith(
+                          fontSize: 14,
+                          color: AppColor.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       backgroundColor: AppColor.primaryColor,
                       onTap: () async {
                         final prefs = await SharedPreferences.getInstance();

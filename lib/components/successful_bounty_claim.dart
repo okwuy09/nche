@@ -78,9 +78,15 @@ handleSuccessfulBountyClaim({context}) {
             const SizedBox(height: 20),
             MainButton(
               borderColor: Colors.transparent,
-              text: 'CLAIM MORE',
+              child: Text(
+                'CLAIM MORE',
+                style: style.copyWith(
+                  fontSize: 14,
+                  color: const Color(0xff188A8A),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               backgroundColor: const Color(0xffD9FFF8),
-              textColor: const Color(0xff188A8A),
               onTap: () => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
