@@ -122,14 +122,16 @@ class _PhoneLoginState extends State<PhoneLogin> {
                       padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                       child: MainButton(
                         borderColor: Colors.transparent,
-                        child: Text(
-                          'GENERATE OTP',
-                          style: style.copyWith(
-                            fontSize: 14,
-                            color: AppColor.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        child: provider.isSignInWithPhone
+                            ? buttonCircularIndicator
+                            : Text(
+                                'GENERATE OTP',
+                                style: style.copyWith(
+                                  fontSize: 14,
+                                  color: AppColor.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                         backgroundColor: AppColor.primaryColor,
                         onTap: () async {
                           if (_globalFormKey.currentState!.validate()) {

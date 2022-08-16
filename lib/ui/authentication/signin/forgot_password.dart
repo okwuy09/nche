@@ -95,14 +95,16 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                       child: MainButton(
                         borderColor: Colors.transparent,
-                        child: Text(
-                          'RESET PASSWORD',
-                          style: style.copyWith(
-                            fontSize: 14,
-                            color: AppColor.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        child: provider.isResetPassword
+                            ? buttonCircularIndicator
+                            : Text(
+                                'RESET PASSWORD',
+                                style: style.copyWith(
+                                  fontSize: 14,
+                                  color: AppColor.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                         backgroundColor: AppColor.primaryColor,
                         onTap: () async {
                           if (_globalFormKey.currentState!.validate()) {

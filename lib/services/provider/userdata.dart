@@ -6,17 +6,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nche/components/alert.dart';
-import 'package:nche/components/colors.dart';
-import 'package:nche/components/progress_indicator.dart';
 import 'package:nche/components/style.dart';
-import 'package:nche/components/success_sheet.dart';
 import 'package:nche/model/users.dart';
-import 'package:nche/ui/menu/profile_detail.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class UserData with ChangeNotifier {
-  bool isnloading = false;
-  bool noProfileUpdate = true;
+  //bool noProfileUpdate = true;
   String userProfileImage = '';
 
   final User _user = FirebaseAuth.instance.currentUser!;
@@ -34,7 +29,40 @@ class UserData with ChangeNotifier {
     return userProfileData;
   }
 
+// Change Password
+  bool ischangePassword = false;
+  Future changePassword(
+    String currentPassword,
+    String newPassword,
+    BuildContext context,
+  ) async {
+    //Must re-authenticate user before updating the password. Otherwise it may fail or user get signed out.
+    try {
+      ischangePassword = true;
+      notifyListeners();
+      final cred = EmailAuthProvider.credential(
+          email: _user.email!, password: currentPassword);
+      await _user.reauthenticateWithCredential(cred).then((value) async {
+        await _user.updatePassword(newPassword).then((_) {
+          // usersRef.doc(uid).update({"password": newPassword});
+        });
+      });
+      ischangePassword = false;
+      notifyListeners();
+      Navigator.pop(context);
+      successOperation(context, 'Password Updated Successfully');
+    } on FirebaseAuthException catch (e) {
+      ischangePassword = false;
+      notifyListeners();
+      return handleFireBaseAlert(
+        context: context,
+        message: e.message!,
+      );
+    }
+  }
+
   // Edit Profile
+  bool isUpdateProfile = false;
   updateUserProfile({
     String? email,
     String? fullName,
@@ -45,7 +73,7 @@ class UserData with ChangeNotifier {
     required BuildContext context,
   }) async {
     try {
-      isnloading = true;
+      isUpdateProfile = true;
       notifyListeners();
       await FirebaseFirestore.instance
           .collection('users')
@@ -58,36 +86,13 @@ class UserData with ChangeNotifier {
         'userCity': userCity,
         'phoneNumber': phoneNumber,
       });
-      isnloading = false;
+      isUpdateProfile = false;
       notifyListeners();
       Navigator.pop(context);
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.check_circle,
-              color: AppColor.white,
-              size: 22,
-            ),
-            const SizedBox(width: 10),
-            Text(
-              'Profile Updated Successfully',
-              style: style.copyWith(color: AppColor.white),
-            ),
-          ],
-        ),
-        backgroundColor: Colors.green,
-        padding: const EdgeInsets.all(10),
-        duration: const Duration(milliseconds: 5000),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(50.0),
-        ),
-      ));
+      successOperation(context, 'Profile Updated Successfully');
     } on FirebaseAuthException catch (e) {
-      isnloading = false;
+      isUpdateProfile = false;
       notifyListeners();
       return handleFireBaseAlert(
         context: context,
@@ -131,7 +136,6 @@ class UserData with ChangeNotifier {
           .doc(_user.uid)
           .update({'avarter': downloadUrl});
 
-      noProfileUpdate = true;
       notifyListeners();
     }
   }

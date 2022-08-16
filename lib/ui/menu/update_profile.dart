@@ -234,7 +234,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   SizedBox(height: screenSize.height * 0.14),
                   MainButton(
                     borderColor: Colors.transparent,
-                    child: provider.isnloading
+                    child: provider.isUpdateProfile
                         ? buttonCircularIndicator
                         : Text('UPDATE',
                             style: style.copyWith(

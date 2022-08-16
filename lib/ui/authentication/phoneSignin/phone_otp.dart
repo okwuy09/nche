@@ -148,14 +148,16 @@ class _OTPAuthenticationState extends State<OTPAuthentication> {
                                       mobile: widget.phoneNumber,
                                     )
                                 : null,
-                            child: Text(
-                              'Resend Code',
-                              style: style.copyWith(
-                                color: _start == 0
-                                    ? AppColor.darkerYellow
-                                    : AppColor.grey,
-                              ),
-                            ),
+                            child: provider.isSignInWithPhone
+                                ? buttonCircularIndicator
+                                : Text(
+                                    'Resend Code',
+                                    style: style.copyWith(
+                                      color: _start == 0
+                                          ? AppColor.darkerYellow
+                                          : AppColor.grey,
+                                    ),
+                                  ),
                           ),
 
                           // Text widget to dispay the count down timer
@@ -177,42 +179,22 @@ class _OTPAuthenticationState extends State<OTPAuthentication> {
                       padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                       child: MainButton(
                         borderColor: Colors.transparent,
-                        child: Text(
-                          'VERIFY OTP',
-                          style: style.copyWith(
-                            fontSize: 14,
-                            color: AppColor.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        child: provider.isVerifyOTP
+                            ? buttonCircularIndicator
+                            : Text(
+                                'VERIFY OTP',
+                                style: style.copyWith(
+                                  fontSize: 14,
+                                  color: AppColor.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                         backgroundColor: AppColor.primaryColor,
                         onTap: () async {
-                          try {
-                            MyIndicator().waiting(context);
-                            await FirebaseAuth.instance
-                                .signInWithCredential(
-                                    PhoneAuthProvider.credential(
-                                        verificationId: widget.verificationId,
-                                        smsCode: _smsCode!))
-                                .then((value) async {
-                              if (value.user != null) {
-                                // Navigate to the home page if code confirmation is successful
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => const BottomNavBar(),
-                                  ),
-                                );
-                              }
-                            });
-                          } catch (e) {
-                            // pop out the loading screen with error occured
-                            Navigator.pop(context);
-                            handleFireBaseAlert(
-                              context: context,
-                              message: e.toString(),
-                            );
-                          }
+                          await provider.verifyOTP(
+                              verificationID: widget.verificationId,
+                              smsCode: _smsCode!,
+                              context: context);
 
                           //clear otp field on summit
                           _otpSignInController.clear();

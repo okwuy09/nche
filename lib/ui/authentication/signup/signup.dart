@@ -257,14 +257,18 @@ class _SignUpState extends State<SignUp> {
                     backgroundColor:
                         ischecked ? AppColor.primaryColor : AppColor.lightGrey,
                     borderColor: Colors.transparent,
-                    child: Text(
-                      'SIGN UP',
-                      style: style.copyWith(
-                        fontSize: 14,
-                        color: ischecked ? AppColor.black : AppColor.darkerGrey,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: provider.isSignUp
+                        ? buttonCircularIndicator
+                        : Text(
+                            'SIGN UP',
+                            style: style.copyWith(
+                              fontSize: 14,
+                              color: ischecked
+                                  ? AppColor.black
+                                  : AppColor.darkerGrey,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                     onTap: () async {
                       if (ischecked) {
                         if (_formkey.currentState!.validate()) {
@@ -310,9 +314,12 @@ class _SignUpState extends State<SignUp> {
                         InkWell(
                           onTap: () async =>
                               await provider.signInWithGoogle(context: context),
-                          child: const SocialButton(
+                          child: SocialButton(
                             assetUrl: 'assets/google_icon.png',
-                            title: 'Google',
+                            title: Text(
+                              'Google',
+                              style: style.copyWith(fontSize: 14),
+                            ),
                           ),
                         ),
                         Expanded(child: Container()),
@@ -323,9 +330,12 @@ class _SignUpState extends State<SignUp> {
                               builder: (_) => const PhoneLogin(),
                             ),
                           ),
-                          child: const SocialButton(
+                          child: SocialButton(
                             assetUrl: 'assets/call_add.png',
-                            title: 'Phone no.',
+                            title: Text(
+                              'Phone no.',
+                              style: style.copyWith(fontSize: 14),
+                            ),
                           ),
                         )
                       ],

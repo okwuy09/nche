@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/style.dart';
 
 class SocialButton extends StatelessWidget {
-  final String title;
+  final Widget title;
   final String assetUrl;
   const SocialButton({Key? key, required this.assetUrl, required this.title})
       : super(key: key);
@@ -27,10 +26,7 @@ class SocialButton extends StatelessWidget {
             height: 20,
           ),
           const SizedBox(width: 13),
-          Text(
-            title,
-            style: style.copyWith(fontSize: 14),
-          )
+          title
         ],
       ),
     );

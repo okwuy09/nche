@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:nche/components/button.dart';
+import 'package:nche/components/change_password_sheet.dart';
 import 'package:nche/components/colors.dart';
+import 'package:nche/components/mytextform.dart';
 import 'package:nche/components/popover.dart';
 import 'package:nche/components/style.dart';
 import 'package:nche/components/user_infor_tile.dart';
@@ -19,11 +22,15 @@ class ProfileDetail extends StatefulWidget {
 class _ProfileDetailState extends State<ProfileDetail> {
   XFile? _profileImage;
 
+  PersistentBottomSheetController? _bottomSheetController;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     var provider = Provider.of<UserData>(context);
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: AppColor.white,
       body: SingleChildScrollView(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -197,10 +204,22 @@ class _ProfileDetailState extends State<ProfileDetail> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Expanded(
-                                child: editInfor(
-                                  screenSize,
-                                  'Password',
-                                  Icons.security,
+                                child: InkWell(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      builder: (_) {
+                                        return const ChangePassword();
+                                      },
+                                    );
+                                  },
+                                  child: editInfor(
+                                    screenSize,
+                                    'Password',
+                                    Icons.security,
+                                  ),
                                 ),
                               ),
                               SizedBox(width: screenSize.width * 0.1),

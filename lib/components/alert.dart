@@ -14,30 +14,25 @@ handleFireBaseAlert({context, required String message}) {
             backgroundColor: AppColor.lightGrey,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            title: Center(
+              child: Text(
+                'ALERT !!!',
+                style: style.copyWith(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: AppColor.red,
+                ),
+              ),
+            ),
             actions: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.warning_rounded,
-                    color: AppColor.darkerYellow,
-                    size: 30,
-                  ),
-                  Text(
-                    'ALERT !!!',
-                    style: style.copyWith(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: AppColor.red,
-                    ),
-                  ),
-                ],
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  message,
+                  style: style.copyWith(),
+                ),
               ),
               const SizedBox(height: 10),
-              Text(
-                message,
-                style: style.copyWith(),
-              ),
               ElevatedButton(
                 onPressed: () => Navigator.pop(context),
                 style: ElevatedButton.styleFrom(
@@ -78,23 +73,15 @@ handleLogOutAlert({
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.warning_rounded,
-                  color: AppColor.darkerYellow,
-                  size: 30,
+            title: Center(
+              child: Text(
+                'ALERT !!!',
+                style: style.copyWith(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: AppColor.red,
                 ),
-                Text(
-                  'ALERT !!!',
-                  style: style.copyWith(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                    color: AppColor.red,
-                  ),
-                ),
-              ],
+              ),
             ),
             actions: [
               Align(

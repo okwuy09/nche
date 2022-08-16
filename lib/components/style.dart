@@ -17,5 +17,33 @@ final buttonCircularIndicator = SizedBox(
   ),
 );
 
+void successOperation(context, String text) =>
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.check_circle,
+              color: AppColor.white,
+              size: 22,
+            ),
+            const SizedBox(width: 10),
+            Text(
+              text,
+              style: style.copyWith(color: AppColor.white),
+            ),
+          ],
+        ),
+        backgroundColor: Colors.green,
+        padding: const EdgeInsets.all(10),
+        duration: const Duration(milliseconds: 5000),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50.0),
+        ),
+      ),
+    );
+
 const googleApiKey = 'AIzaSyAd4rEAQqf5BfCJGABqW99teDPgBcuyN08';
 //const googleAPIkey2 = 'AIzaSyCGShAceyIm1LHL2mLja0eKCKDjoZV2RzY';

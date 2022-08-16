@@ -1,6 +1,3 @@
-//import 'dart:convert';
-//import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,17 +11,16 @@ import 'package:nche/ui/homepage/bottom_navbar.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class Authentication with ChangeNotifier {
-  bool isnloading = false;
   final _firebaseAuth = FirebaseAuth.instance;
 
   // signIn With Google, function with firebase
+
   Future<void> signInWithGoogle({
     required BuildContext context,
   }) async {
     try {
-      isnloading = true;
-      notifyListeners();
       MyIndicator().waiting(context);
+      notifyListeners();
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -65,15 +61,13 @@ class Authentication with ChangeNotifier {
           );
         }
 
-        isnloading = false;
         notifyListeners();
         // Once signed in, return the UserCredential
         return FirebaseAuth.instance.signInWithCredential(credential);
       });
     } on FirebaseAuthException catch (e) {
-      isnloading = false;
-      notifyListeners();
       Navigator.pop(context);
+      notifyListeners();
       return handleFireBaseAlert(
         context: context,
         message: e.message!,
@@ -82,13 +76,15 @@ class Authentication with ChangeNotifier {
   }
 
 // signIn with phone Number function with firebase
+  bool isSignInWithPhone = false;
   Future<void> signInWithPhoneNumber({
     required BuildContext context,
     required String mobile,
     String? sentCode,
   }) async {
     try {
-      MyIndicator().waiting(context);
+      isSignInWithPhone = true;
+      notifyListeners();
       await _firebaseAuth.verifyPhoneNumber(
         phoneNumber: mobile,
         timeout: const Duration(seconds: 60),
@@ -116,6 +112,7 @@ class Authentication with ChangeNotifier {
                   builder: (_) => const BottomNavBar(),
                 ),
               );
+              isSignInWithPhone = false;
               notifyListeners();
             }
             // Once signed in, return the UserCredential
@@ -124,7 +121,8 @@ class Authentication with ChangeNotifier {
         },
         // verification Failed
         verificationFailed: (e) {
-          Navigator.pop(context);
+          isSignInWithPhone = false;
+          notifyListeners();
           handleFireBaseAlert(
             context: context,
             message: e.message!,
@@ -145,9 +143,44 @@ class Authentication with ChangeNotifier {
         codeAutoRetrievalTimeout: (verificationId) {},
       );
     } on FirebaseAuthException catch (e) {
-      isnloading = false;
+      isSignInWithPhone = false;
       notifyListeners();
-      Navigator.pop(context);
+      return handleFireBaseAlert(
+        context: context,
+        message: e.message!,
+      );
+    }
+  }
+
+  // verify OTP,
+  bool isVerifyOTP = false;
+  Future verifyOTP({
+    required String verificationID,
+    required String smsCode,
+    required BuildContext context,
+  }) async {
+    try {
+      isVerifyOTP = true;
+      notifyListeners();
+      await _firebaseAuth
+          .signInWithCredential(PhoneAuthProvider.credential(
+              verificationId: verificationID, smsCode: smsCode))
+          .then((value) async {
+        if (value.user != null) {
+          // Navigate to the home page if code confirmation is successful
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const BottomNavBar(),
+            ),
+          );
+        }
+      });
+      isVerifyOTP = false;
+      notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      isVerifyOTP = false;
+      notifyListeners();
       return handleFireBaseAlert(
         context: context,
         message: e.message!,
@@ -156,25 +189,25 @@ class Authentication with ChangeNotifier {
   }
 
   // Reset password
+  bool isResetPassword = false;
   Future resetPassword({
     required String email,
     required BuildContext context,
   }) async {
     try {
-      isnloading = true;
+      isResetPassword = true;
       notifyListeners();
-      MyIndicator().waiting(context);
       await _firebaseAuth.sendPasswordResetEmail(email: email.trim());
-      Navigator.pop(context);
       handleSuccessfullOperation(
         message: 'Password Reset Email Sent Successfully',
         context: context,
         onTap: () => Navigator.pop(context),
       );
-    } on FirebaseAuthException catch (e) {
-      isnloading = false;
+      isResetPassword = false;
       notifyListeners();
-      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      isResetPassword = false;
+      notifyListeners();
       return handleFireBaseAlert(
         context: context,
         message: e.message!,
@@ -183,15 +216,15 @@ class Authentication with ChangeNotifier {
   }
 
 // signIn function with firebase
+  bool isSignIn = false;
   Future<String?> signIn({
     required String email,
     required String password,
     required BuildContext context,
   }) async {
     try {
-      isnloading = true;
+      isSignIn = true;
       notifyListeners();
-      MyIndicator().waiting(context);
       await _firebaseAuth
           .signInWithEmailAndPassword(
         email: email.trim(),
@@ -209,14 +242,13 @@ class Authentication with ChangeNotifier {
           }
         },
       );
-      isnloading = false;
+      isSignIn = false;
       notifyListeners();
 
       return 'Success';
     } on FirebaseAuthException catch (e) {
-      isnloading = false;
+      isSignIn = false;
       notifyListeners();
-      Navigator.pop(context);
       return handleFireBaseAlert(
         context: context,
         message: e.message!,
@@ -225,6 +257,7 @@ class Authentication with ChangeNotifier {
   }
 
 // signUp function with firebase
+  bool isSignUp = false;
   Future signUp({
     required String email,
     required String password,
@@ -233,9 +266,8 @@ class Authentication with ChangeNotifier {
     required BuildContext context,
   }) async {
     try {
-      isnloading = true;
+      isSignUp = true;
       notifyListeners();
-      MyIndicator().waiting(context);
       var _userdata = await _firebaseAuth
           .createUserWithEmailAndPassword(
         email: email.trim(),
@@ -267,14 +299,13 @@ class Authentication with ChangeNotifier {
         }
       });
 
-      isnloading = false;
+      isSignUp = false;
       notifyListeners();
       // Once signed in, return the UserCredential
       return FirebaseAuth.instance.signInWithCredential(_userdata.credential!);
     } on FirebaseAuthException catch (e) {
-      isnloading = false;
+      isSignUp = false;
       notifyListeners();
-      Navigator.pop(context);
       return handleFireBaseAlert(
         context: context,
         message: e.message!,

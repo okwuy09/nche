@@ -172,14 +172,16 @@ class _SignInState extends State<SignIn> {
                   MainButton(
                     backgroundColor: AppColor.primaryColor,
                     borderColor: Colors.transparent,
-                    child: Text(
-                      'SIGN IN',
-                      style: style.copyWith(
-                        fontSize: 14,
-                        color: AppColor.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: provider.isSignIn
+                        ? buttonCircularIndicator
+                        : Text(
+                            'SIGN IN',
+                            style: style.copyWith(
+                              fontSize: 14,
+                              color: AppColor.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                     onTap: () async {
                       if (_formkey.currentState!.validate()) {
                         await provider.signIn(
@@ -241,9 +243,12 @@ class _SignInState extends State<SignIn> {
                         InkWell(
                           onTap: () async =>
                               await provider.signInWithGoogle(context: context),
-                          child: const SocialButton(
+                          child: SocialButton(
                             assetUrl: 'assets/google_icon.png',
-                            title: 'Google',
+                            title: Text(
+                              'Google',
+                              style: style.copyWith(fontSize: 14),
+                            ),
                           ),
                         ),
                         Expanded(child: Container()),
@@ -254,9 +259,12 @@ class _SignInState extends State<SignIn> {
                               builder: (_) => const PhoneLogin(),
                             ),
                           ),
-                          child: const SocialButton(
+                          child: SocialButton(
                             assetUrl: 'assets/call_add.png',
-                            title: 'Phone no.',
+                            title: Text(
+                              'Phone no.',
+                              style: style.copyWith(fontSize: 14),
+                            ),
                           ),
                         )
                       ],

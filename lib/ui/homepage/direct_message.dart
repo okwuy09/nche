@@ -16,25 +16,29 @@ class _DirectMessageState extends State<DirectMessage> {
 
   List<ChatAgency> chatAgency = [
     ChatAgency(
-        name: "Nigeria Police",
-        messageText: "Awesome Setup",
-        imageURL: "assets/police_logo.png",
-        time: "Now"),
+      name: "Nigeria Police",
+      messageText: "Awesome Setup",
+      avarter: "assets/police_logo.png",
+      time: DateTime.now(),
+    ),
     ChatAgency(
-        name: "Nigeria Army",
-        messageText: "That's Great",
-        imageURL: "assets/nigeria_army.png",
-        time: "Yesterday"),
+      name: "Nigeria Army",
+      messageText: "That's Great",
+      avarter: "assets/nigeria_army.png",
+      time: DateTime.now(),
+    ),
     ChatAgency(
-        name: "Nigeria Fire Service",
-        messageText: "Hey where are you?",
-        imageURL: "assets/nigeria_fireservice.jpg",
-        time: "31 Mar"),
+      name: "Nigeria Fire Service",
+      messageText: "Hey where are you?",
+      avarter: "assets/nigeria_fireservice.jpg",
+      time: DateTime.now(),
+    ),
     ChatAgency(
-        name: "Nigeria EFCC",
-        messageText: "Busy! Call me in 20 mins",
-        imageURL: "assets/nigeria_efcc.jpeg",
-        time: "28 Mar"),
+      name: "Nigeria EFCC",
+      messageText: "Busy! Call me in 20 mins",
+      avarter: "assets/nigeria_efcc.jpeg",
+      time: DateTime.now(),
+    ),
 
     //
     // ChatAgency(
@@ -148,8 +152,8 @@ class _DirectMessageState extends State<DirectMessage> {
                   return ConversationList(
                     name: chatAgency[index].name,
                     messageText: chatAgency[index].messageText,
-                    imageUrl: chatAgency[index].imageURL,
-                    time: chatAgency[index].time,
+                    imageUrl: chatAgency[index].avarter,
+                    time: chatAgency[index].time.toIso8601String(),
                     isMessageRead: (index == 0 || index == 3) ? true : false,
                   );
                 }
@@ -160,8 +164,8 @@ class _DirectMessageState extends State<DirectMessage> {
                   return ConversationList(
                     name: chatAgency[index].name,
                     messageText: chatAgency[index].messageText,
-                    imageUrl: chatAgency[index].imageURL,
-                    time: chatAgency[index].time,
+                    imageUrl: chatAgency[index].avarter,
+                    time: chatAgency[index].time.toIso8601String(),
                     isMessageRead: (index == 0 || index == 3) ? true : false,
                   );
                 } else {
