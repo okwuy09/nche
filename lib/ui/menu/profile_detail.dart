@@ -9,6 +9,7 @@ import 'package:nche/components/style.dart';
 import 'package:nche/components/user_infor_tile.dart';
 import 'package:nche/model/users.dart';
 import 'package:nche/services/provider/userdata.dart';
+import 'package:nche/ui/authentication/signin/forgot_password.dart';
 import 'package:nche/ui/menu/update_profile.dart';
 import 'package:provider/provider.dart';
 
@@ -112,7 +113,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(200),
                               child: Image.network(
-                                provider.userProfileImage,
+                                provider.userData!.avarter!,
                                 //color: AppColor.white,
                                 width: 93,
                                 height: 93,
@@ -127,7 +128,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                       ],
                     ),
                     Positioned(
-                      right: 12,
+                      right: 15,
                       top: 10,
                       child: Container(
                         height: 12,
@@ -208,10 +209,61 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                   onTap: () {
                                     showModalBottomSheet(
                                       context: context,
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      builder: (_) {
-                                        return const ChangePassword();
+                                      builder: (context) {
+                                        return Popover(
+                                          mainAxisSize: MainAxisSize.min,
+                                          child: Column(children: [
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                                showModalBottomSheet(
+                                                  context: context,
+                                                  isScrollControlled: true,
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  builder: (_) {
+                                                    return const ChangePassword();
+                                                  },
+                                                );
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  const Icon(
+                                                    Icons
+                                                        .change_circle_outlined,
+                                                  ),
+                                                  const SizedBox(width: 10),
+                                                  Text('CHANGE PASSWORD',
+                                                      style: style)
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            const Divider(),
+                                            const SizedBox(height: 10),
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        const ForgotPassword(),
+                                                  ),
+                                                );
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  const Icon(
+                                                      Icons.password_rounded),
+                                                  const SizedBox(width: 10),
+                                                  Text('RESET PASSWORD',
+                                                      style: style)
+                                                ],
+                                              ),
+                                            ),
+                                          ]),
+                                        );
                                       },
                                     );
                                   },
@@ -225,14 +277,18 @@ class _ProfileDetailState extends State<ProfileDetail> {
                               SizedBox(width: screenSize.width * 0.1),
                               Expanded(
                                 child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) =>
-                                            UpdateProfile(userDetail: user),
-                                      ),
-                                    );
+                                  onTap: () async {
+                                    await provider.writePost(
+                                        writeUp:
+                                            'I want to display a Container with a Text followed by a ListView of categories. In my current code it works out except that I wasn\'t able to figure out, how to make the Text Container scrollable as well (so it moves upside away out of the frame).',
+                                        context: context);
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //     builder: (_) =>
+                                    //         UpdateProfile(userDetail: user),
+                                    //   ),
+                                    // );
                                   },
                                   child: editInfor(
                                     screenSize,

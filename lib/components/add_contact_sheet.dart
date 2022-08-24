@@ -47,11 +47,6 @@ handleAddContact(
                   ),
                 ),
               ),
-
-              Text(
-                'Enter Name',
-                style: style.copyWith(fontSize: 10),
-              ),
               MyTextForm(
                 controller: nameController,
                 obscureText: false,
@@ -64,11 +59,7 @@ handleAddContact(
                 },
               ),
               //
-              const SizedBox(height: 10),
-              Text(
-                'Enter Phone Number',
-                style: style.copyWith(fontSize: 10),
-              ),
+              const SizedBox(height: 20),
               MyTextForm(
                 controller: phoneController,
                 obscureText: false,

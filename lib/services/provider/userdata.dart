@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:share_plus/share_plus.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -7,16 +8,34 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nche/components/alert.dart';
 import 'package:nche/components/style.dart';
+import 'package:nche/model/feed_post.dart';
 import 'package:nche/model/users.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class UserData with ChangeNotifier {
   //bool noProfileUpdate = true;
-  String userProfileImage = '';
+  Users? userData;
 
   final User _user = FirebaseAuth.instance.currentUser!;
   final _firebaseStorage = FirebaseStorage.instance;
+  final _firebaseStore = FirebaseFirestore.instance;
 
+  // share post to social media
+  bool isSharing = false;
+  Future sharePost({required String imageUrl, required String text}) async {
+    isSharing = false;
+    notifyListeners();
+    // final response = await http.get(Uri.parse(imageUrl));
+    // final temp = await getTemporaryDirectory();
+    // final path = '${temp.path}/image.jpg';
+    // File(path).writeAsBytesSync(response.bodyBytes);
+    await Share.shareWithResult('$text, $imageUrl',
+        subject: 'Security Update From Nche App');
+    isSharing = false;
+    notifyListeners();
+  }
+
+  /// fetch user profile
   Future<Users> userProfile(context) async {
     var userDoc = await FirebaseFirestore.instance
         .collection('users')
@@ -24,7 +43,7 @@ class UserData with ChangeNotifier {
         .get();
 
     var userProfileData = Users.fromJson(userDoc.data()!);
-    userProfileImage = userProfileData.avarter!;
+    userData = userProfileData;
     notifyListeners();
     return userProfileData;
   }
@@ -138,5 +157,96 @@ class UserData with ChangeNotifier {
 
       notifyListeners();
     }
+  }
+
+  /// apps full data
+  bool isPosting = false;
+  Future writePost({
+    required String writeUp,
+    required BuildContext context,
+  }) async {
+    try {
+      isPosting = true;
+      notifyListeners();
+
+      /// create new post
+      final postDoc = FirebaseFirestore.instance.collection('posts').doc();
+      final posts = FeedPost(
+        id: postDoc.id,
+        sender: userData!,
+        time: DateTime.now(),
+        writeUp: writeUp,
+        upLike: [],
+        downLike: [],
+        savePost: [],
+      );
+      final json = posts.toJson();
+      postDoc.set(json);
+
+      isPosting = false;
+      notifyListeners();
+      return;
+    } on FirebaseAuthException catch (e) {
+      isPosting = false;
+      notifyListeners();
+      return handleFireBaseAlert(
+        context: context,
+        message: e.message!,
+      );
+    }
+  }
+
+  // Fetch feed posts from firebase
+  Stream<List<FeedPost>> fetchPost() {
+    var postDoc = FirebaseFirestore.instance
+        .collection('posts')
+        .orderBy('time', descending: true)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => FeedPost.fromJson(doc.data())).toList());
+
+    return postDoc;
+  }
+
+  //save post/ bookmark a favourite post
+  Future savePost(String docID) async {
+    _firebaseStore.collection('posts').doc(docID).update({
+      'save_post': FieldValue.arrayUnion([userData!.id]),
+    });
+  }
+
+  //remove save post/ unbookmark a favourite post
+  Future removeSavePost(String docID) async {
+    _firebaseStore.collection('posts').doc(docID).update({
+      'save_post': FieldValue.arrayRemove([userData!.id]),
+    });
+  }
+
+  //uplike in post
+  Future upLikePost(String docID) async {
+    _firebaseStore.collection('posts').doc(docID).update({
+      'upLike': FieldValue.arrayUnion([userData!.id]),
+    });
+  }
+
+  //removeUplike in post
+  Future removeUpLikePost(String docID) async {
+    _firebaseStore.collection('posts').doc(docID).update({
+      'upLike': FieldValue.arrayRemove([userData!.id]),
+    });
+  }
+
+  //Downlike in post
+  Future downLikePost(String docID) async {
+    _firebaseStore.collection('posts').doc(docID).update({
+      'downLike': FieldValue.arrayUnion([userData!.id]),
+    });
+  }
+
+  //removeUplike in post
+  Future removeDownLikePost(String docID) async {
+    _firebaseStore.collection('posts').doc(docID).update({
+      'downLike': FieldValue.arrayRemove([userData!.id]),
+    });
   }
 }

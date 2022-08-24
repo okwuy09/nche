@@ -33,8 +33,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Nche',
       theme: ThemeData(
+        appBarTheme: const AppBarTheme(elevation: 1),
         colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: AppColor.darkerYellow,
+          primary: AppColor.white,
         ),
       ),
       home: FirebaseAuth.instance.currentUser == null

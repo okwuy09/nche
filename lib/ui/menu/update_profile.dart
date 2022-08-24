@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nche/components/button.dart';
@@ -24,20 +25,22 @@ class _UpdateProfileState extends State<UpdateProfile> {
   TextEditingController? _countryState;
   TextEditingController? _phoneNo;
   TextEditingController? _userCity;
+  final _firebaseAuth = FirebaseAuth.instance;
 
   @override
   void initState() {
     _fullName =
-        TextEditingController(text: widget.userDetail.fullName ?? 'Full Name');
-    _email = TextEditingController(text: widget.userDetail.email ?? 'Email');
+        TextEditingController(text: widget.userDetail.fullName ?? '***');
+    _email = TextEditingController(
+        text: widget.userDetail.email ?? _firebaseAuth.currentUser!.email);
     _userName =
-        TextEditingController(text: widget.userDetail.userName ?? 'UserName');
-    _countryState = TextEditingController(
-        text: widget.userDetail.countryState ?? 'Your State');
-    _phoneNo = TextEditingController(
-        text: widget.userDetail.phoneNumber ?? 'Phone Number');
+        TextEditingController(text: widget.userDetail.userName ?? '***');
+    _countryState =
+        TextEditingController(text: widget.userDetail.countryState ?? '***');
+    _phoneNo =
+        TextEditingController(text: widget.userDetail.phoneNumber ?? '***');
     _userCity =
-        TextEditingController(text: widget.userDetail.userCity ?? 'Your City');
+        TextEditingController(text: widget.userDetail.userCity ?? '***');
     super.initState();
   }
 

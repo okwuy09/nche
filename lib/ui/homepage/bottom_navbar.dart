@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/tapbar.dart';
+import 'package:nche/ui/Feed/tapbar.dart';
 import 'package:nche/ui/authentication/signin/signin.dart';
 import 'package:nche/ui/findfriend/find_friend.dart';
 import 'package:nche/ui/homepage/home_page.dart';
@@ -35,7 +35,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
       screens: _buildScreens(),
       items: _navBarsItems(),
       confineInSafeArea: true,
-      backgroundColor: const Color(0xff1D1416), // Default is Colors.white.
+      backgroundColor: AppColor.brown.withOpacity(
+          0.8), //const Color(0xff1D1416), // Default is Colors.white.
       handleAndroidBackButtonPress: true, // Default is true.
       resizeToAvoidBottomInset:
           true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.

@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
+import 'package:nche/ui/Feed/feed_search.dart';
 import 'package:nche/components/style.dart';
 import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/ui/Feed/feed.dart';
 import 'package:nche/ui/Feed/saved_feed.dart';
+import 'package:nche/ui/menu/profile_detail.dart';
 import 'package:nche/ui/menu/user_profile.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
@@ -44,7 +46,9 @@ class _MyTapBarState extends State<MyTapBar> {
                             CircleAvatar(
                               backgroundColor: AppColor.darkerYellow,
                               backgroundImage: NetworkImage(
-                                Provider.of<UserData>(context).userProfileImage,
+                                Provider.of<UserData>(context)
+                                    .userData!
+                                    .avarter!,
                               ),
                               maxRadius: 20,
                               onBackgroundImageError: (exception, stackTrace) =>
@@ -73,24 +77,39 @@ class _MyTapBarState extends State<MyTapBar> {
                           ],
                         ),
                       ),
-                      Expanded(child: Container()),
-                      SizedBox(
-                        width: screenSize.width * 0.46,
-                        child: CupertinoSearchTextField(
-                          decoration: BoxDecoration(
-                            color: AppColor.lightGrey,
-                            borderRadius: BorderRadius.circular(30),
-                            border: Border.all(color: AppColor.lightGrey),
+                      const SizedBox(width: 50),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () => showSearch(
+                            context: context,
+                            // delegate to customize the search bar
+                            delegate: CustomSearchDelegate(),
                           ),
-                          onChanged: (value) => {},
-                          onSubmitted: (value) => {},
+                          child: Container(
+                            height: screenSize.height * 0.05,
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: AppColor.lightGrey,
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.search,
+                                  color: AppColor.grey,
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  'Search',
+                                  style: style.copyWith(
+                                    color: AppColor.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 6),
-                      Image.asset(
-                        'assets/nche_logo.png',
-                        width: 100,
-                        height: 50,
                       ),
                     ],
                   ),

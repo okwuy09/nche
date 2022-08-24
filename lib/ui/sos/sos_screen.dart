@@ -49,7 +49,9 @@ class _SOSScreenState extends State<SOSScreen> {
                             CircleAvatar(
                               backgroundColor: AppColor.darkerYellow,
                               backgroundImage: NetworkImage(
-                                Provider.of<UserData>(context).userProfileImage,
+                                Provider.of<UserData>(context)
+                                    .userData!
+                                    .avarter!,
                               ),
                               maxRadius: 20,
                               onBackgroundImageError: (exception, stackTrace) =>

@@ -4,7 +4,7 @@ import 'package:nche/components/add_contact_sheet.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/home_container.dart';
 import 'package:nche/components/style.dart';
-import 'package:nche/components/tapbar.dart';
+import 'package:nche/ui/Feed/tapbar.dart';
 import 'package:nche/model/users.dart';
 import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/ui/homepage/claim_reward.dart';
@@ -31,6 +31,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    // initilizing the image animation inside homepage,
     Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {
           selected = !selected;
         }));
@@ -43,14 +44,13 @@ class _HomePageState extends State<HomePage> {
     var provider = Provider.of<UserData>(context);
 
     return Scaffold(
-      backgroundColor: AppColor.darkerYellow,
+      backgroundColor: AppColor.white,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Container(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 40),
-              color: AppColor.darkerYellow,
               height: 110,
               child: Row(
                 children: [
@@ -78,7 +78,12 @@ class _HomePageState extends State<HomePage> {
                                         Image.asset('assets/avatar.png'),
                               );
                             }
-                            return Container();
+                            return CircleAvatar(
+                              maxRadius: 20,
+                              backgroundColor: AppColor.white,
+                              backgroundImage:
+                                  const AssetImage('assets/avatar.png'),
+                            );
                           },
                         ),
                         Positioned(
@@ -88,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                             height: 12,
                             width: 12,
                             decoration: BoxDecoration(
-                              color: AppColor.darkerYellow,
+                              color: AppColor.white,
                               borderRadius: BorderRadius.circular(50),
                             ),
                             child: Container(

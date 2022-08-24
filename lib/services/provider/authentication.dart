@@ -37,13 +37,12 @@ class Authentication with ChangeNotifier {
       // Once signed in, return the UserCredential
       await FirebaseAuth.instance
           .signInWithCredential(credential)
-          .then((value) {
-        if (value.user != null) {
+          .then((value) async {
+        if (value.user != null && value.additionalUserInfo!.isNewUser) {
           /// create profile on signup using Phone Number
           final docUser = FirebaseFirestore.instance
               .collection('users')
               .doc(value.user!.uid);
-
           final user = Users(
             email: value.user!.email,
             fullName: value.user!.displayName,
@@ -53,6 +52,14 @@ class Authentication with ChangeNotifier {
           final json = user.toJson();
           // create document and write data to firebase
           docUser.set(json);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const BottomNavBar(),
+            ),
+          );
+        } else {
+          Navigator.pop(context);
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -87,37 +94,10 @@ class Authentication with ChangeNotifier {
       notifyListeners();
       await _firebaseAuth.verifyPhoneNumber(
         phoneNumber: mobile,
-        timeout: const Duration(seconds: 60),
+        timeout: const Duration(minutes: 2),
         // verification completed
         verificationCompleted: (credential) async {
-          await _firebaseAuth.signInWithCredential(credential).then((value) {
-            if (value.user != null) {
-              /// create profile on signup using Phone Number
-              final docUser = FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(value.user!.uid);
-
-              final user = Users(
-                email: value.user!.email,
-                fullName: value.user!.displayName,
-                id: docUser.id,
-                avarter: value.user!.photoURL,
-              );
-              final json = user.toJson();
-              // create document and write data to firebase
-              docUser.set(json);
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const BottomNavBar(),
-                ),
-              );
-              isSignInWithPhone = false;
-              notifyListeners();
-            }
-            // Once signed in, return the UserCredential
-            return FirebaseAuth.instance.signInWithCredential(credential);
-          });
+          await _firebaseAuth.signInWithCredential(credential);
         },
         // verification Failed
         verificationFailed: (e) {
@@ -152,7 +132,7 @@ class Authentication with ChangeNotifier {
     }
   }
 
-  // verify OTP,
+  // verify Phone OTP,
   bool isVerifyOTP = false;
   Future verifyOTP({
     required String verificationID,
@@ -166,8 +146,31 @@ class Authentication with ChangeNotifier {
           .signInWithCredential(PhoneAuthProvider.credential(
               verificationId: verificationID, smsCode: smsCode))
           .then((value) async {
-        if (value.user != null) {
+        if (value.additionalUserInfo!.isNewUser) {
+          /// create profile on signup using Phone Number
+          final docUser = FirebaseFirestore.instance
+              .collection('users')
+              .doc(value.user!.uid);
+
+          final user = Users(
+            email: value.user!.email,
+            fullName: value.user!.displayName,
+            id: docUser.id,
+            phoneNumber: value.user!.phoneNumber,
+            avarter:
+                'https://firebasestorage.googleapis.com/v0/b/nche-application.appspot.com/o/avatar.png?alt=media&token=f70e3f9c-d432-4a03-b047-4ff97a245b52',
+          );
+          final json = user.toJson();
+          // create document and write data to firebase
+          docUser.set(json);
           // Navigate to the home page if code confirmation is successful
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const BottomNavBar(),
+            ),
+          );
+        } else {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -280,12 +283,13 @@ class Authentication with ChangeNotifier {
               .collection('users')
               .doc(value.user!.uid);
           final user = Users(
-              email: email.trim(),
-              fullName: fullName.trim(),
-              id: docUser.id,
-              userName: userName.trim(),
-              avarter:
-                  'https://firebasestorage.googleapis.com/v0/b/nche-application.appspot.com/o/avatar.png?alt=media&token=f70e3f9c-d432-4a03-b047-4ff97a245b52');
+            email: email.trim(),
+            fullName: fullName.trim(),
+            id: docUser.id,
+            userName: userName.trim(),
+            avarter:
+                'https://firebasestorage.googleapis.com/v0/b/nche-application.appspot.com/o/avatar.png?alt=media&token=f70e3f9c-d432-4a03-b047-4ff97a245b52',
+          );
           final json = user.toJson();
           // create document and write data to firebase
           docUser.set(json);

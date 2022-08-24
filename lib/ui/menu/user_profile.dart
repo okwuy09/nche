@@ -109,7 +109,8 @@ class _UserProfileState extends State<UserProfile> {
                                 borderRadius: BorderRadius.circular(200),
                                 child: Image.network(
                                   Provider.of<UserData>(context)
-                                      .userProfileImage,
+                                      .userData!
+                                      .avarter!,
                                   //color: AppColor.white,
                                   width: 80,
                                   height: 80,
@@ -124,7 +125,7 @@ class _UserProfileState extends State<UserProfile> {
                         ],
                       ),
                       Positioned(
-                        right: 12,
+                        right: 15,
                         top: 10,
                         child: Container(
                           height: 12,

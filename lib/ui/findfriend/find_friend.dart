@@ -82,7 +82,9 @@ class _FindFriendState extends State<FindFriend> {
                             CircleAvatar(
                               backgroundColor: AppColor.darkerYellow,
                               backgroundImage: NetworkImage(
-                                Provider.of<UserData>(context).userProfileImage,
+                                Provider.of<UserData>(context)
+                                    .userData!
+                                    .avarter!,
                               ),
                               maxRadius: 20,
                               onBackgroundImageError: (exception, stackTrace) =>

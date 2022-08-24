@@ -28,7 +28,7 @@ class Users {
         'avarter': avarter,
       };
 
-  factory Users.fromJson(Map<String, dynamic> json) => Users(
+  static Users fromJson(Map<String, dynamic> json) => Users(
         email: json['email'],
         fullName: json['fullName'],
         id: json['id'],

@@ -148,16 +148,14 @@ class _OTPAuthenticationState extends State<OTPAuthentication> {
                                       mobile: widget.phoneNumber,
                                     )
                                 : null,
-                            child: provider.isSignInWithPhone
-                                ? buttonCircularIndicator
-                                : Text(
-                                    'Resend Code',
-                                    style: style.copyWith(
-                                      color: _start == 0
-                                          ? AppColor.darkerYellow
-                                          : AppColor.grey,
-                                    ),
-                                  ),
+                            child: Text(
+                              'Resend Code',
+                              style: style.copyWith(
+                                color: _start == 0
+                                    ? AppColor.darkerYellow
+                                    : AppColor.grey,
+                              ),
+                            ),
                           ),
 
                           // Text widget to dispay the count down timer
