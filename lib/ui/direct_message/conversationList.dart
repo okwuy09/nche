@@ -4,17 +4,19 @@ import 'package:nche/components/style.dart';
 import 'package:nche/ui/direct_message/chat_detail_page.dart';
 
 class ConversationList extends StatefulWidget {
-  String name;
-  String messageText;
-  String imageUrl;
-  String time;
-  bool isMessageRead;
-  ConversationList(
-      {required this.name,
+  final String name;
+  final String messageText;
+  final String imageUrl;
+  final String time;
+  final bool isMessageRead;
+  const ConversationList(
+      {Key? key,
+      required this.name,
       required this.messageText,
       required this.imageUrl,
       required this.time,
-      required this.isMessageRead});
+      required this.isMessageRead})
+      : super(key: key);
   @override
   _ConversationListState createState() => _ConversationListState();
 }

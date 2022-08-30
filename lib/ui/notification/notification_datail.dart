@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/style.dart';
-import 'package:video_player/video_player.dart';
+//import 'package:video_player/video_player.dart';
 
 class NotificationDetails extends StatefulWidget {
   const NotificationDetails({Key? key}) : super(key: key);
@@ -11,10 +11,9 @@ class NotificationDetails extends StatefulWidget {
 }
 
 class _NotificationDetailsState extends State<NotificationDetails> {
-  late VideoPlayerController _controller;
+  //late VideoPlayerController _controller;
   int _upcount = 0;
   int _downcount = 0;
-  bool _acceptClicks = true;
   bool _upClicks = true;
   bool _downClicks = true;
   @override

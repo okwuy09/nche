@@ -8,7 +8,8 @@ typedef TagTitle<String> = Widget Function(String tag);
 
 class FlutterTagView extends StatefulWidget {
   FlutterTagView(
-      {required this.tags,
+      {Key? key,
+      required this.tags,
       this.minTagViewHeight = 0,
       this.maxTagViewHeight = 150,
       this.tagBackgroundColor = Colors.black12,
@@ -19,7 +20,8 @@ class FlutterTagView extends StatefulWidget {
       : assert(
             tags != null,
             'Tags can\'t be empty\n'
-            'Provide the list of tags');
+            'Provide the list of tags'),
+        super(key: key);
 
   List<String> tags;
 
@@ -79,8 +81,6 @@ class _FlutterTagViewState extends State<FlutterTagView> {
     return InkWell(
       onTap: () {
         setState(() {
-          //TODO: Handle tag selection
-
           selectedTagIndex = index;
         });
       },

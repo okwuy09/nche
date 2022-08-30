@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/popover.dart';
+import 'package:nche/widget/popover.dart';
 import 'package:nche/components/style.dart';
 import 'package:nche/model/feed_post.dart';
 import 'package:nche/services/provider/userdata.dart';
 
 class SharePost extends StatelessWidget {
   final UserData provider;
-  final List<FeedPost> post;
-  final int index;
+  final FeedPost post;
   final Size screenSize;
+  final BuildContext? ctx;
   const SharePost(
       {Key? key,
-      required this.index,
+      required this.ctx,
       required this.post,
       required this.provider,
       required this.screenSize})
@@ -22,84 +22,76 @@ class SharePost extends StatelessWidget {
   Widget build(BuildContext context) {
     return Popover(
       mainAxisSize: MainAxisSize.min,
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              InkWell(
-                onTap: () async {
-                  await provider.sharePost(
-                      imageUrl: post[index].avarter!,
-                      text: post[index].writeUp);
-                },
-                child: actionbutton(
-                  screenSize: screenSize,
-                  icon: provider.isSharing
-                      ? buttonCircularIndicator
-                      : Icon(
-                          Icons.share,
-                          color: AppColor.darkerYellow,
-                        ),
-                  title: 'Share',
-                ),
-              ),
-              SizedBox(width: screenSize.width * 0.1),
-              InkWell(
-                child: actionbutton(
-                  screenSize: screenSize,
-                  icon: Icon(
-                    Icons.report_outlined,
-                    color: AppColor.red,
-                  ),
-                  title: 'Report',
-                ),
-              ),
-              SizedBox(width: screenSize.width * 0.1),
-              InkWell(
-                onTap: () {
-                  if (post[index].sender.id == provider.userData!.id) {
-                  } else {
-                    Navigator.pop(context);
-                  }
-                },
-                child: actionbutton(
-                  screenSize: screenSize,
-                  icon: Icon(
-                    post[index].sender.id == provider.userData!.id
-                        ? Icons.edit_outlined
-                        : Icons.cancel,
-                    color: AppColor.brown,
-                  ),
-                  title: post[index].sender.id == provider.userData!.id
-                      ? 'Edit'
-                      : 'Cancel',
-                ),
-              ),
-            ],
-          )
-        ],
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: AppColor.lightGrey,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            shareList(
+              onTap: () async {
+                Navigator.pop(context);
+                await provider.sharePost(
+                    imageUrl: post.avarter![0], text: post.writeUp);
+              },
+              icon: Icons.share,
+              title: 'Share',
+            ),
+            const Divider(height: 0),
+            shareList(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              icon: Icons.report_outlined,
+              title: 'Report',
+            ),
+            post.sender.id == provider.userData!.id
+                ? Column(
+                    children: [
+                      const Divider(height: 0),
+                      shareList(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icons.edit_outlined,
+                        title: 'Edit',
+                      ),
+                      const Divider(height: 0),
+                      shareList(
+                        onTap: () {
+                          Navigator.pop(context);
+                          provider.deletePost(post.id, ctx!);
+                        },
+                        icon: Icons.delete_outline,
+                        title: 'Delete',
+                      ),
+                    ],
+                  )
+                : Container()
+          ],
+        ),
       ),
     );
   }
 
-  Container actionbutton(
-      {required Size screenSize, String? title, required Widget icon}) {
-    return Container(
-      height: 60,
-      width: screenSize.width * 0.2,
-      decoration: BoxDecoration(
-        color: AppColor.lightGrey,
-        borderRadius: BorderRadius.circular(12),
+  shareList(
+      {required Function() onTap,
+      required String title,
+      required IconData icon}) {
+    return ListTile(
+      onTap: onTap,
+      horizontalTitleGap: 5.0,
+      title: Text(
+        title,
+        style: style,
       ),
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      leading: Icon(
         icon,
-        const SizedBox(height: 2),
-        Text(
-          title!,
-          style: style.copyWith(fontSize: 14),
-        ),
-      ]),
+        color: AppColor.darkerGrey,
+      ),
     );
   }
 }

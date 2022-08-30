@@ -1,13 +1,11 @@
-import 'dart:ffi';
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:nche/components/button.dart';
+import 'package:nche/widget/button.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/datefield.dart';
-import 'package:nche/components/mytextform.dart';
-import 'package:nche/components/popover.dart';
+import 'package:nche/widget/datefield.dart';
+import 'package:nche/widget/mytextform.dart';
+import 'package:nche/widget/popover.dart';
 import 'package:nche/components/style.dart';
 import 'package:nche/ui/homepage/bottom_navbar.dart';
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:nche/components/button.dart';
+import 'package:nche/widget/button.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/mytextform.dart';
-import 'package:nche/components/social_button.dart';
+import 'package:nche/widget/mytextform.dart';
+import 'package:nche/widget/social_button.dart';
 import 'package:nche/components/style.dart';
 import 'package:nche/services/provider/authentication.dart';
 import 'package:nche/ui/authentication/onboarding/onboardingscreen.dart';

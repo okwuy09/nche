@@ -2,7 +2,7 @@ import 'package:nche/model/users.dart';
 
 class FeedPost {
   String writeUp;
-  String? avarter;
+  List? avarter;
   DateTime time;
   Users sender;
   List? upLike;

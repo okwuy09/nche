@@ -15,11 +15,11 @@ class Popover extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      margin: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(bottom: 20),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: theme.cardColor,
-        borderRadius: const BorderRadius.all(Radius.circular(2.0)),
+        borderRadius: BorderRadius.circular(2.0),
       ),
       child: Column(
         mainAxisSize: mainAxisSize,
@@ -39,7 +39,7 @@ class Popover extends StatelessWidget {
     final theme = Theme.of(context);
 
     return FractionallySizedBox(
-      widthFactor: 0.25,
+      widthFactor: 0.15,
       child: Container(
         margin: const EdgeInsets.symmetric(
           vertical: 12.0,

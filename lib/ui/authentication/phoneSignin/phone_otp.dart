@@ -1,14 +1,9 @@
 import 'dart:async';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:nche/components/alert.dart';
-import 'package:nche/components/button.dart';
+import 'package:nche/widget/button.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/progress_indicator.dart';
 import 'package:nche/components/style.dart';
 import 'package:nche/services/provider/authentication.dart';
-import 'package:nche/ui/homepage/bottom_navbar.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:provider/provider.dart';

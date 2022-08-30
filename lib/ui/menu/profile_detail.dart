@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:nche/components/button.dart';
 import 'package:nche/components/change_password_sheet.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/mytextform.dart';
-import 'package:nche/components/popover.dart';
+import 'package:nche/widget/popover.dart';
 import 'package:nche/components/style.dart';
-import 'package:nche/components/user_infor_tile.dart';
+import 'package:nche/widget/user_infor_tile.dart';
 import 'package:nche/model/users.dart';
 import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/ui/authentication/signin/forgot_password.dart';
-import 'package:nche/ui/menu/update_profile.dart';
 import 'package:provider/provider.dart';
 
 class ProfileDetail extends StatefulWidget {
@@ -23,7 +20,6 @@ class ProfileDetail extends StatefulWidget {
 class _ProfileDetailState extends State<ProfileDetail> {
   XFile? _profileImage;
 
-  PersistentBottomSheetController? _bottomSheetController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -280,7 +276,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                   onTap: () async {
                                     await provider.writePost(
                                         writeUp:
-                                            'I want to display a Container with a Text followed by a ListView of categories. In my current code it works out except that I wasn\'t able to figure out, how to make the Text Container scrollable as well (so it moves upside away out of the frame).',
+                                            'an unfortunate incident that happens unexpectedly and unintentionally, typically resulting in damage or injury. In my current code it works out except that I wasn\'t able to figure out, how to make the Text Container scrollable as well (so it moves upside away out of the frame).',
                                         context: context);
                                     // Navigator.push(
                                     //   context,

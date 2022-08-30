@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nche/components/button.dart';
+import 'package:nche/widget/button.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/style.dart';
 import 'package:nche/ui/authentication/onboarding/firstslide.dart';

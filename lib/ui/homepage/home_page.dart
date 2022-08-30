@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nche/components/add_contact_sheet.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/home_container.dart';
+import 'package:nche/widget/home_container.dart';
 import 'package:nche/components/style.dart';
 import 'package:nche/ui/Feed/tapbar.dart';
 import 'package:nche/model/users.dart';

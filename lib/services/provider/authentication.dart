@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nche/components/alert.dart';
-import 'package:nche/components/progress_indicator.dart';
+import 'package:nche/widget/progress_indicator.dart';
 import 'package:nche/components/success_sheet.dart';
 import 'package:nche/model/users.dart';
 import 'package:nche/ui/authentication/phoneSignin/phone_otp.dart';

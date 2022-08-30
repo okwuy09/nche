@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nche/components/alert.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/style.dart';
-import 'package:nche/components/mylisttile.dart';
+import 'package:nche/widget/mylisttile.dart';
 import 'package:nche/services/provider/authentication.dart';
 import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/ui/menu/profile_detail.dart';

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:nche/components/button.dart';
+import 'package:nche/widget/button.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/style.dart';
 import 'package:nche/services/provider/authentication.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:nche/ui/authentication/phoneSignin/phone_otp.dart';
 import 'package:provider/provider.dart';
 
 class PhoneLogin extends StatefulWidget {

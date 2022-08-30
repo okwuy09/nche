@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/ui/Feed/feed_search.dart';
@@ -6,7 +5,6 @@ import 'package:nche/components/style.dart';
 import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/ui/Feed/feed.dart';
 import 'package:nche/ui/Feed/saved_feed.dart';
-import 'package:nche/ui/menu/profile_detail.dart';
 import 'package:nche/ui/menu/user_profile.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';

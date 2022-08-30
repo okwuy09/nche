@@ -17,27 +17,30 @@ final buttonCircularIndicator = SizedBox(
   ),
 );
 
-void successOperation(context, String text) =>
-    ScaffoldMessenger.of(context).showSnackBar(
+void successOperation(context) => ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.check_circle,
-              color: AppColor.white,
-              size: 22,
-            ),
-            const SizedBox(width: 10),
-            Text(
-              text,
-              style: style.copyWith(color: AppColor.white),
-            ),
-          ],
+        margin: const EdgeInsets.all(100),
+        content: Flexible(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.check_outlined,
+                color: AppColor.white,
+                //size: 2,
+              ),
+              const SizedBox(width: 10),
+              Text(
+                'Successful',
+                style: style.copyWith(color: AppColor.white),
+              ),
+            ],
+          ),
         ),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.green.withOpacity(0.8),
         padding: const EdgeInsets.all(10),
-        duration: const Duration(milliseconds: 5000),
+        duration: const Duration(milliseconds: 3000),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50.0),

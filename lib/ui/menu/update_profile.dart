@@ -1,9 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:nche/components/button.dart';
+import 'package:nche/widget/button.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/mytextform.dart';
+import 'package:nche/widget/mytextform.dart';
 import 'package:nche/components/style.dart';
 import 'package:nche/model/users.dart';
 import 'package:nche/services/provider/userdata.dart';
@@ -18,7 +17,6 @@ class UpdateProfile extends StatefulWidget {
 }
 
 class _UpdateProfileState extends State<UpdateProfile> {
-  XFile? _profileImage;
   TextEditingController? _fullName;
   TextEditingController? _email;
   TextEditingController? _userName;

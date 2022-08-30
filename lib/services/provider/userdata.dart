@@ -69,7 +69,7 @@ class UserData with ChangeNotifier {
       ischangePassword = false;
       notifyListeners();
       Navigator.pop(context);
-      successOperation(context, 'Password Updated Successfully');
+      successOperation(context);
     } on FirebaseAuthException catch (e) {
       ischangePassword = false;
       notifyListeners();
@@ -109,7 +109,7 @@ class UserData with ChangeNotifier {
       notifyListeners();
       Navigator.pop(context);
 
-      successOperation(context, 'Profile Updated Successfully');
+      successOperation(context);
     } on FirebaseAuthException catch (e) {
       isUpdateProfile = false;
       notifyListeners();
@@ -179,6 +179,7 @@ class UserData with ChangeNotifier {
         upLike: [],
         downLike: [],
         savePost: [],
+        avarter: [],
       );
       final json = posts.toJson();
       postDoc.set(json);
@@ -206,6 +207,14 @@ class UserData with ChangeNotifier {
             snapshot.docs.map((doc) => FeedPost.fromJson(doc.data())).toList());
 
     return postDoc;
+  }
+
+  // delete your post
+  Future deletePost(String docID, BuildContext context) async {
+    await _firebaseStore.collection('posts').doc(docID).delete().then(
+          (value) => successOperation(context),
+        );
+    notifyListeners();
   }
 
   //save post/ bookmark a favourite post

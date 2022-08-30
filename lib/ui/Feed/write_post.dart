@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:nche/components/button.dart';
+import 'package:nche/widget/button.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/imageDisplay.dart';
-import 'package:nche/components/popover.dart';
+//import 'package:nche/components/imageDisplay.dart';
+import 'package:nche/widget/popover.dart';
 import 'package:nche/components/style.dart';
 import 'package:nche/components/tag.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -109,7 +109,7 @@ class _WritePostState extends State<WritePost> {
 
   Future stop() async {
     if (!isRecorderReady) return;
-    var recordedAudio = await recorder.stopRecorder();
+    await recorder.stopRecorder();
     //final audioFile = File(path!);
   }
 
