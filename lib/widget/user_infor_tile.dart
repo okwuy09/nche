@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 
 class UserInforTile extends StatelessWidget {
   final IconData icon;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/add_contact_sheet.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 import 'package:nche/components/success_sheet.dart';
 import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/ui/menu/user_profile.dart';
@@ -24,6 +24,7 @@ class _SOSScreenState extends State<SOSScreen> {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+    var provider = Provider.of<UserData>(context);
     return Scaffold(
       backgroundColor: AppColor.brown,
       body: SingleChildScrollView(
@@ -47,11 +48,11 @@ class _SOSScreenState extends State<SOSScreen> {
                           children: [
                             CircleAvatar(
                               backgroundColor: AppColor.darkerYellow,
-                              backgroundImage: NetworkImage(
-                                Provider.of<UserData>(context)
-                                    .userData!
-                                    .avarter!,
-                              ),
+                              backgroundImage: provider
+                                      .userData!.avarter!.isNotEmpty
+                                  ? NetworkImage(provider.userData!.avarter!)
+                                  : const AssetImage('assets/avatar.png')
+                                      as ImageProvider,
                               maxRadius: 20,
                               onBackgroundImageError: (exception, stackTrace) =>
                                   Image.asset('assets/avatar.png'),

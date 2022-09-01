@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 import 'package:video_player/video_player.dart';
 
 class LiveIncidents extends StatefulWidget {

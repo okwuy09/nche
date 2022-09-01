@@ -35,8 +35,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
       screens: _buildScreens(),
       items: _navBarsItems(),
       confineInSafeArea: true,
-      backgroundColor: AppColor.brown.withOpacity(
-          0.8), //const Color(0xff1D1416), // Default is Colors.white.
+      backgroundColor:
+          AppColor.white, //const Color(0xff1D1416), // Default is Colors.white.
       handleAndroidBackButtonPress: true, // Default is true.
       resizeToAvoidBottomInset:
           true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
@@ -82,13 +82,13 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
       icon: const Icon(Icons.home_outlined),
       title: "Home",
       activeColorPrimary: AppColor.darkerYellow,
-      inactiveColorPrimary: AppColor.white,
+      inactiveColorPrimary: AppColor.black,
     ),
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.feed_outlined),
       title: ("Feed"),
       activeColorPrimary: AppColor.darkerYellow,
-      inactiveColorPrimary: AppColor.white,
+      inactiveColorPrimary: AppColor.black,
       routeAndNavigatorSettings: RouteAndNavigatorSettings(
         initialRoute: '/',
         routes: {
@@ -102,7 +102,7 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
         height: 40,
         width: 40,
         decoration: BoxDecoration(
-          border: Border.all(color: AppColor.white),
+          border: Border.all(color: AppColor.black),
           borderRadius: BorderRadius.circular(130),
         ),
         child: Scaffold(
@@ -110,7 +110,11 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
           body: Center(
             child: Text(
               'SOS',
-              style: TextStyle(fontSize: 14, color: AppColor.white),
+              style: TextStyle(
+                fontSize: 14,
+                color: AppColor.black,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ),
@@ -120,7 +124,7 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
       //title: ("Add"),
       activeColorPrimary: AppColor.darkerYellow,
       activeColorSecondary: AppColor.darkerYellow,
-      inactiveColorPrimary: AppColor.white,
+      inactiveColorPrimary: AppColor.black,
       routeAndNavigatorSettings: RouteAndNavigatorSettings(
         initialRoute: '/',
         routes: {
@@ -137,7 +141,7 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
       icon: const Icon(Icons.notifications_active_outlined),
       title: ("Notification"),
       activeColorPrimary: AppColor.darkerYellow,
-      inactiveColorPrimary: AppColor.white,
+      inactiveColorPrimary: AppColor.black,
       routeAndNavigatorSettings: RouteAndNavigatorSettings(
         initialRoute: '/',
         routes: {
@@ -150,7 +154,7 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
       icon: const Icon(Icons.person_search_outlined),
       title: ("Person"),
       activeColorPrimary: AppColor.darkerYellow,
-      inactiveColorPrimary: AppColor.white,
+      inactiveColorPrimary: AppColor.black,
       routeAndNavigatorSettings: RouteAndNavigatorSettings(
         initialRoute: '/',
         routes: {

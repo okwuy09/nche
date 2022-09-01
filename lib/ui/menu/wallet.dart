@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 import 'package:nche/ui/menu/user_profile.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 

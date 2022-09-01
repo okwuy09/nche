@@ -1,6 +1,6 @@
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/date.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 import 'package:nche/model/feed_post.dart';
 import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/ui/Feed/grid_image.dart';
@@ -77,7 +77,7 @@ class FeedCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'Accident',
+                    post[index].incidentType!,
                     style: style.copyWith(
                       fontSize: 10,
                       color: AppColor.darkerGrey,
@@ -193,7 +193,7 @@ class FeedCard extends StatelessWidget {
                         SizedBox(
                           width: 120,
                           child: Text(
-                            'No1 Nkpokiti street newlayout Enugu state',
+                            '${post[index].location!} State',
                             style: style.copyWith(
                               fontSize: 8,
                               color: AppColor.white,

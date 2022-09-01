@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:nche/components/add_contact_sheet.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/widget/home_container.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 import 'package:nche/ui/Feed/tapbar.dart';
 import 'package:nche/model/users.dart';
 import 'package:nche/services/provider/userdata.dart';
@@ -68,10 +68,13 @@ class _HomePageState extends State<HomePage> {
                           stream: provider.userProfile(context).asStream(),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
-                              var userImage = snapshot.data!.avarter;
+                              var userImage = snapshot.data?.avarter;
                               return CircleAvatar(
                                 backgroundColor: AppColor.white,
-                                backgroundImage: NetworkImage(userImage!),
+                                backgroundImage: userImage!.isNotEmpty
+                                    ? NetworkImage(userImage)
+                                    : const AssetImage('assets/avatar.png')
+                                        as ImageProvider,
                                 maxRadius: 20,
                                 onBackgroundImageError:
                                     (exception, stackTrace) =>

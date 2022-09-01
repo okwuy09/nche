@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 
 class TermsAndCondition extends StatelessWidget {
   const TermsAndCondition({Key? key}) : super(key: key);

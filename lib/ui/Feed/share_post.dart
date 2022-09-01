@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/widget/popover.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 import 'package:nche/model/feed_post.dart';
 import 'package:nche/services/provider/userdata.dart';
 

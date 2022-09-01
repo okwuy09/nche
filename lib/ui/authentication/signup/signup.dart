@@ -3,7 +3,7 @@ import 'package:nche/widget/button.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/widget/mytextform.dart';
 import 'package:nche/widget/social_button.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 import 'package:nche/services/provider/authentication.dart';
 import 'package:nche/ui/authentication/phoneSignin/phone_login.dart';
 import 'package:provider/provider.dart';

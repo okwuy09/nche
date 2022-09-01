@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/alert.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 import 'package:nche/widget/mylisttile.dart';
 import 'package:nche/services/provider/authentication.dart';
 import 'package:nche/services/provider/userdata.dart';
@@ -99,27 +99,20 @@ class _UserProfileState extends State<UserProfile> {
                           Positioned(
                             top: 3.5,
                             left: 3.5,
-                            child: Container(
-                              height: 93,
-                              width: 93,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(200),
-                                child: Image.network(
-                                  Provider.of<UserData>(context)
+                            child: CircleAvatar(
+                              backgroundColor: AppColor.white,
+                              radius: 46,
+                              backgroundImage: Provider.of<UserData>(context)
                                       .userData!
-                                      .avarter!,
-                                  //color: AppColor.white,
-                                  width: 80,
-                                  height: 80,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (_, error, stackTrace) {
-                                    return Container(color: AppColor.white);
-                                  },
-                                ),
-                              ),
+                                      .avarter!
+                                      .isNotEmpty
+                                  ? NetworkImage(
+                                      Provider.of<UserData>(context)
+                                          .userData!
+                                          .avarter!,
+                                    )
+                                  : const AssetImage('assets/avatar.png')
+                                      as ImageProvider,
                             ),
                           ),
                         ],

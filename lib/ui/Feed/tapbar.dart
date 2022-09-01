@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/ui/Feed/feed_search.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/ui/Feed/feed.dart';
 import 'package:nche/ui/Feed/saved_feed.dart';
+import 'package:nche/ui/Feed/write_post.dart';
 import 'package:nche/ui/menu/user_profile.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
@@ -19,10 +20,26 @@ class _MyTapBarState extends State<MyTapBar> {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+    var provider = Provider.of<UserData>(context);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         backgroundColor: AppColor.white,
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: AppColor.darkerYellow,
+          elevation: 3,
+          child: Icon(
+            Icons.post_add_rounded,
+            color: AppColor.brown,
+            size: 28,
+          ),
+          onPressed: () => pushNewScreen(
+            context,
+            screen: const WritePost(),
+            withNavBar: false, // OPTIONAL VALUE. True by default.
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+          ),
+        ),
         body: Column(
           children: [
             Padding(
@@ -43,11 +60,11 @@ class _MyTapBarState extends State<MyTapBar> {
                           children: [
                             CircleAvatar(
                               backgroundColor: AppColor.darkerYellow,
-                              backgroundImage: NetworkImage(
-                                Provider.of<UserData>(context)
-                                    .userData!
-                                    .avarter!,
-                              ),
+                              backgroundImage: provider
+                                      .userData!.avarter!.isNotEmpty
+                                  ? NetworkImage(provider.userData!.avarter!)
+                                  : const AssetImage('assets/avatar.png')
+                                      as ImageProvider,
                               maxRadius: 20,
                               onBackgroundImageError: (exception, stackTrace) =>
                                   Image.asset('assets/avatar.png'),
@@ -75,8 +92,9 @@ class _MyTapBarState extends State<MyTapBar> {
                           ],
                         ),
                       ),
-                      const SizedBox(width: 50),
+                      Expanded(child: Container()),
                       Expanded(
+                        flex: 4,
                         child: InkWell(
                           onTap: () => showSearch(
                             context: context,
@@ -109,6 +127,7 @@ class _MyTapBarState extends State<MyTapBar> {
                           ),
                         ),
                       ),
+                      Expanded(child: Container())
                     ],
                   ),
                 ],

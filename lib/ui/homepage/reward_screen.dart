@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nche/widget/button.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 import 'package:nche/ui/homepage/claim_reward.dart';
 
 class RewardScreen extends StatefulWidget {

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nche/components/change_password_sheet.dart';
 import 'package:nche/components/colors.dart';
+import 'package:nche/ui/menu/update_profile.dart';
 import 'package:nche/widget/popover.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 import 'package:nche/widget/user_infor_tile.dart';
 import 'package:nche/model/users.dart';
 import 'package:nche/services/provider/userdata.dart';
@@ -100,25 +101,16 @@ class _ProfileDetailState extends State<ProfileDetail> {
                         Positioned(
                           top: 3.5,
                           left: 3.5,
-                          child: Container(
-                            height: 93,
-                            width: 93,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(200),
-                              child: Image.network(
-                                provider.userData!.avarter!,
-                                //color: AppColor.white,
-                                width: 93,
-                                height: 93,
-                                fit: BoxFit.cover,
-                                errorBuilder: (_, error, stackTrace) {
-                                  return Container(color: AppColor.white);
-                                },
-                              ),
-                            ),
+                          child: CircleAvatar(
+                            backgroundColor: AppColor.white,
+                            radius: 46,
+                            backgroundImage:
+                                provider.userData!.avarter!.isNotEmpty
+                                    ? NetworkImage(
+                                        provider.userData!.avarter!,
+                                      )
+                                    : const AssetImage('assets/avatar.png')
+                                        as ImageProvider,
                           ),
                         ),
                       ],
@@ -147,8 +139,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
 
                     /// Show when a user want to edit
                     Positioned(
-                      bottom: 0,
-                      right: 0,
+                      bottom: 5,
+                      right: 15,
                       child: GestureDetector(
                         onTap: () {
                           handleProfilePicture(context, provider);
@@ -273,18 +265,14 @@ class _ProfileDetailState extends State<ProfileDetail> {
                               SizedBox(width: screenSize.width * 0.1),
                               Expanded(
                                 child: InkWell(
-                                  onTap: () async {
-                                    await provider.writePost(
-                                        writeUp:
-                                            'an unfortunate incident that happens unexpectedly and unintentionally, typically resulting in damage or injury. In my current code it works out except that I wasn\'t able to figure out, how to make the Text Container scrollable as well (so it moves upside away out of the frame).',
-                                        context: context);
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (_) =>
-                                    //         UpdateProfile(userDetail: user),
-                                    //   ),
-                                    // );
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            UpdateProfile(userDetail: user),
+                                      ),
+                                    );
                                   },
                                   child: editInfor(
                                     screenSize,
@@ -383,7 +371,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
           child: Column(children: [
             InkWell(
               onTap: () {
-                provider.pickProfileImage(
+                provider.updateProfileImage(
                     source: ImageSource.camera,
                     profileImage: _profileImage,
                     context: context);
@@ -402,7 +390,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
             const SizedBox(height: 10),
             InkWell(
               onTap: () {
-                provider.pickProfileImage(
+                provider.updateProfileImage(
                     source: ImageSource.gallery,
                     profileImage: _profileImage,
                     context: context);

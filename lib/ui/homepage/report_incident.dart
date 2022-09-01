@@ -6,7 +6,7 @@ import 'package:nche/components/colors.dart';
 import 'package:nche/widget/datefield.dart';
 import 'package:nche/widget/mytextform.dart';
 import 'package:nche/widget/popover.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 import 'package:nche/ui/homepage/bottom_navbar.dart';
 
 class ReportIncident extends StatefulWidget {

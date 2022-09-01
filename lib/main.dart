@@ -33,7 +33,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Nche',
       theme: ThemeData(
-        appBarTheme: const AppBarTheme(elevation: 1),
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: AppColor.black,
+        ),
+        appBarTheme: const AppBarTheme(elevation: 0),
         colorScheme: ColorScheme.fromSwatch().copyWith(
           primary: AppColor.white,
         ),

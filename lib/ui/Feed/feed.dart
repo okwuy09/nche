@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 import 'package:nche/model/feed_post.dart';
 import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/ui/Feed/post_detail.dart';
@@ -44,21 +44,6 @@ class _FeedState extends State<Feed> {
     var provider = Provider.of<UserData>(context);
     return Scaffold(
       backgroundColor: AppColor.lightGrey,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColor.darkerYellow,
-        elevation: 3,
-        child: Icon(
-          Icons.post_add_rounded,
-          color: AppColor.brown,
-          size: 28,
-        ),
-        onPressed: () => pushNewScreen(
-          context,
-          screen: const WritePost(),
-          withNavBar: false, // OPTIONAL VALUE. True by default.
-          pageTransitionAnimation: PageTransitionAnimation.cupertino,
-        ),
-      ),
       body: SingleChildScrollView(
         child: StreamBuilder<List<FeedPost>>(
           stream: provider.fetchPost(),
@@ -69,10 +54,8 @@ class _FeedState extends State<Feed> {
                 children: [
                   // latest post in the list of post
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 5,
-                      vertical: 12,
-                    ),
+                    padding:
+                        const EdgeInsets.only(right: 5, left: 5, bottom: 12),
                     child: Stack(
                       children: [
                         Container(
@@ -120,6 +103,7 @@ class _FeedState extends State<Feed> {
                                   ),
                                 ),
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
                                       children: [
@@ -170,7 +154,7 @@ class _FeedState extends State<Feed> {
                                             ),
                                             const SizedBox(height: 2),
                                             Text(
-                                              'Accident',
+                                              post[0].incidentType!,
                                               style: style.copyWith(
                                                 fontSize: 10,
                                                 color: AppColor.lightGrey,

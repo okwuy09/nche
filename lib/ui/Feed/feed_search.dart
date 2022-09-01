@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 import 'package:nche/model/feed_post.dart';
 import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/widget/feedcard.dart';
@@ -60,45 +60,49 @@ class CustomSearchDelegate extends SearchDelegate {
   Widget buildResults(BuildContext context) {
     var provider = Provider.of<UserData>(context);
 
-    return StreamBuilder<List<FeedPost>>(
-      stream: provider.fetchPost(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          var posts = snapshot.data!;
+    return Container(
+      color: AppColor.lightGrey,
+      child: StreamBuilder<List<FeedPost>>(
+        stream: provider.fetchPost(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            var posts = snapshot.data!;
 
-          var post = posts
-              .where(
-                  (e) => e.writeUp.toLowerCase().contains(query.toLowerCase()))
-              .toList();
+            var post = posts
+                .where((e) =>
+                    e.writeUp.toLowerCase().contains(query.toLowerCase()))
+                .toList();
 
-          return MediaQuery.removePadding(
-            removeTop: true,
-            context: context,
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: post.length,
-              itemBuilder: (context, index) {
-                return FeedCard(
-                  context: context,
-                  index: index,
-                  post: post,
-                );
-              },
-            ),
-          );
-        } else {
-          return Align(
-            alignment: Alignment.center,
-            child: Text(
-              'LOADING...',
-              style: style.copyWith(
-                color: AppColor.grey,
-                fontSize: 12,
+            return MediaQuery.removePadding(
+              removeTop: true,
+              context: context,
+              child: ListView.builder(
+                padding: const EdgeInsets.only(top: 5),
+                shrinkWrap: true,
+                itemCount: post.length,
+                itemBuilder: (context, index) {
+                  return FeedCard(
+                    context: context,
+                    index: index,
+                    post: post,
+                  );
+                },
               ),
-            ),
-          );
-        }
-      },
+            );
+          } else {
+            return Align(
+              alignment: Alignment.center,
+              child: Text(
+                'LOADING...',
+                style: style.copyWith(
+                  color: AppColor.grey,
+                  fontSize: 12,
+                ),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 
@@ -108,45 +112,49 @@ class CustomSearchDelegate extends SearchDelegate {
   Widget buildSuggestions(BuildContext context) {
     var provider = Provider.of<UserData>(context);
 
-    return StreamBuilder<List<FeedPost>>(
-      stream: provider.fetchPost(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          var posts = snapshot.data!;
+    return Container(
+      color: AppColor.lightGrey,
+      child: StreamBuilder<List<FeedPost>>(
+        stream: provider.fetchPost(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            var posts = snapshot.data!;
 
-          var post = posts
-              .where(
-                  (e) => e.writeUp.toLowerCase().contains(query.toLowerCase()))
-              .toList();
+            var post = posts
+                .where((e) =>
+                    e.writeUp.toLowerCase().contains(query.toLowerCase()))
+                .toList();
 
-          return MediaQuery.removePadding(
-            removeTop: true,
-            context: context,
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: post.length,
-              itemBuilder: (context, index) {
-                return FeedCard(
-                  context: context,
-                  index: index,
-                  post: post,
-                );
-              },
-            ),
-          );
-        } else {
-          return Align(
-            alignment: Alignment.center,
-            child: Text(
-              'LOADING...',
-              style: style.copyWith(
-                color: AppColor.grey,
-                fontSize: 12,
+            return MediaQuery.removePadding(
+              removeTop: true,
+              context: context,
+              child: ListView.builder(
+                padding: const EdgeInsets.only(top: 5),
+                shrinkWrap: true,
+                itemCount: post.length,
+                itemBuilder: (context, index) {
+                  return FeedCard(
+                    context: context,
+                    index: index,
+                    post: post,
+                  );
+                },
               ),
-            ),
-          );
-        }
-      },
+            );
+          } else {
+            return Align(
+              alignment: Alignment.center,
+              child: Text(
+                'LOADING...',
+                style: style.copyWith(
+                  color: AppColor.grey,
+                  fontSize: 12,
+                ),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }

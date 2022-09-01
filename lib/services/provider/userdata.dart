@@ -7,10 +7,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nche/components/alert.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 import 'package:nche/model/feed_post.dart';
 import 'package:nche/model/users.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:path/path.dart' as paths;
 
 class UserData with ChangeNotifier {
   //bool noProfileUpdate = true;
@@ -105,6 +106,13 @@ class UserData with ChangeNotifier {
         'userCity': userCity,
         'phoneNumber': phoneNumber,
       });
+      await FirebaseFirestore.instance
+          .collection('posts')
+          .where('sender.id', isEqualTo: userData!.id)
+          .get()
+          .then((value) => value.docs.forEach((doc) {
+                doc.reference.update({'sender.userName': userName});
+              }));
       isUpdateProfile = false;
       notifyListeners();
       Navigator.pop(context);
@@ -121,7 +129,7 @@ class UserData with ChangeNotifier {
   }
 
 // update user profile picture
-  Future pickProfileImage({
+  Future updateProfileImage({
     required ImageSource source,
     XFile? profileImage,
     required BuildContext context,
@@ -149,11 +157,20 @@ class UserData with ChangeNotifier {
           .putFile(file);
 
       var downloadUrl = await snapshot.ref.getDownloadURL();
-      var userDoc = FirebaseFirestore.instance;
-      userDoc
+      var _userDoc = FirebaseFirestore.instance;
+      _userDoc
           .collection('users')
           .doc(_user.uid)
           .update({'avarter': downloadUrl});
+
+      notifyListeners();
+      _userDoc
+          .collection('posts')
+          .where('sender.id', isEqualTo: userData!.id)
+          .get()
+          .then((value) => value.docs.forEach((doc) {
+                doc.reference.update({'sender.avarter': downloadUrl});
+              }));
 
       notifyListeners();
     }
@@ -164,10 +181,39 @@ class UserData with ChangeNotifier {
   Future writePost({
     required String writeUp,
     required BuildContext context,
+    required String location,
+    required bool isAnonymous,
+    required String incidentType,
+    List<File>? avarter,
+    XFile? camImage,
   }) async {
     try {
       isPosting = true;
       notifyListeners();
+      List images = [];
+
+      // if the conditions are through upload picture from
+      // camera and post else send post without image
+      if (avarter!.isEmpty && camImage != null) {
+        var file = File(camImage.path);
+        var snapshot = await _firebaseStorage
+            .ref()
+            .child('PostImages/${camImage.path}')
+            .putFile(file);
+
+        var downloadUrl = await snapshot.ref.getDownloadURL();
+        images.add(downloadUrl);
+      } else {
+        for (var img in avarter) {
+          var snapshot = _firebaseStorage
+              .ref()
+              .child('PostImages/${paths.basename(img.path)}');
+          await snapshot.putFile(img).whenComplete(() async {
+            var downloadUrl = await snapshot.getDownloadURL();
+            images.add(downloadUrl);
+          });
+        }
+      }
 
       /// create new post
       final postDoc = FirebaseFirestore.instance.collection('posts').doc();
@@ -179,7 +225,10 @@ class UserData with ChangeNotifier {
         upLike: [],
         downLike: [],
         savePost: [],
-        avarter: [],
+        avarter: images,
+        location: location,
+        isAnanymous: isAnonymous,
+        incidentType: incidentType,
       );
       final json = posts.toJson();
       postDoc.set(json);

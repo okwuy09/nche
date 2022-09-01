@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nche/widget/button.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 import 'package:nche/model/contact.dart';
 import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/ui/findfriend/mapscreen.dart';
@@ -58,6 +58,7 @@ class _FindFriendState extends State<FindFriend> {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+    var provider = Provider.of<UserData>(context);
     return Scaffold(
       backgroundColor: AppColor.white,
       body: SingleChildScrollView(
@@ -81,11 +82,11 @@ class _FindFriendState extends State<FindFriend> {
                           children: [
                             CircleAvatar(
                               backgroundColor: AppColor.darkerYellow,
-                              backgroundImage: NetworkImage(
-                                Provider.of<UserData>(context)
-                                    .userData!
-                                    .avarter!,
-                              ),
+                              backgroundImage: provider
+                                      .userData!.avarter!.isNotEmpty
+                                  ? NetworkImage(provider.userData!.avarter!)
+                                  : const AssetImage('assets/avatar.png')
+                                      as ImageProvider,
                               maxRadius: 20,
                               onBackgroundImageError: (exception, stackTrace) =>
                                   Image.asset('assets/avatar.png'),

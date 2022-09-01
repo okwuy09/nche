@@ -17,26 +17,65 @@ final buttonCircularIndicator = SizedBox(
   ),
 );
 
+// all states
+const allNigeriaStates = [
+  "Abia",
+  "Adamawa",
+  "Akwa Ibom",
+  "Anambra",
+  "Bauchi",
+  "Bayelsa",
+  "Benue",
+  "Borno",
+  "Cross River",
+  "Delta",
+  "Ebonyi",
+  "Edo",
+  "Ekiti",
+  "Enugu",
+  "Gombe",
+  "Imo",
+  "Jigawa",
+  "Kaduna",
+  "Kano",
+  "Katsina",
+  "Kebbi",
+  "Kogi",
+  "Kwara",
+  "Lagos",
+  "Nasarawa",
+  "Niger",
+  "Ogun",
+  "Ondo",
+  "Osun",
+  "Oyo",
+  "Plateau",
+  "Rivers",
+  "Sokoto",
+  "Taraba",
+  "Yobe",
+  "Zamfara",
+  "FCT(Abuja)",
+];
+
 void successOperation(context) => ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         margin: const EdgeInsets.all(100),
-        content: Flexible(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.check_outlined,
-                color: AppColor.white,
-                //size: 2,
-              ),
-              const SizedBox(width: 10),
-              Text(
-                'Successful',
-                style: style.copyWith(color: AppColor.white),
-              ),
-            ],
-          ),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.check_outlined,
+              color: AppColor.white,
+              //size: 2,
+            ),
+            const SizedBox(width: 10),
+            Text(
+              'Successful',
+              style: style.copyWith(color: AppColor.white),
+            ),
+          ],
         ),
         backgroundColor: Colors.green.withOpacity(0.8),
         padding: const EdgeInsets.all(10),

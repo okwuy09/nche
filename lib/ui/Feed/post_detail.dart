@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/date.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 import 'package:nche/model/feed_post.dart';
 import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/ui/Feed/share_post.dart';
@@ -185,7 +185,7 @@ class _PostDetailState extends State<PostDetail> {
                                 gridDelegate:
                                     SliverGridDelegateWithMaxCrossAxisExtent(
                                   maxCrossAxisExtent: screenSize.width,
-                                  mainAxisExtent: screenSize.height * 0.29,
+                                  mainAxisExtent: screenSize.height * 0.3,
                                   //crossAxisSpacing: 2,
                                   mainAxisSpacing: 5,
                                 ),
@@ -223,11 +223,11 @@ class _PostDetailState extends State<PostDetail> {
                                     color: AppColor.white,
                                     size: 15,
                                   ),
-                                  const SizedBox(width: 4),
+                                  const SizedBox(width: 5),
                                   SizedBox(
                                     width: 120,
                                     child: Text(
-                                      'No1 Nkpokiti street newlayout Enugu state',
+                                      '${post.location!} State',
                                       style: style.copyWith(
                                         fontSize: 8,
                                         color: AppColor.white,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/components/style.dart';
+import 'package:nche/components/const_values.dart';
 import 'package:nche/model/feed_post.dart';
 import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/widget/feedcard.dart';
@@ -81,6 +81,7 @@ class _SaveFeedState extends State<SaveFeed> {
                       removeTop: true,
                       context: context,
                       child: ListView.builder(
+                        padding: const EdgeInsets.only(top: 5),
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: post.length,
