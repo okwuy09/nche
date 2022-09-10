@@ -3,6 +3,8 @@ import 'package:nche/components/colors.dart';
 import 'package:nche/ui/Feed/tapbar.dart';
 import 'package:nche/ui/authentication/signin/signin.dart';
 import 'package:nche/ui/findfriend/find_friend.dart';
+import 'package:nche/ui/findfriend/friends.dart';
+import 'package:nche/ui/findfriend/user_list.dart';
 import 'package:nche/ui/homepage/home_page.dart';
 import 'package:nche/ui/notification/notification.dart';
 import 'package:nche/ui/sos/sos_screen.dart';
@@ -35,8 +37,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
       screens: _buildScreens(),
       items: _navBarsItems(),
       confineInSafeArea: true,
-      backgroundColor:
-          AppColor.white, //const Color(0xff1D1416), // Default is Colors.white.
+      backgroundColor: AppColor.grey.withOpacity(
+          0.4), //const Color(0xff1D1416), // Default is Colors.white.
       handleAndroidBackButtonPress: true, // Default is true.
       resizeToAvoidBottomInset:
           true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
@@ -72,7 +74,8 @@ List<Widget> _buildScreens() {
     const MyTapBar(),
     const SOSScreen(),
     const NotificationScreen(),
-    const FindFriend()
+    const Friends(),
+    //const FindFriend()
   ];
 }
 

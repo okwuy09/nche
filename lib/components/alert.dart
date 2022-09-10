@@ -33,17 +33,12 @@ handleFireBaseAlert({context, required String message}) {
                 ),
               ),
               const SizedBox(height: 10),
-              ElevatedButton(
+              TextButton(
                 onPressed: () => Navigator.pop(context),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                ),
                 child: Text(
                   'OK',
                   style: style.copyWith(
-                    color: AppColor.white,
+                    color: AppColor.darkerYellow,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

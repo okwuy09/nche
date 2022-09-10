@@ -59,9 +59,7 @@ class _FeedState extends State<Feed> {
                     child: Stack(
                       children: [
                         Container(
-                          height: screenSize.width > 600
-                              ? screenSize.width * 0.5
-                              : screenSize.height * 0.4,
+                          height: screenSize.width > 600 ? 400 : 300,
                           width: screenSize.width,
                           decoration: BoxDecoration(
                             color: AppColor.lightGrey,
@@ -87,9 +85,7 @@ class _FeedState extends State<Feed> {
                               filter:
                                   ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
                               child: Container(
-                                height: screenSize.width > 600
-                                    ? screenSize.height * 0.25
-                                    : screenSize.height * 0.2,
+                                height: screenSize.width > 600 ? 200 : 150,
                                 width: screenSize.width,
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 20,
@@ -174,7 +170,7 @@ class _FeedState extends State<Feed> {
                                           color: AppColor.lightGrey,
                                           fontSize: 14),
                                     ),
-                                    const SizedBox(height: 12),
+                                    Expanded(child: Container()),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
@@ -196,7 +192,8 @@ class _FeedState extends State<Feed> {
                                           ),
                                         ),
                                       ],
-                                    )
+                                    ),
+                                    const SizedBox(height: 10),
                                   ],
                                 ),
                               ),

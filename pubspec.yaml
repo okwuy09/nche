@@ -33,7 +33,6 @@ dependencies:
 
   flutter_polyline_points: ^1.0.0
   google_maps_flutter: ^2.1.9
-  location: ^4.4.0
   flutter_svg: ^1.1.1+1
   flutter_native_splash: ^2.2.7
   share_plus: ^4.0.10+1
@@ -44,6 +43,7 @@ dependencies:
   firebase_auth: ^3.6.2
   google_sign_in: ^5.4.0
   firebase_storage: ^10.3.4
+  geolocator: ^9.0.1
 
 dev_dependencies:
   flutter_test:

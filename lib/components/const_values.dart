@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:nche/components/colors.dart';
 
 final style = TextStyle(
@@ -87,5 +88,77 @@ void successOperation(context) => ScaffoldMessenger.of(context).showSnackBar(
       ),
     );
 
-const googleApiKey = 'AIzaSyAd4rEAQqf5BfCJGABqW99teDPgBcuyN08';
-//const googleAPIkey2 = 'AIzaSyCGShAceyIm1LHL2mLja0eKCKDjoZV2RzY';
+void locationNotification(context, String text) =>
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        // animation: Tween<double>(begin: 0, end: 300).animate(
+        //     AnimationController(
+        //         duration: const Duration(seconds: 5), vsync:  ),),
+
+        duration: const Duration(seconds: 5),
+        backgroundColor: AppColor.white,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 200),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Container(
+                  height: 45,
+                  width: 45,
+                  decoration: BoxDecoration(
+                    color: AppColor.red,
+                    borderRadius: BorderRadius.circular(36),
+                  ),
+                  child: Icon(
+                    Icons.warning_amber,
+                    size: 30,
+                    color: AppColor.white,
+                  ),
+                ),
+                const SizedBox(width: 5),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'WARNING !!!',
+                      style: style.copyWith(
+                        color: AppColor.red,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      text,
+                      style: style.copyWith(color: AppColor.black),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: InkWell(
+                onTap: () async => await Geolocator.openLocationSettings(),
+                child: Text(
+                  'ENABLE',
+                  style: style.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppColor.red,
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+
+const googleApiKey = 'AIzaSyDGGeVU35neK9m5l_GdCnP8u09zxSe3kJg';

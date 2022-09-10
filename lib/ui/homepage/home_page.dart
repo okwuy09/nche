@@ -32,6 +32,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     // initilizing the image animation inside homepage,
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Provider.of<UserData>(context, listen: false).checkGps(context);
+    });
     Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {
           selected = !selected;
         }));
@@ -45,97 +48,87 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       backgroundColor: AppColor.white,
+      appBar: AppBar(
+        title: Row(
+          children: [
+            GestureDetector(
+              onTap: () => pushNewScreen(
+                context,
+                screen: const UserProfile(),
+                withNavBar: false, // OPTIONAL VALUE. True by default.
+                pageTransitionAnimation: PageTransitionAnimation.cupertino,
+              ),
+              child: Stack(
+                children: [
+                  StreamBuilder<Users>(
+                    stream: provider.userProfile(context).asStream(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        var userImage = snapshot.data?.avarter;
+                        return CircleAvatar(
+                          backgroundColor: AppColor.white,
+                          backgroundImage: userImage!.isNotEmpty
+                              ? NetworkImage(userImage)
+                              : const AssetImage('assets/avatar.png')
+                                  as ImageProvider,
+                          maxRadius: 20,
+                          onBackgroundImageError: (exception, stackTrace) =>
+                              Image.asset('assets/avatar.png'),
+                        );
+                      }
+                      return CircleAvatar(
+                        maxRadius: 20,
+                        backgroundColor: AppColor.white,
+                        backgroundImage: const AssetImage('assets/avatar.png'),
+                      );
+                    },
+                  ),
+                  Positioned(
+                    right: -1,
+                    top: 5,
+                    child: Container(
+                      height: 12,
+                      width: 12,
+                      decoration: BoxDecoration(
+                        color: AppColor.white,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: Container(
+                        height: 8,
+                        width: 8,
+                        margin: const EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                            color: const Color(0xff00F261),
+                            borderRadius: BorderRadius.circular(50)),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(child: Container()),
+            SizedBox(
+              width: 200,
+              child: CupertinoSearchTextField(
+                decoration: BoxDecoration(
+                  color: AppColor.lightGrey,
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: AppColor.lightGrey),
+                ),
+                onChanged: (value) => {},
+                onSubmitted: (value) => {},
+              ),
+            ),
+            SizedBox(width: screenSize.width > 600 ? 100 : 30)
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Container(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 40),
-              height: 110,
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => pushNewScreen(
-                      context,
-                      screen: const UserProfile(),
-                      withNavBar: false, // OPTIONAL VALUE. True by default.
-                      pageTransitionAnimation:
-                          PageTransitionAnimation.cupertino,
-                    ),
-                    child: Stack(
-                      children: [
-                        StreamBuilder<Users>(
-                          stream: provider.userProfile(context).asStream(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              var userImage = snapshot.data?.avarter;
-                              return CircleAvatar(
-                                backgroundColor: AppColor.white,
-                                backgroundImage: userImage!.isNotEmpty
-                                    ? NetworkImage(userImage)
-                                    : const AssetImage('assets/avatar.png')
-                                        as ImageProvider,
-                                maxRadius: 20,
-                                onBackgroundImageError:
-                                    (exception, stackTrace) =>
-                                        Image.asset('assets/avatar.png'),
-                              );
-                            }
-                            return CircleAvatar(
-                              maxRadius: 20,
-                              backgroundColor: AppColor.white,
-                              backgroundImage:
-                                  const AssetImage('assets/avatar.png'),
-                            );
-                          },
-                        ),
-                        Positioned(
-                          right: -1,
-                          top: 5,
-                          child: Container(
-                            height: 12,
-                            width: 12,
-                            decoration: BoxDecoration(
-                              color: AppColor.white,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: Container(
-                              height: 8,
-                              width: 8,
-                              margin: const EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                  color: const Color(0xff00F261),
-                                  borderRadius: BorderRadius.circular(50)),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(child: Container()),
-                  SizedBox(
-                    width: screenSize.width * 0.46,
-                    child: CupertinoSearchTextField(
-                      decoration: BoxDecoration(
-                        color: AppColor.lightGrey,
-                        borderRadius: BorderRadius.circular(30),
-                        border: Border.all(color: AppColor.lightGrey),
-                      ),
-                      onChanged: (value) => {},
-                      onSubmitted: (value) => {},
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  Image.asset(
-                    'assets/nche_logo.png',
-                    width: 100,
-                    height: 50,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              height: screenSize.height * 0.79,
+              //height: screenSize.height * 0.79,
               width: screenSize.width,
               decoration: BoxDecoration(
                 color: AppColor.lightGrey,
@@ -145,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                padding: const EdgeInsets.only(top: 15, left: 20, right: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -197,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
 
-                    SizedBox(height: screenSize.height * 0.02),
+                    SizedBox(height: screenSize.width > 600 ? 20 : 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -243,7 +236,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
 
-                    SizedBox(height: screenSize.height * 0.02),
+                    SizedBox(height: screenSize.width > 600 ? 20 : 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -298,14 +291,14 @@ class _HomePageState extends State<HomePage> {
                           alignment: Alignment.center,
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.decelerate,
-                          margin: EdgeInsets.only(
-                            top: screenSize.height * 0.065,
-                            bottom: screenSize.height * 0.02,
+                          margin: const EdgeInsets.only(
+                            top: 30,
+                            bottom: 15,
                           ),
-                          height: screenSize.height * 0.126,
+                          height: 85,
                           width: selected
                               ? screenSize.width
-                              : screenSize.width * 0.95,
+                              : screenSize.width * 0.975,
                           decoration: BoxDecoration(
                             color: AppColor.brown,
                             borderRadius: BorderRadius.circular(17),
@@ -331,7 +324,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: screenSize.height * 0.02),
+                              const SizedBox(height: 10),
                               Padding(
                                 padding:
                                     const EdgeInsets.only(left: 40, bottom: 3),
@@ -356,23 +349,29 @@ class _HomePageState extends State<HomePage> {
                               : screenSize.width * 0.08,
                           child: Image.asset(
                             'assets/picture.png',
+                            height: 115,
                             fit: BoxFit.cover,
                           ),
                         ),
                       ],
                     ),
                     Text(
-                      'Open for claim',
-                      style: style,
+                      'Open For Claim',
+                      style: style.copyWith(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18,
+                      ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 18),
                     //
                     SizedBox(
-                      height: screenSize.height * 0.163,
+                      height: screenSize.height * 0.227,
                       child: MediaQuery.removePadding(
                         context: context,
                         removeTop: true,
                         child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
                           itemCount: 2,
                           itemBuilder: (context, int index) {
                             return InkWell(

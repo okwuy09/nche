@@ -102,7 +102,7 @@ class _MyTapBarState extends State<MyTapBar> {
                             delegate: CustomSearchDelegate(),
                           ),
                           child: Container(
-                            height: screenSize.height * 0.05,
+                            height: 40,
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color: AppColor.lightGrey,

@@ -304,7 +304,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
 
                     UserInforTile(
                       icon: Icons.email,
-                      title: user.email ?? '***',
+                      title: user.location!.latitude.toString(), // ?? '***',
                       subTitle: 'Email',
                     ),
 

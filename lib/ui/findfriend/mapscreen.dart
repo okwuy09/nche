@@ -1,114 +1,55 @@
 import 'dart:async';
+import 'dart:math';
+import 'package:geolocator/geolocator.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/const_values.dart';
+import 'package:nche/model/users.dart';
+import 'package:nche/services/provider/userdata.dart';
+import 'package:provider/provider.dart';
 
-class MapScreen extends StatefulWidget {
-  const MapScreen({Key? key}) : super(key: key);
+class MapScreen extends StatelessWidget {
+  final Users destination;
+  MapScreen({Key? key, required this.destination}) : super(key: key);
 
-  @override
-  State<MapScreen> createState() => _MapScreenState();
-}
-
-class _MapScreenState extends State<MapScreen> {
   final Completer<GoogleMapController> _googleMapController = Completer();
-  static const LatLng sourceLocation = LatLng(37.33500926, -122.03272188);
-  static const LatLng destination = LatLng(37.33429383, -122.06600055);
 
-  List<LatLng> polylineCoordinates = [];
-  LocationData? currentLocation;
+  //static const LatLng destination = LatLng(6.4096, 7.4978);
 
-  BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
-  BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
-  BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarkerWithHue(95);
+  BitmapDescriptor sourceLocationIcon = BitmapDescriptor.defaultMarker;
 
-  @override
-  void initState() {
-    getCurrentLocation();
-    getCustomMarkerIcon();
-    getPolyPoint();
-    super.initState();
+  // calculate distance between two coordinate
+  double calculateDistance(lat1, lon1, lat2, lon2) {
+    var p = 0.017453292519943295;
+    var a = 0.5 -
+        cos((lat2 - lat1) * p) / 2 +
+        cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2;
+    return 12742 * asin(sqrt(a));
   }
 
-  void getCurrentLocation() async {
-    Location location = Location();
-
-    location.getLocation().then(
-          (location) => {
-            currentLocation = location,
-          },
-        );
-
-    GoogleMapController googleMapController = await _googleMapController.future;
-
-    location.onLocationChanged.listen((newLocation) {
-      currentLocation = newLocation;
-
-      googleMapController.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-            zoom: 13.5,
-            target: LatLng(
-              newLocation.latitude!,
-              newLocation.longitude!,
-            ),
-          ),
-        ),
-      );
-      setState(() {});
-    });
-  }
-
-  void getPolyPoint() async {
-    PolylinePoints polylinePoints = PolylinePoints();
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      googleApiKey,
-      PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
-      PointLatLng(destination.latitude, destination.longitude),
-    );
-    if (result.points.isEmpty) {
-      // ignore: avoid_function_literals_in_foreach_calls
-      result.points.forEach(
-        (PointLatLng point) => polylineCoordinates.add(
-          LatLng(point.latitude, point.longitude),
-        ),
-      );
-      setState(() {});
+// calculate the extimated time between two coordinate
+  String getTimeTaken(Position source, LatLng dest) {
+    double kms = calculateDistance(
+        source.latitude, source.longitude, dest.latitude, dest.longitude);
+    double kmsPerMin = 0.5;
+    double minsTaken = kms / kmsPerMin;
+    var totalMinutes = minsTaken;
+    if (totalMinutes < 60) {
+      return totalMinutes.toStringAsFixed(2) + "  mins";
+    } else {
+      String minutes = (totalMinutes % 60).toStringAsFixed(0);
+      minutes = minutes.length == 1 ? "0" + minutes : minutes;
+      return '${(totalMinutes / 60).toStringAsFixed(2)} hr  $minutes  mins';
     }
-  }
-
-  void getCustomMarkerIcon() {
-    BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, 'assets/musk.jpg')
-        .then(
-      (icon) {
-        sourceIcon = icon;
-      },
-    );
-    BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, 'assets/musk.jpg')
-        .then(
-      (icon) {
-        destinationIcon = icon;
-      },
-    );
-    BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, 'assets/musk.jpg')
-        .then(
-      (icon) {
-        currentLocationIcon = icon;
-      },
-    );
-  }
-
-  Future<void> _pullRefresh() async {
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+    var provider = Provider.of<UserData>(context);
     return Scaffold(
       backgroundColor: AppColor.white,
       appBar: AppBar(
@@ -145,66 +86,56 @@ class _MapScreenState extends State<MapScreen> {
                   bottomRight: Radius.circular(25),
                 ),
               ),
-              child: currentLocation == null
-                  ? RefreshIndicator(
-                      onRefresh: () async => await _pullRefresh(),
-                      child: Stack(
-                        children: [
-                          ListView(),
-                          const Center(child: Text('Loading...')),
-                        ],
-                      ))
-                  : ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(25),
-                        topRight: Radius.circular(25),
-                        bottomLeft: Radius.circular(25),
-                        bottomRight: Radius.circular(25),
-                      ),
-                      child: GoogleMap(
-                        zoomControlsEnabled: false,
-                        initialCameraPosition: CameraPosition(
-                          target: LatLng(
-                            // sourceLocation.latitude,
-                            // sourceLocation.longitude,
-                            currentLocation!.latitude!,
-                            currentLocation!.longitude!,
-                          ),
-                          zoom: 13.5,
-                        ),
-                        polylines: {
-                          Polyline(
-                            polylineId: const PolylineId('route'),
-                            points: polylineCoordinates,
-                            color: AppColor.darkerYellow,
-                            width: 6,
-                          ),
-                        },
-                        markers: {
-                          // Marker(
-                          //   markerId: const MarkerId('currentLocation'),
-                          //   icon: currentLocationIcon,
-                          //   position: LatLng(
-                          //     currentLocation!.latitude!,
-                          //     currentLocation!.longitude!,
-                          //   ),
-                          // ),
-                          Marker(
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(25),
+                  topRight: Radius.circular(25),
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25),
+                ),
+                child: GoogleMap(
+                  zoomControlsEnabled: false,
+                  myLocationEnabled: true,
+                  compassEnabled: true,
+                  scrollGesturesEnabled: true,
+                  zoomGesturesEnabled: true,
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(
+                      destination.location!.latitude,
+                      destination.location!.longitude,
+                    ),
+                    zoom: 13.5,
+                  ),
+                  polylines: Set<Polyline>.of(provider.polylines.values),
+                  markers: {
+                    provider.locationPosition == null
+                        ? const Marker(markerId: MarkerId('ok'))
+                        : Marker(
                             markerId: const MarkerId('source'),
-                            icon: sourceIcon,
-                            position: sourceLocation,
+                            icon: sourceLocationIcon, //sourceLocationIcon,
+                            position: LatLng(
+                              provider.locationPosition!.latitude,
+                              provider.locationPosition!.longitude,
+                            ),
                           ),
-                          Marker(
-                            markerId: const MarkerId('destination'),
-                            icon: destinationIcon,
-                            position: destination,
-                          )
-                        },
-                        onMapCreated: ((controller) {
-                          _googleMapController.complete(controller);
-                        }),
+                    Marker(
+                      markerId: const MarkerId('destination'),
+                      icon: destinationIcon,
+                      position: LatLng(
+                        destination.location!.latitude,
+                        destination.location!.longitude,
+                      ),
+                      infoWindow: const InfoWindow(
+                        title: 'Ruth',
+                        snippet: 'New Location',
                       ),
                     ),
+                  },
+                  onMapCreated: ((controller) {
+                    _googleMapController.complete(controller);
+                  }),
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -216,16 +147,16 @@ class _MapScreenState extends State<MapScreen> {
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: AppColor.darkerYellow,
-                        width: 2,
+                        width: 1,
                       ),
                       borderRadius: BorderRadius.circular(100),
-                      image: const DecorationImage(
-                        image: AssetImage('assets/musk.jpg'),
+                      image: DecorationImage(
+                        image: NetworkImage(destination.avarter!),
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 12),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -235,39 +166,53 @@ class _MapScreenState extends State<MapScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '800 km',
+                                calculateDistance(
+                                      provider.locationPosition!.latitude,
+                                      provider.locationPosition!.longitude,
+                                      destination.location!.latitude,
+                                      destination.location!.longitude,
+                                    ).toStringAsFixed(2) +
+                                    " KM",
                                 style: style.copyWith(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                   color: AppColor.darkerGrey,
                                 ),
                               ),
+                              const SizedBox(height: 4),
                               Text(
                                 'Distance',
                                 style: style.copyWith(
-                                  fontSize: 13,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                   color: AppColor.grey,
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(width: screenSize.width * 0.13),
+                          SizedBox(width: screenSize.width * 0.15),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '35 mins',
+                                getTimeTaken(
+                                  provider.locationPosition!,
+                                  LatLng(
+                                    destination.location!.latitude,
+                                    destination.location!.longitude,
+                                  ),
+                                ),
                                 style: style.copyWith(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                   color: AppColor.darkerGrey,
                                 ),
                               ),
+                              const SizedBox(height: 4),
                               Text(
                                 'Estimated Time',
                                 style: style.copyWith(
-                                  fontSize: 13,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                   color: AppColor.grey,
                                 ),
@@ -278,19 +223,19 @@ class _MapScreenState extends State<MapScreen> {
                       ),
                     ],
                   ),
-                  Expanded(child: Container()),
-                  Container(
-                    height: 45,
-                    width: 45,
-                    decoration: BoxDecoration(
-                      color: AppColor.darkerYellow,
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: const Icon(
-                      Icons.location_on_outlined,
-                      size: 30,
-                    ),
-                  ),
+                  // Expanded(child: Container()),
+                  // Container(
+                  //   height: 45,
+                  //   width: 45,
+                  //   decoration: BoxDecoration(
+                  //     color: AppColor.darkerYellow,
+                  //     borderRadius: BorderRadius.circular(100),
+                  //   ),
+                  //   child: const Icon(
+                  //     Icons.location_on_outlined,
+                  //     size: 30,
+                  //   ),
+                  // ),
                 ],
               ),
             ),

@@ -1,5 +1,10 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:nche/components/colors.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,6 +25,132 @@ class UserData with ChangeNotifier {
   final User _user = FirebaseAuth.instance.currentUser!;
   final _firebaseStorage = FirebaseStorage.instance;
   final _firebaseStore = FirebaseFirestore.instance;
+  bool servicestatus = false;
+  bool haspermission = false;
+  Position? locationPosition;
+  Map<PolylineId, Polyline> polylines = {};
+  LatLng destination = const LatLng(6.4096, 7.4978);
+
+  // display polyline inside te map
+  // on user changes
+  void _getPolyline() async {
+    List<LatLng> polylineCoordinates = [];
+    PolylinePoints polylinePoints = PolylinePoints();
+
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      googleApiKey,
+      PointLatLng(locationPosition!.latitude, locationPosition!.longitude),
+      PointLatLng(destination.latitude, destination.longitude),
+      travelMode: TravelMode.driving,
+    );
+    if (result.points.isNotEmpty) {
+      for (var point in result.points) {
+        polylineCoordinates.add(
+          LatLng(point.latitude, point.longitude),
+        );
+      }
+    } else {
+      (result.errorMessage);
+    }
+    PolylineId id = const PolylineId("nche");
+    Polyline polyline = Polyline(
+      polylineId: id,
+      color: AppColor.orange,
+      points: polylineCoordinates,
+      width: 6,
+      geodesic: true,
+      jointType: JointType.round,
+      endCap: Cap.roundCap,
+      startCap: Cap.roundCap,
+    );
+    polylines[id] = polyline;
+    notifyListeners();
+  }
+
+  // check user Gps cordinate location,
+  // onces a user open the application
+  checkGps(context) async {
+    late LocationPermission permission;
+    servicestatus = await Geolocator.isLocationServiceEnabled();
+    if (servicestatus) {
+      permission = await Geolocator.checkPermission();
+
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          locationPosition = await Geolocator.getLastKnownPosition();
+          notifyListeners();
+        } else if (permission == LocationPermission.deniedForever) {
+          //print("'Location permissions are permanently denied");
+        } else {
+          haspermission = true;
+        }
+      } else {
+        haspermission = true;
+      }
+
+      if (haspermission) {
+        locationPosition = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.best);
+
+        notifyListeners();
+
+        late LocationSettings locationSettings;
+        //  = const LocationSettings(
+        //   accuracy: LocationAccuracy.best,
+        //   distanceFilter: 100,
+        // );
+
+        if (defaultTargetPlatform == TargetPlatform.android) {
+          locationSettings = AndroidSettings(
+            accuracy: LocationAccuracy.high,
+            distanceFilter: 100,
+            forceLocationManager: true,
+            //intervalDuration: const Duration(seconds: 10),
+            //(Optional) Set foreground notification config to keep the app alive
+            //when going to the background
+            foregroundNotificationConfig: const ForegroundNotificationConfig(
+              notificationText: "Nche is updating your location",
+              notificationTitle: "Tracking",
+              enableWakeLock: true,
+            ),
+          );
+        } else if (defaultTargetPlatform == TargetPlatform.iOS ||
+            defaultTargetPlatform == TargetPlatform.macOS) {
+          locationSettings = AppleSettings(
+            accuracy: LocationAccuracy.high,
+            activityType: ActivityType.fitness,
+            distanceFilter: 100,
+            pauseLocationUpdatesAutomatically: true,
+            // Only set to true if our app will be started up in the background.
+            showBackgroundLocationIndicator: true,
+          );
+        } else {
+          locationSettings = const LocationSettings(
+            accuracy: LocationAccuracy.high,
+            distanceFilter: 100,
+          );
+        }
+
+        Geolocator.getPositionStream(locationSettings: locationSettings)
+            .listen((Position position) {
+          locationPosition = position;
+          _getPolyline();
+          _firebaseStore.collection('users').doc(_user.uid).update(
+            {'location': GeoPoint(position.latitude, position.longitude)},
+          );
+          notifyListeners();
+        });
+      }
+    } else {
+      locationNotification(
+        context,
+        'Enable device location services',
+      );
+    }
+
+    notifyListeners();
+  }
 
   // share post to social media
   bool isSharing = false;
@@ -38,7 +169,7 @@ class UserData with ChangeNotifier {
 
   /// fetch user profile
   Future<Users> userProfile(context) async {
-    var userDoc = await FirebaseFirestore.instance
+    var userDoc = await _firebaseStore
         .collection('users')
         .doc(_user.uid) //'trCGMsdcg1MwjWyMHpgP'
         .get();
@@ -95,10 +226,7 @@ class UserData with ChangeNotifier {
     try {
       isUpdateProfile = true;
       notifyListeners();
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(_user.uid)
-          .update({
+      await _firebaseStore.collection('users').doc(_user.uid).update({
         'email': email,
         'fullName': fullName,
         'userName': userName,
@@ -106,7 +234,7 @@ class UserData with ChangeNotifier {
         'userCity': userCity,
         'phoneNumber': phoneNumber,
       });
-      await FirebaseFirestore.instance
+      await _firebaseStore
           .collection('posts')
           .where('sender.id', isEqualTo: userData!.id)
           .get()
@@ -157,7 +285,7 @@ class UserData with ChangeNotifier {
           .putFile(file);
 
       var downloadUrl = await snapshot.ref.getDownloadURL();
-      var _userDoc = FirebaseFirestore.instance;
+      var _userDoc = _firebaseStore;
       _userDoc
           .collection('users')
           .doc(_user.uid)
@@ -216,7 +344,7 @@ class UserData with ChangeNotifier {
       }
 
       /// create new post
-      final postDoc = FirebaseFirestore.instance.collection('posts').doc();
+      final postDoc = _firebaseStore.collection('posts').doc();
       final posts = FeedPost(
         id: postDoc.id,
         sender: userData!,
@@ -248,7 +376,7 @@ class UserData with ChangeNotifier {
 
   // Fetch feed posts from firebase
   Stream<List<FeedPost>> fetchPost() {
-    var postDoc = FirebaseFirestore.instance
+    var postDoc = _firebaseStore
         .collection('posts')
         .orderBy('time', descending: true)
         .snapshots()
@@ -256,6 +384,15 @@ class UserData with ChangeNotifier {
             snapshot.docs.map((doc) => FeedPost.fromJson(doc.data())).toList());
 
     return postDoc;
+  }
+
+  // Fetch feed posts from firebase
+  Stream<List<Users>> fetchUsers() {
+    var usersDoc = _firebaseStore.collection('users').snapshots().map(
+        (snapshot) =>
+            snapshot.docs.map((doc) => Users.fromJson(doc.data())).toList());
+
+    return usersDoc;
   }
 
   // delete your post

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nche/components/alert.dart';
+
 import 'package:nche/widget/progress_indicator.dart';
 import 'package:nche/components/success_sheet.dart';
 import 'package:nche/model/users.dart';
@@ -44,6 +45,11 @@ class Authentication with ChangeNotifier {
               .collection('users')
               .doc(value.user!.uid);
           final user = Users(
+            location: const GeoPoint(0, 0),
+            userName: '',
+            phoneNumber: '',
+            userCity: '',
+            countryState: '',
             email: value.user!.email,
             fullName: value.user!.displayName,
             id: docUser.id,
@@ -153,8 +159,12 @@ class Authentication with ChangeNotifier {
               .doc(value.user!.uid);
 
           final user = Users(
-            email: value.user!.email,
-            fullName: value.user!.displayName,
+            location: const GeoPoint(0, 0),
+            userName: '',
+            userCity: '',
+            countryState: '',
+            email: '',
+            fullName: '',
             id: docUser.id,
             phoneNumber: value.user!.phoneNumber,
             avarter:
@@ -283,6 +293,10 @@ class Authentication with ChangeNotifier {
               .collection('users')
               .doc(value.user!.uid);
           final user = Users(
+            location: const GeoPoint(0, 0),
+            phoneNumber: '',
+            userCity: '',
+            countryState: '',
             email: email.trim(),
             fullName: fullName.trim(),
             id: docUser.id,

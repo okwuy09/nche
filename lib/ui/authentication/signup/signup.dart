@@ -83,7 +83,9 @@ class _SignUpState extends State<SignUp> {
           Form(
             key: _formkey,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(
+                horizontal: screensize.width > 600 ? 150 : 20,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
@@ -131,7 +133,7 @@ class _SignUpState extends State<SignUp> {
                       ),
 
                       //
-                      SizedBox(height: screensize.height * 0.01),
+                      SizedBox(height: screensize.height * 0.015),
                       MyTextForm(
                         controller: _userName,
                         obscureText: false,
@@ -146,7 +148,7 @@ class _SignUpState extends State<SignUp> {
                       ),
 
                       //
-                      SizedBox(height: screensize.height * 0.01),
+                      SizedBox(height: screensize.height * 0.015),
                       MyTextForm(
                         controller: _emailField,
                         obscureText: false,
@@ -161,19 +163,19 @@ class _SignUpState extends State<SignUp> {
                       ),
 
                       //
-                      SizedBox(height: screensize.height * 0.01),
+                      SizedBox(height: screensize.height * 0.015),
                       MyTextForm(
                         controller: _passwordField,
                         obscureText: _isObscurePassword,
                         hintText: 'Password',
-                        suffixIcon: IconButton(
-                            icon: Icon(
+                        suffixIcon: GestureDetector(
+                            child: Icon(
                               _isObscurePassword
                                   ? Icons.visibility
                                   : Icons.visibility_off,
                               color: AppColor.grey,
                             ),
-                            onPressed: () {
+                            onTap: () {
                               setState(() {
                                 _isObscurePassword = !_isObscurePassword;
                               });

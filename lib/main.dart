@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/services/provider/authentication.dart';
@@ -9,10 +10,13 @@ import 'package:nche/ui/authentication/signin/signin.dart';
 import 'package:nche/ui/homepage/bottom_navbar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   // Call the sharedPreferences when the app initialized to determine the bool condition of page to show.
   final prefs = await SharedPreferences.getInstance();
   final showHome = prefs.getBool('showHome') ?? false;
