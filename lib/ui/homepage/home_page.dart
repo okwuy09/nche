@@ -24,8 +24,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final TextEditingController _fullName = TextEditingController();
-  final TextEditingController _phoneNumber = TextEditingController();
   bool selected = false;
   bool onComplete = false;
 
@@ -196,11 +194,11 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         // add emergency number from home page
                         InkWell(
-                          onTap: () => handleAddContact(
+                          onTap: () => showModalBottomSheet(
+                            backgroundColor: Colors.transparent,
+                            isScrollControlled: true,
                             context: context,
-                            nameController: _fullName,
-                            phoneController: _phoneNumber,
-                            onTap: () {},
+                            builder: ((_) => const AddEmergencyContact()),
                           ),
                           child: HomeContainer(
                             icon: Icon(

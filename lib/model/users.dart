@@ -1,17 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nche/model/friends_contact.dart';
 
 class Users {
   String? email;
   String? fullName;
   String? userName;
   String? userCity;
-  String? id;
+  String id;
   String? phoneNumber;
   String? countryState;
   String? avarter;
   GeoPoint? location;
+  List? emergencyContact;
   Users({
-    this.id,
+    required this.id,
     this.email,
     this.fullName,
     this.userName,
@@ -20,6 +22,7 @@ class Users {
     this.avarter,
     this.userCity,
     this.location,
+    this.emergencyContact,
   });
 
   Map<String, dynamic> toJson() => {
@@ -32,17 +35,18 @@ class Users {
         'phoneNumber': phoneNumber,
         'avarter': avarter,
         'location': location,
+        'emergencyContact': emergencyContact,
       };
 
   static Users fromJson(Map<String, dynamic> json) => Users(
-        email: json['email'],
-        fullName: json['fullName'],
-        id: json['id'],
-        userName: json['userName'],
-        userCity: json['userCity'],
-        countryState: json['countryState'],
-        phoneNumber: json['phoneNumber'],
-        avarter: json['avarter'],
-        location: json['location'],
-      );
+      email: json['email'],
+      fullName: json['fullName'],
+      id: json['id'],
+      userName: json['userName'],
+      userCity: json['userCity'],
+      countryState: json['countryState'],
+      phoneNumber: json['phoneNumber'],
+      avarter: json['avarter'],
+      location: json['location'],
+      emergencyContact: json['emergencyContact']);
 }

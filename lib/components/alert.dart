@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/const_values.dart';
 
-handleFireBaseAlert({context, required String message}) {
+handleFireBaseAlert({
+  required BuildContext context,
+  required String message,
+}) {
   return showDialog(
     context: context,
     builder: (_) {
@@ -34,7 +37,8 @@ handleFireBaseAlert({context, required String message}) {
               ),
               const SizedBox(height: 10),
               TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () =>
+                    Navigator.of(context, rootNavigator: true).pop(),
                 child: Text(
                   'OK',
                   style: style.copyWith(

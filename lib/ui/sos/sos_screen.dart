@@ -283,15 +283,12 @@ class _SOSScreenState extends State<SOSScreen> {
                             size: 30,
                           ),
                         ),
-                        onTap: () {
-                          // add contact
-                          handleAddContact(
-                            context: context,
-                            nameController: _fullName,
-                            phoneController: _phoneNumber,
-                            onTap: () {},
-                          );
-                        },
+                        onTap: () => showModalBottomSheet(
+                          context: context,
+                          backgroundColor: Colors.transparent,
+                          isScrollControlled: true,
+                          builder: ((_) => const AddEmergencyContact()),
+                        ),
                       )
                     ],
                   ),

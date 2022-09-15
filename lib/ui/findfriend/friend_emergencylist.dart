@@ -5,7 +5,7 @@ import 'package:nche/model/users.dart';
 import 'package:nche/widget/button.dart';
 
 class FriendEmergencyList extends StatelessWidget {
-  final List<Users> friends;
+  final Users friends;
   const FriendEmergencyList({Key? key, required this.friends})
       : super(key: key);
 
@@ -14,6 +14,7 @@ class FriendEmergencyList extends StatelessWidget {
     var screenSize = MediaQuery.of(context).size;
     return Container(
       width: screenSize.width,
+      height: screenSize.height * 0.78,
       padding: const EdgeInsets.symmetric(
         horizontal: 20,
         vertical: 10,
@@ -58,20 +59,20 @@ class FriendEmergencyList extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Text(
-            '@ Albert Obiefuna EMERGENCY LIST',
+            '@${friends.fullName}',
             style: style.copyWith(
               fontSize: 18,
             ),
           ),
-
           // new list
           ListView.builder(
             padding: const EdgeInsets.symmetric(vertical: 20),
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: friends.length,
+            itemCount: friends.emergencyContact!.length,
             itemBuilder: (context, index) {
               return Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
                     //margin: const EdgeInsets.only(bottom: 10, top: 0),
@@ -87,12 +88,12 @@ class FriendEmergencyList extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CircleAvatar(
-                          backgroundColor: AppColor.white,
-                          radius: 25,
-                          backgroundImage:
-                              NetworkImage(friends[index].avarter!),
-                        ),
+                        // CircleAvatar(
+                        //   backgroundColor: AppColor.white,
+                        //   radius: 25,
+                        //   backgroundImage:
+                        //       NetworkImage(friends[index].avarter!),
+                        // ),
                         const SizedBox(width: 10),
                         SizedBox(
                           height: 50,
@@ -102,7 +103,7 @@ class FriendEmergencyList extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                friends[index].fullName!,
+                                friends.emergencyContact![index]['name'],
                                 style: style.copyWith(
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -138,7 +139,7 @@ class FriendEmergencyList extends StatelessWidget {
               );
             },
           ),
-          const SizedBox(height: 40),
+          Expanded(child: Container()),
           MainButton(
             borderColor: Colors.transparent,
             backgroundColor: AppColor.white,
@@ -148,7 +149,8 @@ class FriendEmergencyList extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-          )
+          ),
+          const SizedBox(height: 20),
         ],
       ),
     );

@@ -45,16 +45,16 @@ class Authentication with ChangeNotifier {
               .collection('users')
               .doc(value.user!.uid);
           final user = Users(
-            location: const GeoPoint(0, 0),
-            userName: '',
-            phoneNumber: '',
-            userCity: '',
-            countryState: '',
-            email: value.user!.email,
-            fullName: value.user!.displayName,
-            id: docUser.id,
-            avarter: value.user!.photoURL,
-          );
+              location: const GeoPoint(0, 0),
+              userName: '',
+              phoneNumber: '',
+              userCity: '',
+              countryState: '',
+              email: value.user!.email,
+              fullName: value.user!.displayName,
+              id: docUser.id,
+              avarter: value.user!.photoURL,
+              emergencyContact: []);
           final json = user.toJson();
           // create document and write data to firebase
           docUser.set(json);
@@ -167,6 +167,7 @@ class Authentication with ChangeNotifier {
             fullName: '',
             id: docUser.id,
             phoneNumber: value.user!.phoneNumber,
+            emergencyContact: [],
             avarter:
                 'https://firebasestorage.googleapis.com/v0/b/nche-application.appspot.com/o/avatar.png?alt=media&token=f70e3f9c-d432-4a03-b047-4ff97a245b52',
           );
@@ -301,6 +302,7 @@ class Authentication with ChangeNotifier {
             fullName: fullName.trim(),
             id: docUser.id,
             userName: userName.trim(),
+            emergencyContact: [],
             avarter:
                 'https://firebasestorage.googleapis.com/v0/b/nche-application.appspot.com/o/avatar.png?alt=media&token=f70e3f9c-d432-4a03-b047-4ff97a245b52',
           );

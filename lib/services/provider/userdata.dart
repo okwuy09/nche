@@ -5,6 +5,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:nche/components/colors.dart';
+import 'package:nche/model/friends_contact.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -393,6 +394,17 @@ class UserData with ChangeNotifier {
             snapshot.docs.map((doc) => Users.fromJson(doc.data())).toList());
 
     return usersDoc;
+  }
+
+  //Add Emergency contact
+  Future addEmergencyContact(String name, String phoneNo) async {
+    final friendContact =
+        EmergencyContact(friendName: name, friendPhone: phoneNo);
+    final json = friendContact.toJson();
+    _firebaseStore.collection('users').doc(_user.uid).update({
+      'emergencyContact': FieldValue.arrayUnion([json]),
+    });
+    notifyListeners();
   }
 
   // delete your post
