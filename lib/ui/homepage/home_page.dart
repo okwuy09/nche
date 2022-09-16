@@ -29,10 +29,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // initilizing the image animation inside homepage,
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<UserData>(context, listen: false).checkGps(context);
     });
+    // initilizing the image animation inside homepage,
     Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {
           selected = !selected;
         }));

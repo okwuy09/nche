@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/const_values.dart';
 
-class nonActiveUsers extends StatelessWidget {
-  const nonActiveUsers({
+class NonActiveUsers extends StatelessWidget {
+  const NonActiveUsers({
     Key? key,
     required this.friends,
     required this.index,
@@ -21,30 +21,29 @@ class nonActiveUsers extends StatelessWidget {
           //margin: const EdgeInsets.only(bottom: 10, top: 0),
           padding: const EdgeInsets.symmetric(
             horizontal: 20,
-            vertical: 15,
+            vertical: 8,
           ),
-          height: 80,
+          height: 72,
           width: screenSize.width,
           decoration: BoxDecoration(
-            //color: AppColor.lightGrey,
-            borderRadius: BorderRadius.circular(6),
+            color: AppColor.white,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                height: 40,
-                width: 40,
+                height: 44,
+                width: 44,
                 decoration: BoxDecoration(
                   color: Colors.primaries[index % Colors.primaries.length],
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(50),
                 ),
                 child: Center(
                   child: Text(
                     friends[index]['name'][0].toUpperCase(),
                     style: style.copyWith(
-                      fontSize: 25,
+                      fontSize: 26,
                       fontWeight: FontWeight.w800,
                       color: AppColor.white,
                     ),
@@ -62,17 +61,19 @@ class nonActiveUsers extends StatelessWidget {
                     Text(
                       friends[index]['name'],
                       style: style.copyWith(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 15,
+                        color: AppColor.black.withOpacity(0.6),
                       ),
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 3),
                     Text(
                       friends[index]['phone'],
                       style: style.copyWith(
-                        fontSize: 15,
+                        fontSize: 14,
                         fontWeight: FontWeight.w400,
-                        color: AppColor.darkerGrey,
+                        color: AppColor.darkerGrey.withOpacity(0.8),
+                        letterSpacing: 0.5,
                       ),
                     ),
                   ],
@@ -89,8 +90,7 @@ class nonActiveUsers extends StatelessWidget {
                     Text(
                       'Invite',
                       style: style.copyWith(
-                        //fontSize: 14,
-                        //fontWeight: FontWeight.w500,
+                        fontSize: 15,
                         color: AppColor.black.withOpacity(0.6),
                       ),
                     ),

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/const_values.dart';
+import 'package:nche/model/emergency_contact_friend.dart';
 import 'package:nche/model/users.dart';
+import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/widget/button.dart';
+import 'package:provider/provider.dart';
 
 class FriendEmergencyList extends StatelessWidget {
   final Users friends;
@@ -12,6 +15,8 @@ class FriendEmergencyList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+    var provider = Provider.of<UserData>(context);
+    List<EmergencyContactFriend> userFriendsList = [];
     return Container(
       width: screenSize.width,
       height: screenSize.height * 0.78,
@@ -20,7 +25,7 @@ class FriendEmergencyList extends StatelessWidget {
         vertical: 10,
       ),
       decoration: BoxDecoration(
-        color: AppColor.grey,
+        color: AppColor.white,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -34,8 +39,7 @@ class FriendEmergencyList extends StatelessWidget {
           Row(
             children: [
               Text(
-                '',
-                // 'Find Friend',
+                'Find Friend',
                 style: style.copyWith(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
@@ -114,7 +118,7 @@ class FriendEmergencyList extends StatelessWidget {
                         Expanded(child: Container()),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: AppColor.orange.withOpacity(0.6),
+                            primary: AppColor.grey.withOpacity(0.6),
                             elevation: 0,
                           ),
                           child: Row(
@@ -141,15 +145,29 @@ class FriendEmergencyList extends StatelessWidget {
           ),
           Expanded(child: Container()),
           MainButton(
-            borderColor: Colors.transparent,
-            backgroundColor: AppColor.white,
-            child: Text(
-              'NOTIFY ALL FRIENDS',
-              style: style.copyWith(
-                fontWeight: FontWeight.w500,
+              borderColor: AppColor.black,
+              backgroundColor: AppColor.lightGrey,
+              child: Text(
+                'NOTIFY ALL FRIENDS',
+                style: style.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-          ),
+              onTap: () {
+                for (var i in friends.emergencyContact!) {
+                  var friendList = EmergencyContactFriend(
+                    approved: false,
+                    phone: i['phone'],
+                    name: i['name'],
+                  );
+                  userFriendsList.add(friendList);
+                }
+                provider.createSearch(
+                  userId: provider.userData!.id,
+                  userFriends: userFriendsList,
+                  searchName: friends.fullName ?? 'Name Undefined',
+                );
+              }),
           const SizedBox(height: 20),
         ],
       ),

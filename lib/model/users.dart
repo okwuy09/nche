@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:nche/model/friends_contact.dart';
 
 class Users {
   String? email;

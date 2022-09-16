@@ -26,9 +26,25 @@ void main() async {
   ], child: MyApp(showHome: showHome)));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final bool? showHome;
   const MyApp({Key? key, this.showHome}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    Future.delayed(const Duration(seconds: 2)).then((value) => setState(() {
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Provider.of<UserData>(context, listen: false).userProfile(context);
+    });
+        }));
+    
+    super.initState();
+  }
 
   // This widget is the root of your application.
   @override
@@ -46,7 +62,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: FirebaseAuth.instance.currentUser == null
-          ? showHome!
+          ? widget.showHome!
               ? const SignIn()
               : const OnboardingPage()
           : const BottomNavBar(),

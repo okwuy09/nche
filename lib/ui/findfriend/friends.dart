@@ -5,7 +5,6 @@ import 'package:nche/model/users.dart';
 import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/ui/findfriend/friend_list.dart';
 import 'package:nche/ui/findfriend/search_friend.dart';
-import 'package:nche/widget/button.dart';
 import 'package:provider/provider.dart';
 
 class Friends extends StatelessWidget {
@@ -17,18 +16,16 @@ class Friends extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: AppColor.lightGrey,
-          automaticallyImplyLeading: false,
-          title: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              'Find Friend',
-              style: style.copyWith(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          )),
+        backgroundColor: AppColor.lightGrey,
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Find Friend',
+          style: style.copyWith(
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Container(
           color: AppColor.white,
@@ -53,7 +50,7 @@ class Friends extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return _usersPhone.contains(friends[index]['phone'])
                             ? Container()
-                            : nonActiveUsers(
+                            : NonActiveUsers(
                                 friends: friends,
                                 index: index,
                               );

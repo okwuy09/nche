@@ -5,7 +5,8 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:nche/components/colors.dart';
-import 'package:nche/model/friends_contact.dart';
+import 'package:nche/model/emergency_contact.dart';
+import 'package:nche/model/emergency_contact_friend.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,6 +32,38 @@ class UserData with ChangeNotifier {
   Position? locationPosition;
   Map<PolylineId, Polyline> polylines = {};
   LatLng destination = const LatLng(6.4096, 7.4978);
+
+// fetch friend search
+  Stream<List<UserFriends>> fetchFriendSearch() {
+    var friendSearchDoc = _firebaseStore.collection('search').snapshots().map(
+        (snapshot) => snapshot.docs
+            .map((doc) => UserFriends.fromJson(doc.data()))
+            .toList());
+
+    return friendSearchDoc;
+  }
+
+// creating new friend search
+  bool iscreating = false;
+  void createSearch({
+    required String userId,
+    required List<EmergencyContactFriend> userFriends,
+    required String searchName,
+  }) async {
+    iscreating = true;
+    notifyListeners();
+    final searchDoc = _firebaseStore.collection('search').doc();
+    final _userFriends = UserFriends(
+      id: searchDoc.id,
+      userId: userId,
+      searchName: searchName,
+      userFriends: userFriends,
+    );
+    final json = _userFriends.toJson();
+    searchDoc.set(json);
+    iscreating = false;
+    notifyListeners();
+  }
 
   // display polyline inside te map
   // on user changes
@@ -97,10 +130,6 @@ class UserData with ChangeNotifier {
         notifyListeners();
 
         late LocationSettings locationSettings;
-        //  = const LocationSettings(
-        //   accuracy: LocationAccuracy.best,
-        //   distanceFilter: 100,
-        // );
 
         if (defaultTargetPlatform == TargetPlatform.android) {
           locationSettings = AndroidSettings(
@@ -213,7 +242,7 @@ class UserData with ChangeNotifier {
     }
   }
 
-  // Edit Profile
+  /// Update Profile
   bool isUpdateProfile = false;
   updateUserProfile({
     String? email,
@@ -297,6 +326,7 @@ class UserData with ChangeNotifier {
           .collection('posts')
           .where('sender.id', isEqualTo: userData!.id)
           .get()
+          // ignore: avoid_function_literals_in_foreach_calls
           .then((value) => value.docs.forEach((doc) {
                 doc.reference.update({'sender.avarter': downloadUrl});
               }));
