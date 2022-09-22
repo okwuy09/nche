@@ -5,6 +5,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:nche/components/colors.dart';
+import 'package:nche/components/success_sheet.dart';
 import 'package:nche/model/emergency_contact.dart';
 import 'package:nche/model/emergency_contact_friend.dart';
 import 'package:share_plus/share_plus.dart';
@@ -22,7 +23,7 @@ import 'package:path/path.dart' as paths;
 
 class UserData with ChangeNotifier {
   //bool noProfileUpdate = true;
-  Users? userData;
+  Users userData = Users();
 
   final User _user = FirebaseAuth.instance.currentUser!;
   final _firebaseStorage = FirebaseStorage.instance;
@@ -32,6 +33,74 @@ class UserData with ChangeNotifier {
   Position? locationPosition;
   Map<PolylineId, Polyline> polylines = {};
   LatLng destination = const LatLng(6.4096, 7.4978);
+
+  /// update emergency contact
+  void updateEmergencyContact({
+    required String names,
+    required String phones,
+    required String fname,
+    required String fphone,
+    required BuildContext context,
+  }) {
+    final usercontact = _firebaseStore.collection('users').doc(_user.uid);
+    // Atomically add a new region to the "regions" array field.
+    usercontact.update({
+      'emergencyContact': FieldValue.arrayRemove([
+        {
+          'name': fname,
+          'phone': fphone,
+        }
+      ]),
+    }).then(
+      (value) => notifyListeners(),
+    );
+    // Atomically remove a region from the "regions" array field.
+    usercontact.update({
+      'emergencyContact': FieldValue.arrayUnion([
+        {
+          'name': names,
+          'phone': phones,
+        }
+      ]),
+    }).then(
+      (value) => notifyListeners(),
+    );
+    successOperation(context);
+    Navigator.pop(context);
+  }
+
+  /// delete emergency contact
+  void deleteEmergencyContact({
+    required String name,
+    required String phone,
+    required BuildContext context,
+  }) {
+    _firebaseStore.collection('users').doc(_user.uid).update({
+      'emergencyContact': FieldValue.arrayRemove([
+        {
+          'name': name,
+          'phone': phone,
+        }
+      ]),
+    }).then((value) {
+      successOperation(context);
+      notifyListeners();
+    });
+  }
+
+  // delete search history
+  void deleteSearch(String id) {
+    _firebaseStore.collection('search').doc(id).delete();
+    notifyListeners();
+  }
+
+  /// update search status
+  void changeSearchStatus(String id) {
+    _firebaseStore.collection('search').doc(id).update(
+      {'isSuccessfull': true},
+    );
+    notifyListeners();
+  }
 
 // fetch friend search
   Stream<List<UserFriends>> fetchFriendSearch() {
@@ -45,24 +114,39 @@ class UserData with ChangeNotifier {
 
 // creating new friend search
   bool iscreating = false;
-  void createSearch({
+  createSearch({
     required String userId,
+    required String searcherId,
     required List<EmergencyContactFriend> userFriends,
     required String searchName,
+    required BuildContext context,
   }) async {
-    iscreating = true;
-    notifyListeners();
-    final searchDoc = _firebaseStore.collection('search').doc();
-    final _userFriends = UserFriends(
-      id: searchDoc.id,
-      userId: userId,
-      searchName: searchName,
-      userFriends: userFriends,
-    );
-    final json = _userFriends.toJson();
-    searchDoc.set(json);
-    iscreating = false;
-    notifyListeners();
+    try {
+      iscreating = true;
+      notifyListeners();
+      final searchDoc = _firebaseStore.collection('search').doc();
+      final _userFriends = UserFriends(
+        id: searchDoc.id,
+        userId: userId,
+        searcherId: searcherId,
+        searchName: searchName,
+        userFriends: userFriends,
+      );
+      final json = _userFriends.toJson();
+      searchDoc.set(json);
+      handleSuccessfullOperation(
+        message: 'Search is successfully initialized',
+        context: context,
+        onTap: () => Navigator.pop(context),
+      );
+      iscreating = false;
+      notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      return handleFireBaseAlert(
+        context: context,
+        message: e.message!,
+      );
+    }
   }
 
   // display polyline inside te map
@@ -201,13 +285,16 @@ class UserData with ChangeNotifier {
   Future<Users> userProfile(context) async {
     var userDoc = await _firebaseStore
         .collection('users')
-        .doc(_user.uid) //'trCGMsdcg1MwjWyMHpgP'
-        .get();
-
-    var userProfileData = Users.fromJson(userDoc.data()!);
-    userData = userProfileData;
+        .doc(_user.uid)
+        .get(); //'trCGMsdcg1MwjWyMHpgP'
+    // .snapshots()
+    _firebaseStore
+        .collection('users')
+        .doc(_user.uid)
+        .snapshots()
+        .listen((event) => userData = Users.fromJson(event.data()!));
     notifyListeners();
-    return userProfileData;
+    return Users.fromJson(userDoc.data()!);
   }
 
 // Change Password
@@ -266,7 +353,7 @@ class UserData with ChangeNotifier {
       });
       await _firebaseStore
           .collection('posts')
-          .where('sender.id', isEqualTo: userData!.id)
+          .where('sender.id', isEqualTo: userData.id)
           .get()
           .then((value) => value.docs.forEach((doc) {
                 doc.reference.update({'sender.userName': userName});
@@ -324,7 +411,7 @@ class UserData with ChangeNotifier {
       notifyListeners();
       _userDoc
           .collection('posts')
-          .where('sender.id', isEqualTo: userData!.id)
+          .where('sender.id', isEqualTo: userData.id)
           .get()
           // ignore: avoid_function_literals_in_foreach_calls
           .then((value) => value.docs.forEach((doc) {
@@ -378,7 +465,7 @@ class UserData with ChangeNotifier {
       final postDoc = _firebaseStore.collection('posts').doc();
       final posts = FeedPost(
         id: postDoc.id,
-        sender: userData!,
+        sender: userData,
         time: DateTime.now(),
         writeUp: writeUp,
         upLike: [],
@@ -448,42 +535,42 @@ class UserData with ChangeNotifier {
   //save post/ bookmark a favourite post
   Future savePost(String docID) async {
     _firebaseStore.collection('posts').doc(docID).update({
-      'save_post': FieldValue.arrayUnion([userData!.id]),
+      'save_post': FieldValue.arrayUnion([userData.id]),
     });
   }
 
   //remove save post/ unbookmark a favourite post
   Future removeSavePost(String docID) async {
     _firebaseStore.collection('posts').doc(docID).update({
-      'save_post': FieldValue.arrayRemove([userData!.id]),
+      'save_post': FieldValue.arrayRemove([userData.id]),
     });
   }
 
   //uplike in post
   Future upLikePost(String docID) async {
     _firebaseStore.collection('posts').doc(docID).update({
-      'upLike': FieldValue.arrayUnion([userData!.id]),
+      'upLike': FieldValue.arrayUnion([userData.id]),
     });
   }
 
   //removeUplike in post
   Future removeUpLikePost(String docID) async {
     _firebaseStore.collection('posts').doc(docID).update({
-      'upLike': FieldValue.arrayRemove([userData!.id]),
+      'upLike': FieldValue.arrayRemove([userData.id]),
     });
   }
 
   //Downlike in post
   Future downLikePost(String docID) async {
     _firebaseStore.collection('posts').doc(docID).update({
-      'downLike': FieldValue.arrayUnion([userData!.id]),
+      'downLike': FieldValue.arrayUnion([userData.id]),
     });
   }
 
   //removeUplike in post
   Future removeDownLikePost(String docID) async {
     _firebaseStore.collection('posts').doc(docID).update({
-      'downLike': FieldValue.arrayRemove([userData!.id]),
+      'downLike': FieldValue.arrayRemove([userData.id]),
     });
   }
 }

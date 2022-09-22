@@ -33,8 +33,8 @@ class NonActiveUsers extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                height: 44,
-                width: 44,
+                height: 42,
+                width: 42,
                 decoration: BoxDecoration(
                   color: Colors.primaries[index % Colors.primaries.length],
                   borderRadius: BorderRadius.circular(50),
@@ -43,8 +43,8 @@ class NonActiveUsers extends StatelessWidget {
                   child: Text(
                     friends[index]['name'][0].toUpperCase(),
                     style: style.copyWith(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w800,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600,
                       color: AppColor.white,
                     ),
                   ),
@@ -59,7 +59,8 @@ class NonActiveUsers extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      friends[index]['name'],
+                      friends[index]['name'][0].toUpperCase() +
+                          friends[index]['name'].substring(1),
                       style: style.copyWith(
                         fontWeight: FontWeight.w500,
                         fontSize: 15,

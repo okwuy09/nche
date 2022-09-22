@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nche/components/add_contact_sheet.dart';
+import 'package:nche/components/alert.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/widget/home_container.dart';
 import 'package:nche/components/const_values.dart';
@@ -29,8 +30,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<UserData>(context, listen: false).checkGps(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      /// call user profile before naviagting
+      Provider.of<UserData>(context, listen: false).userProfile(context);
+      // call user Gprs checker to know if user location is on
+      Provider.of<UserData>(context, listen: false).checkGps(context);
     });
     // initilizing the image animation inside homepage,
     Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {
@@ -43,10 +47,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     var provider = Provider.of<UserData>(context);
-
     return Scaffold(
       backgroundColor: AppColor.white,
       appBar: AppBar(
+        toolbarHeight: 60,
         title: Row(
           children: [
             GestureDetector(
@@ -58,28 +62,15 @@ class _HomePageState extends State<HomePage> {
               ),
               child: Stack(
                 children: [
-                  StreamBuilder<Users>(
-                    stream: provider.userProfile(context).asStream(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        var userImage = snapshot.data?.avarter;
-                        return CircleAvatar(
-                          backgroundColor: AppColor.white,
-                          backgroundImage: userImage!.isNotEmpty
-                              ? NetworkImage(userImage)
-                              : const AssetImage('assets/avatar.png')
-                                  as ImageProvider,
-                          maxRadius: 20,
-                          onBackgroundImageError: (exception, stackTrace) =>
-                              Image.asset('assets/avatar.png'),
-                        );
-                      }
-                      return CircleAvatar(
-                        maxRadius: 20,
-                        backgroundColor: AppColor.white,
-                        backgroundImage: const AssetImage('assets/avatar.png'),
-                      );
-                    },
+                  CircleAvatar(
+                    backgroundColor: AppColor.lightGrey,
+                    backgroundImage: provider.userData.avarter != null
+                        ? NetworkImage(provider.userData.avarter ?? '')
+                        : const AssetImage('assets/avatar.png')
+                            as ImageProvider,
+                    maxRadius: 20,
+                    onBackgroundImageError: (exception, stackTrace) =>
+                        Image.asset('assets/avatar.png'),
                   ),
                   Positioned(
                     right: -1,
@@ -131,12 +122,12 @@ class _HomePageState extends State<HomePage> {
               decoration: BoxDecoration(
                 color: AppColor.lightGrey,
                 borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  topRight: Radius.circular(50),
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(top: 15, left: 20, right: 20),
+                padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -157,6 +148,7 @@ class _HomePageState extends State<HomePage> {
                             icon: Icon(
                               Icons.report,
                               color: AppColor.white,
+                              size: 20,
                             ),
                             iconBackgroundColor: AppColor.brown,
                             title: 'Report\nIncident',
@@ -180,6 +172,7 @@ class _HomePageState extends State<HomePage> {
                             icon: Icon(
                               Icons.wallet_giftcard,
                               color: Color(0xff188A8A),
+                              size: 20,
                             ),
                             iconBackgroundColor: Color(0xffD9FFF8),
                             title: 'Rewards',
@@ -188,25 +181,37 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
 
-                    SizedBox(height: screenSize.width > 600 ? 20 : 12),
+                    SizedBox(height: screenSize.width > 600 ? 15 : 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         // add emergency number from home page
                         InkWell(
-                          onTap: () => showModalBottomSheet(
-                            backgroundColor: Colors.transparent,
-                            isScrollControlled: true,
-                            context: context,
-                            builder: ((_) => const AddEmergencyContact()),
-                          ),
+                          onTap: () {
+                            if (provider.userData.emergencyContact!.length <
+                                5) {
+                              showModalBottomSheet(
+                                context: context,
+                                backgroundColor: Colors.transparent,
+                                isScrollControlled: true,
+                                builder: ((_) => const AddEmergencyContact()),
+                              );
+                            } else {
+                              handleFireBaseAlert(
+                                message:
+                                    ' Sorry You can\'t add more than Five(5) Emergency contact',
+                                context: context,
+                              );
+                            }
+                          },
                           child: HomeContainer(
                             icon: Icon(
                               Icons.person_add_alt_1_outlined,
                               color: AppColor.orange,
+                              size: 20,
                             ),
                             iconBackgroundColor: AppColor.lightOrange,
-                            title: 'Add\nEmergency\nContact',
+                            title: 'Add Emergency\nContact',
                           ),
                         ),
 
@@ -226,6 +231,7 @@ class _HomePageState extends State<HomePage> {
                             icon: Icon(
                               Icons.chat_outlined,
                               color: AppColor.primaryColor,
+                              size: 20,
                             ),
                             iconBackgroundColor: AppColor.lighterOrange,
                             title: 'Direct\nMessages',
@@ -234,7 +240,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
 
-                    SizedBox(height: screenSize.width > 600 ? 20 : 12),
+                    SizedBox(height: screenSize.width > 600 ? 15 : 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -252,6 +258,7 @@ class _HomePageState extends State<HomePage> {
                             icon: Icon(
                               Icons.feed_outlined,
                               color: AppColor.black,
+                              size: 20,
                             ),
                             iconBackgroundColor: AppColor.lighterOrange,
                             title: 'News Feed',
@@ -274,6 +281,7 @@ class _HomePageState extends State<HomePage> {
                             icon: Icon(
                               Icons.online_prediction,
                               color: AppColor.red,
+                              size: 20,
                             ),
                             iconBackgroundColor: const Color(0xffFFDDDD),
                             title: 'Live',
@@ -290,8 +298,8 @@ class _HomePageState extends State<HomePage> {
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.decelerate,
                           margin: const EdgeInsets.only(
-                            top: 30,
-                            bottom: 15,
+                            top: 40,
+                            bottom: 30,
                           ),
                           height: 85,
                           width: selected
@@ -306,17 +314,21 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(right: 38),
+                                padding: const EdgeInsets.only(right: 30),
                                 child: Container(
                                   height: 20,
                                   width: 57,
-                                  color: AppColor.black,
+                                  decoration: BoxDecoration(
+                                    color: AppColor.black,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
                                   child: Center(
                                     child: Text(
                                       'Nche tips',
                                       style: style.copyWith(
                                         fontSize: 10,
                                         color: AppColor.primaryColor,
+                                        fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                   ),
@@ -325,10 +337,14 @@ class _HomePageState extends State<HomePage> {
                               const SizedBox(height: 10),
                               Padding(
                                 padding:
-                                    const EdgeInsets.only(left: 40, bottom: 3),
+                                    const EdgeInsets.only(left: 20, bottom: 3),
                                 child: Text(
                                   'Memorise at least\none friend\' contact',
-                                  style: style.copyWith(color: AppColor.white),
+                                  style: style.copyWith(
+                                    color: AppColor.white,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 13,
+                                  ),
                                 ),
                               )
                             ],
@@ -341,7 +357,7 @@ class _HomePageState extends State<HomePage> {
                           },
                         ),
                         Positioned(
-                          top: 0,
+                          top: 10,
                           left: onComplete
                               ? screenSize.width * 0.1
                               : screenSize.width * 0.08,
@@ -354,16 +370,16 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     Text(
-                      'Open For Claim',
+                      'Open for claim',
                       style: style.copyWith(
                         fontWeight: FontWeight.w500,
-                        fontSize: 18,
+                        color: AppColor.black.withOpacity(0.6),
                       ),
                     ),
                     const SizedBox(height: 18),
                     //
                     SizedBox(
-                      height: screenSize.height * 0.227,
+                      height: screenSize.height * 0.23,
                       child: MediaQuery.removePadding(
                         context: context,
                         removeTop: true,
@@ -396,38 +412,45 @@ class _HomePageState extends State<HomePage> {
                                       height: 49,
                                       width: 49,
                                       decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: AppColor.lightGrey),
+                                        color: AppColor.white,
                                         image: const DecorationImage(
                                           image: AssetImage('assets/arm.png'),
+                                          fit: BoxFit.cover,
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(width: 10),
+                                    const SizedBox(width: 8),
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Benefactor',
+                                          'Benefactor:',
                                           style: style.copyWith(
-                                            fontSize: 10,
+                                            fontSize: 11,
                                             color: AppColor.grey,
+                                            fontWeight: FontWeight.w500,
                                           ),
                                         ),
                                         //
                                         const SizedBox(height: 5),
                                         Text(
-                                          'Nigeria police Force NPF',
-                                          style: style.copyWith(fontSize: 12),
+                                          'Nigeria police Force',
+                                          style: style.copyWith(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w500,
+                                            color:
+                                                AppColor.black.withOpacity(0.6),
+                                          ),
                                         ),
                                         //
-                                        const SizedBox(height: 5),
+                                        const SizedBox(height: 4),
                                         Text(
-                                          'Expires: 5th july, 2022',
+                                          'Expires:   5th july, 2022',
                                           style: style.copyWith(
                                             fontSize: 10,
                                             color: AppColor.grey,
+                                            fontWeight: FontWeight.w500,
                                           ),
                                         ),
                                       ],
@@ -439,25 +462,29 @@ class _HomePageState extends State<HomePage> {
                                       padding: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
                                         color: const Color(0xffE4FFE6),
-                                        borderRadius: BorderRadius.circular(8),
+                                        borderRadius: BorderRadius.circular(6),
                                       ),
                                       child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                            CrossAxisAlignment.center,
                                         children: [
                                           Text(
-                                            'Reward:',
+                                            'Reward',
                                             style: style.copyWith(
-                                              fontSize: 10,
-                                              color: AppColor.grey,
+                                              fontSize: 12,
+                                              color: AppColor.darkerGrey,
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           ),
                                           const SizedBox(height: 5),
                                           Text(
                                             '\$5000',
                                             style: style.copyWith(
-                                              fontSize: 14,
+                                              fontSize: 12,
                                               color: const Color(0xff4CAF50),
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           )
                                         ],

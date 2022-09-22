@@ -41,7 +41,7 @@ class _SaveFeedState extends State<SaveFeed> {
             if (snapshot.hasData) {
               var posts = snapshot.data!;
               var post = posts
-                  .where((e) => e.savePost!.contains(provider.userData!.id))
+                  .where((e) => e.savePost!.contains(provider.userData.id))
                   .toList();
 
               return post.isEmpty

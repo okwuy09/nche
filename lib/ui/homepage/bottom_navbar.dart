@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
+import 'package:nche/components/const_values.dart';
 import 'package:nche/ui/Feed/tapbar.dart';
 import 'package:nche/ui/authentication/signin/signin.dart';
 import 'package:nche/ui/findfriend/friends.dart';
@@ -15,9 +16,9 @@ class BottomNavBar extends StatefulWidget {
   State<BottomNavBar> createState() => _BottomNavBarState();
 }
 
-class _BottomNavBarState extends State<BottomNavBar> {
-  PersistentTabController? _controller;
+PersistentTabController? _controller;
 
+class _BottomNavBarState extends State<BottomNavBar> {
   //bool? _hideNavBar;
 
   @override
@@ -35,8 +36,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
       screens: _buildScreens(),
       items: _navBarsItems(),
       confineInSafeArea: true,
-      backgroundColor: AppColor.grey.withOpacity(
-          0.4), //const Color(0xff1D1416), // Default is Colors.white.
+      backgroundColor:
+          AppColor.white, //const Color(0xff1D1416), // Default is Colors.white.
       handleAndroidBackButtonPress: true, // Default is true.
       resizeToAvoidBottomInset:
           true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
@@ -61,7 +62,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         duration: Duration(milliseconds: 200),
       ),
       navBarStyle:
-          NavBarStyle.style5, // Choose the nav bar style with this property.
+          NavBarStyle.style15, // Choose the nav bar style with this property.
     );
   }
 }
@@ -83,27 +84,24 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
       icon: const Icon(Icons.home_outlined),
       title: "Home",
       activeColorPrimary: AppColor.darkerYellow,
-      inactiveColorPrimary: AppColor.black,
+      inactiveColorPrimary: AppColor.black.withOpacity(0.6),
     ),
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.feed_outlined),
       title: ("Feed"),
       activeColorPrimary: AppColor.darkerYellow,
-      inactiveColorPrimary: AppColor.black,
-      routeAndNavigatorSettings: RouteAndNavigatorSettings(
-        initialRoute: '/',
-        routes: {
-          '/first': (context) => const HomePage(),
-          '/second': (context) => const SignIn(),
-        },
-      ),
+      inactiveColorPrimary: AppColor.black.withOpacity(0.6),
     ),
     PersistentBottomNavBarItem(
       icon: Container(
         height: 40,
-        width: 40,
+        width: 45,
         decoration: BoxDecoration(
-          border: Border.all(color: AppColor.black),
+          color: AppColor.brown,
+          border: Border.all(
+            color: AppColor.white,
+            width: 1.5,
+          ),
           borderRadius: BorderRadius.circular(130),
         ),
         child: Scaffold(
@@ -111,58 +109,29 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
           body: Center(
             child: Text(
               'SOS',
-              style: TextStyle(
-                fontSize: 14,
-                color: AppColor.black,
+              style: style.copyWith(
+                color: AppColor.white,
                 fontWeight: FontWeight.w500,
               ),
             ),
           ),
         ),
       ),
-
-      //Icon(Icons.add),
-      //title: ("Add"),
-      activeColorPrimary: AppColor.darkerYellow,
-      activeColorSecondary: AppColor.darkerYellow,
-      inactiveColorPrimary: AppColor.black,
-      routeAndNavigatorSettings: RouteAndNavigatorSettings(
-        initialRoute: '/',
-        routes: {
-          '/first': (context) => const HomePage(),
-          '/second': (context) => const SignIn(),
-        },
-      ),
-      // onPressed: (context) {
-      //   // pushDynamicScreen(context!,
-      //   //     screen: SampleModalScreen(), withNavBar: true);
-      // },
+      title: ("Panic button"),
+      activeColorPrimary: AppColor.brown,
+      inactiveColorPrimary: AppColor.black.withOpacity(0.6),
     ),
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.notifications_active_outlined),
-      title: ("Notification"),
+      title: ("Notifs"),
       activeColorPrimary: AppColor.darkerYellow,
-      inactiveColorPrimary: AppColor.black,
-      routeAndNavigatorSettings: RouteAndNavigatorSettings(
-        initialRoute: '/',
-        routes: {
-          '/first': (context) => const HomePage(),
-          '/second': (context) => const SignIn(),
-        },
-      ),
+      inactiveColorPrimary: AppColor.black.withOpacity(0.6),
     ),
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.person_search_outlined),
-      title: ("Person"),
+      title: ("Find Friend"),
       activeColorPrimary: AppColor.darkerYellow,
-      inactiveColorPrimary: AppColor.black,
-      routeAndNavigatorSettings: RouteAndNavigatorSettings(
-        initialRoute: '/',
-        routes: {
-          '/first': (context) => const HomePage(),
-          '/second': (context) => const SignIn(),
-        },
-      ),
+      inactiveColorPrimary: AppColor.black.withOpacity(0.6),
     ),
   ];
 }

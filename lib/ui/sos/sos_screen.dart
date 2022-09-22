@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/add_contact_sheet.dart';
+import 'package:nche/components/alert.dart';
 import 'package:nche/components/colors.dart';
 import 'package:nche/components/const_values.dart';
 import 'package:nche/components/success_sheet.dart';
@@ -16,8 +17,8 @@ class SOSScreen extends StatefulWidget {
 }
 
 class _SOSScreenState extends State<SOSScreen> {
-  final TextEditingController _fullName = TextEditingController();
-  final TextEditingController _phoneNumber = TextEditingController();
+  // final TextEditingController _fullName = TextEditingController();
+  // final TextEditingController _phoneNumber = TextEditingController();
   bool selected = false;
   bool bottonComplete = false;
 
@@ -26,84 +27,70 @@ class _SOSScreenState extends State<SOSScreen> {
     var screenSize = MediaQuery.of(context).size;
     var provider = Provider.of<UserData>(context);
     return Scaffold(
-      backgroundColor: AppColor.brown,
-      body: SingleChildScrollView(
-        child: Column(
+      backgroundColor: AppColor.white,
+      appBar: AppBar(
+        backgroundColor: AppColor.lightGrey,
+        title: Row(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
-              child: Column(
+            GestureDetector(
+              onTap: () => pushNewScreen(
+                context,
+                screen: const UserProfile(),
+                withNavBar: false, // OPTIONAL VALUE. True by default.
+                pageTransitionAnimation: PageTransitionAnimation.cupertino,
+              ),
+              child: Stack(
                 children: [
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () => pushNewScreen(
-                          context,
-                          screen: const UserProfile(),
-                          withNavBar: false, // OPTIONAL VALUE. True by default.
-                          pageTransitionAnimation:
-                              PageTransitionAnimation.cupertino,
-                        ),
-                        child: Stack(
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: AppColor.darkerYellow,
-                              backgroundImage: provider
-                                      .userData!.avarter!.isNotEmpty
-                                  ? NetworkImage(provider.userData!.avarter!)
-                                  : const AssetImage('assets/avatar.png')
-                                      as ImageProvider,
-                              maxRadius: 20,
-                              onBackgroundImageError: (exception, stackTrace) =>
-                                  Image.asset('assets/avatar.png'),
-                            ),
-                            Positioned(
-                              right: -1,
-                              top: 5,
-                              child: Container(
-                                height: 12,
-                                width: 12,
-                                decoration: BoxDecoration(
-                                  color: AppColor.brown,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Container(
-                                  height: 8,
-                                  width: 8,
-                                  margin: const EdgeInsets.all(2),
-                                  decoration: BoxDecoration(
-                                      color: const Color(0xff00F261),
-                                      borderRadius: BorderRadius.circular(50)),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                  CircleAvatar(
+                    backgroundColor: AppColor.darkerYellow,
+                    backgroundImage: provider.userData.avarter != null
+                        ? NetworkImage(provider.userData.avarter ?? '')
+                        : const AssetImage('assets/avatar.png')
+                            as ImageProvider,
+                    maxRadius: 20,
+                    onBackgroundImageError: (exception, stackTrace) =>
+                        Image.asset('assets/avatar.png'),
+                  ),
+                  Positioned(
+                    right: -1,
+                    top: 5,
+                    child: Container(
+                      height: 12,
+                      width: 12,
+                      decoration: BoxDecoration(
+                        color: AppColor.white,
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      Expanded(child: Container()),
-                      Text(
-                        'Panic Button',
-                        style: style.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: AppColor.white,
-                        ),
+                      child: Container(
+                        height: 8,
+                        width: 8,
+                        margin: const EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                            color: const Color(0xff00F261),
+                            borderRadius: BorderRadius.circular(50)),
                       ),
-                      Expanded(child: Container()),
-                      GestureDetector(
-                        child: Icon(
-                          Icons.more_vert,
-                          color: AppColor.white,
-                          size: 30,
-                        ),
-                        onTap: () {},
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ),
             ),
-
+            Align(
+              widthFactor: 2.5,
+              child: Text(
+                'Panic Button',
+                style: style.copyWith(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18,
+                  color: AppColor.black,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
             // SOS button
             Container(
               height: 310,
@@ -168,7 +155,9 @@ class _SOSScreenState extends State<SOSScreen> {
                                             'SOS',
                                             style: style.copyWith(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 22,
+                                              color: AppColor.black
+                                                  .withOpacity(0.6),
+                                              fontSize: 23,
                                             ),
                                           ),
                                   ),
@@ -206,11 +195,11 @@ class _SOSScreenState extends State<SOSScreen> {
                               ),
 
                               Text(
-                                'Tap Here',
+                                'Long press to activate',
                                 style: style.copyWith(
-                                  fontSize: 12,
+                                  fontSize: 10,
                                   fontWeight: FontWeight.w500,
-                                  color: AppColor.lightGrey,
+                                  color: AppColor.black.withOpacity(0.6),
                                 ),
                               )
                             ],
@@ -222,33 +211,16 @@ class _SOSScreenState extends State<SOSScreen> {
                 ],
               ),
             ),
-            // cancel buton
-            //SizedBox(height: screenSize.height * 0.05),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 20),
-            //   child: MainButton(
-            //     borderColor: Colors.transparent,
-            //     text: bottonComplete ? 'SENT SUCCESSFULLY' : 'CANCEL',
-            //     backgroundColor: AppColor.white,
-            //     onTap: () {
-            //       setState(() {
-            //         selected = false;
-            //       });
-            //     },
-            //   ),
-            // ),
-
-            //
-            SizedBox(height: screenSize.height * 0.18),
+            SizedBox(height: screenSize.height * 0.14),
             Container(
-              height: screenSize.height * 0.18,
+              height: 130,
               margin: const EdgeInsets.only(
                 left: 20,
                 right: 20,
               ),
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: AppColor.white.withOpacity(0.15),
+                color: AppColor.lightGrey,
                 border: Border.all(
                   color: AppColor.white.withOpacity(0.1),
                 ),
@@ -262,9 +234,10 @@ class _SOSScreenState extends State<SOSScreen> {
                       Text(
                         'Add Emergency\nNumber',
                         style: style.copyWith(
-                            color: AppColor.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal),
+                          color: AppColor.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
                       Expanded(child: Container()),
 
@@ -274,7 +247,7 @@ class _SOSScreenState extends State<SOSScreen> {
                           height: 54,
                           width: 54,
                           decoration: BoxDecoration(
-                            color: const Color(0xff231F20),
+                            color: AppColor.black.withOpacity(0.8),
                             borderRadius: BorderRadius.circular(19),
                           ),
                           child: Icon(
@@ -283,12 +256,22 @@ class _SOSScreenState extends State<SOSScreen> {
                             size: 30,
                           ),
                         ),
-                        onTap: () => showModalBottomSheet(
-                          context: context,
-                          backgroundColor: Colors.transparent,
-                          isScrollControlled: true,
-                          builder: ((_) => const AddEmergencyContact()),
-                        ),
+                        onTap: () {
+                          if (provider.userData.emergencyContact!.length < 5) {
+                            showModalBottomSheet(
+                              context: context,
+                              backgroundColor: Colors.transparent,
+                              isScrollControlled: true,
+                              builder: ((_) => const AddEmergencyContact()),
+                            );
+                          } else {
+                            handleFireBaseAlert(
+                              message:
+                                  ' Sorry You can\'t add more than Five(5) Emergency contact',
+                              context: context,
+                            );
+                          }
+                        },
                       )
                     ],
                   ),
@@ -300,8 +283,8 @@ class _SOSScreenState extends State<SOSScreen> {
                       'View Emergency Contacts',
                       style: style.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: AppColor.white,
-                        fontSize: 14,
+                        color: AppColor.black,
+                        fontSize: 15,
                       ),
                     ),
                     onTap: () => Navigator.push(

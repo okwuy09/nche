@@ -9,7 +9,9 @@ import 'package:provider/provider.dart';
 
 class FriendEmergencyList extends StatelessWidget {
   final Users friends;
-  const FriendEmergencyList({Key? key, required this.friends})
+  final BuildContext friendContext;
+  const FriendEmergencyList(
+      {Key? key, required this.friends, required this.friendContext})
       : super(key: key);
 
   @override
@@ -59,13 +61,16 @@ class FriendEmergencyList extends StatelessWidget {
           //const SizedBox(height: 10),
           Text(
             'Before you can search for a user on the app, you must get accreditation from at least three (3) people in his emergency contact list.',
-            style: style,
+            style: style.copyWith(
+              color: AppColor.black.withOpacity(0.5),
+              fontSize: 15,
+            ),
           ),
           const SizedBox(height: 20),
           Text(
             '@${friends.fullName}',
             style: style.copyWith(
-              fontSize: 18,
+              color: AppColor.black.withOpacity(0.5),
             ),
           ),
           // new list
@@ -74,7 +79,7 @@ class FriendEmergencyList extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: friends.emergencyContact!.length,
-            itemBuilder: (context, index) {
+            itemBuilder: (ctx, index) {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -107,9 +112,14 @@ class FriendEmergencyList extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                friends.emergencyContact![index]['name'],
+                                friends.emergencyContact![index]['name'][0]
+                                        .toUpperCase() +
+                                    friends.emergencyContact![index]['name']
+                                        .substring(1),
                                 style: style.copyWith(
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15,
+                                  color: AppColor.black.withOpacity(0.6),
                                 ),
                               ),
                             ],
@@ -126,8 +136,8 @@ class FriendEmergencyList extends StatelessWidget {
                               Text(
                                 'Notify',
                                 style: style.copyWith(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15,
+                                  //fontWeight: FontWeight.w500,
                                   color: AppColor.black.withOpacity(0.6),
                                 ),
                               ),
@@ -145,15 +155,16 @@ class FriendEmergencyList extends StatelessWidget {
           ),
           Expanded(child: Container()),
           MainButton(
-              borderColor: AppColor.black,
-              backgroundColor: AppColor.lightGrey,
+              borderColor: Colors.transparent,
+              backgroundColor: AppColor.darkerYellow,
               child: Text(
-                'NOTIFY ALL FRIENDS',
+                'Initialize Search',
                 style: style.copyWith(
-                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
                 ),
               ),
               onTap: () {
+                Navigator.of(context).pop();
                 for (var i in friends.emergencyContact!) {
                   var friendList = EmergencyContactFriend(
                     approved: false,
@@ -163,9 +174,11 @@ class FriendEmergencyList extends StatelessWidget {
                   userFriendsList.add(friendList);
                 }
                 provider.createSearch(
-                  userId: provider.userData!.id,
+                  userId: friends.id!,
+                  searcherId: provider.userData.id!,
                   userFriends: userFriendsList,
                   searchName: friends.fullName ?? 'Name Undefined',
+                  context: friendContext,
                 );
               }),
           const SizedBox(height: 20),

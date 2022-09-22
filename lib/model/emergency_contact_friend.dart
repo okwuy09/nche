@@ -25,20 +25,26 @@ class EmergencyContactFriend {
 class UserFriends {
   final String id;
   final String userId;
+  final String searcherId;
   final String searchName;
+  final bool isSuccessfull;
   final List<EmergencyContactFriend> userFriends;
 
   UserFriends({
     required this.id,
     required this.userFriends,
     required this.userId,
+    required this.searcherId,
     required this.searchName,
+    this.isSuccessfull = false,
   });
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'userId': userId,
+        'searcherId': searcherId,
         'searchName': searchName,
+        'isSuccessfull': isSuccessfull,
         'userFriends': userFriends.map((e) => e.toJson()).toList(),
       };
 
@@ -47,7 +53,9 @@ class UserFriends {
     return UserFriends(
       id: json['id'],
       userId: json['userId'],
+      searcherId: json['searcherId'],
       searchName: json['searchName'],
+      isSuccessfull: json['isSuccessfull'],
       userFriends: contactData
           .map((data) => EmergencyContactFriend.fromJson(data))
           .toList(),

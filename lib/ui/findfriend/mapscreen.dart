@@ -57,9 +57,9 @@ class MapScreen extends StatelessWidget {
         backgroundColor: AppColor.white,
         iconTheme: IconThemeData(color: AppColor.black),
         title: Align(
-          widthFactor: 2,
+          widthFactor: 1,
           child: Text(
-            'Track Friend',
+            'Track Friend Location',
             style: style.copyWith(
               fontSize: 18,
               fontWeight: FontWeight.w500,
@@ -73,7 +73,7 @@ class MapScreen extends StatelessWidget {
           children: [
             Container(
               width: double.infinity,
-              height: screenSize.height * 0.79,
+              height: screenSize.height * 0.8,
               margin: const EdgeInsets.only(
                 bottom: 6,
               ),
@@ -125,9 +125,9 @@ class MapScreen extends StatelessWidget {
                         destination.location!.latitude,
                         destination.location!.longitude,
                       ),
-                      infoWindow: const InfoWindow(
-                        title: 'Ruth',
-                        snippet: 'New Location',
+                      infoWindow: InfoWindow(
+                        title: destination.fullName!,
+                        snippet: 'Target Location',
                       ),
                     ),
                   },
@@ -138,17 +138,13 @@ class MapScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
               child: Row(
                 children: [
                   Container(
                     height: 45,
                     width: 45,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: AppColor.darkerYellow,
-                        width: 1,
-                      ),
                       borderRadius: BorderRadius.circular(100),
                       image: DecorationImage(
                         image: NetworkImage(destination.avarter!),
@@ -156,7 +152,7 @@ class MapScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  Expanded(child: Container()),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -172,25 +168,25 @@ class MapScreen extends StatelessWidget {
                                       destination.location!.latitude,
                                       destination.location!.longitude,
                                     ).toStringAsFixed(2) +
-                                    " KM",
+                                    "  km",
                                 style: style.copyWith(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                   color: AppColor.darkerGrey,
                                 ),
                               ),
-                              const SizedBox(height: 4),
+                              const SizedBox(height: 5),
                               Text(
                                 'Distance',
                                 style: style.copyWith(
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w500,
                                   color: AppColor.grey,
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(width: screenSize.width * 0.15),
+                          SizedBox(width: screenSize.width * 0.14),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -203,16 +199,16 @@ class MapScreen extends StatelessWidget {
                                   ),
                                 ),
                                 style: style.copyWith(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                   color: AppColor.darkerGrey,
                                 ),
                               ),
-                              const SizedBox(height: 4),
+                              const SizedBox(height: 5),
                               Text(
                                 'Estimated Time',
                                 style: style.copyWith(
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w500,
                                   color: AppColor.grey,
                                 ),
@@ -223,19 +219,7 @@ class MapScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // Expanded(child: Container()),
-                  // Container(
-                  //   height: 45,
-                  //   width: 45,
-                  //   decoration: BoxDecoration(
-                  //     color: AppColor.darkerYellow,
-                  //     borderRadius: BorderRadius.circular(100),
-                  //   ),
-                  //   child: const Icon(
-                  //     Icons.location_on_outlined,
-                  //     size: 30,
-                  //   ),
-                  // ),
+                  Expanded(child: Container()),
                 ],
               ),
             ),

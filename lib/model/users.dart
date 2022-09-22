@@ -5,14 +5,14 @@ class Users {
   String? fullName;
   String? userName;
   String? userCity;
-  String id;
+  String? id;
   String? phoneNumber;
   String? countryState;
   String? avarter;
   GeoPoint? location;
   List? emergencyContact;
   Users({
-    required this.id,
+    this.id,
     this.email,
     this.fullName,
     this.userName,

@@ -11,7 +11,7 @@ handleSuccessfullOperation({
   return showModalBottomSheet(
     backgroundColor: Colors.transparent,
     isScrollControlled: true,
-    isDismissible: false,
+    isDismissible: true,
     context: context,
     builder: (_) {
       return Container(
@@ -68,11 +68,10 @@ handleSuccessfullOperation({
             MainButton(
               borderColor: Colors.transparent,
               child: Text(
-                'CONTINUE',
+                'Continue',
                 style: style.copyWith(
                   fontSize: 14,
                   color: AppColor.black,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
               backgroundColor: AppColor.darkerYellow,

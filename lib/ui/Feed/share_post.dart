@@ -48,7 +48,7 @@ class SharePost extends StatelessWidget {
               icon: Icons.report_outlined,
               title: 'Report',
             ),
-            post.sender.id == provider.userData!.id
+            post.sender.id == provider.userData.id
                 ? Column(
                     children: [
                       const Divider(height: 0),

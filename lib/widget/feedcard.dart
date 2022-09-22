@@ -81,6 +81,7 @@ class FeedCard extends StatelessWidget {
                     style: style.copyWith(
                       fontSize: 10,
                       color: AppColor.darkerGrey,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
@@ -89,133 +90,147 @@ class FeedCard extends StatelessWidget {
               Text(
                 timeEn(post[index].time.toIso8601String(), numberDate: true),
                 style: style.copyWith(
-                    color: AppColor.darkerGrey,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500),
+                  color: AppColor.darkerGrey,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
           ),
           const SizedBox(height: 10),
-          Stack(
-            children: [
-              // Post video
-
-              // Stack(
-              //   children: [
-              //     Container(
-              //         height: screenSize.width > 600
-              // ? screenSize.width * 0.45
-              // : screenSize.height * 0.25,
-              //         width: screenSize.width,
-              //         margin: const EdgeInsets.symmetric(vertical: 10),
-              //         decoration: BoxDecoration(
-              //           borderRadius: BorderRadius.circular(6),
-              //         ),
-              //         child: ClipRRect(
-              //           borderRadius: BorderRadius.circular(6),
-              //           child: VideoPlayer(_controller),
-              //         )),
-              //     Positioned(
-              //       top: 0,
-              //       left: 0,
-              //       right: 0,
-              //       bottom: 0,
-              //       child: IconButton(
-              //         icon: Icon(
-              //           _controller.value.isPlaying
-              //               ? Icons.pause_circle_outlined
-              //               : Icons.play_circle_outline,
-              //           size: 50,
-              //           color: AppColor.white,
-              //         ),
-              //         onPressed: () {
-              //           setState(
-              //             () {
-              //               _controller.value.isPlaying
-              //                   ? _controller.pause()
-              //                   : _controller.play();
-              //             },
-              //           );
-              //         },
-              //       ),
-              //     )
-              //   ],
-              // ),
-
-              // post image
-
-              post[index].avarter!.isEmpty
-                  ? Container()
-                  : Container(
-                      height: screenSize.width > 600
-                          ? screenSize.width * 0.45
-                          : screenSize.height * 0.29,
-                      width: screenSize.width,
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 10,
-                      ),
-                      child: post[index].avarter!.length <= 1
-                          ? Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                image: DecorationImage(
-                                  image: NetworkImage(post[index].avarter![0]),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            )
-                          : PhotoGrid(
-                              imageUrls: post[index].avarter!,
-                              onImageClicked: (i) {},
-                              onExpandClicked: () {},
-                            ),
-                    ),
-              Positioned(
-                bottom: 20,
-                right: 10,
-                child: Container(
-                  height: 30,
-                  width: 145,
-                  padding: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.my_location_sharp,
-                          color: AppColor.white,
-                          size: 15,
-                        ),
-                        const SizedBox(width: 4),
-                        SizedBox(
-                          width: 120,
-                          child: Text(
-                            '${post[index].location!} State',
-                            style: style.copyWith(
-                              fontSize: 8,
-                              color: AppColor.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        )
-                      ]),
-                ),
+          InkWell(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => PostDetail(index: index),
               ),
-            ],
+            ),
+            child: Stack(
+              children: [
+                // Post video
+
+                // Stack(
+                //   children: [
+                //     Container(
+                //         height: screenSize.width > 600
+                // ? screenSize.width * 0.45
+                // : screenSize.height * 0.25,
+                //         width: screenSize.width,
+                //         margin: const EdgeInsets.symmetric(vertical: 10),
+                //         decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(6),
+                //         ),
+                //         child: ClipRRect(
+                //           borderRadius: BorderRadius.circular(6),
+                //           child: VideoPlayer(_controller),
+                //         )),
+                //     Positioned(
+                //       top: 0,
+                //       left: 0,
+                //       right: 0,
+                //       bottom: 0,
+                //       child: IconButton(
+                //         icon: Icon(
+                //           _controller.value.isPlaying
+                //               ? Icons.pause_circle_outlined
+                //               : Icons.play_circle_outline,
+                //           size: 50,
+                //           color: AppColor.white,
+                //         ),
+                //         onPressed: () {
+                //           setState(
+                //             () {
+                //               _controller.value.isPlaying
+                //                   ? _controller.pause()
+                //                   : _controller.play();
+                //             },
+                //           );
+                //         },
+                //       ),
+                //     )
+                //   ],
+                // ),
+
+                // post image
+
+                post[index].avarter!.isEmpty
+                    ? Container()
+                    : Container(
+                        height: screenSize.width > 600
+                            ? screenSize.width * 0.45
+                            : screenSize.height * 0.29,
+                        width: screenSize.width,
+                        margin: const EdgeInsets.symmetric(
+                          vertical: 10,
+                        ),
+                        child: post[index].avarter!.length <= 1
+                            ? Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  image: DecorationImage(
+                                    image:
+                                        NetworkImage(post[index].avarter![0]),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              )
+                            : PhotoGrid(
+                                imageUrls: post[index].avarter!,
+                                onImageClicked: (i) {},
+                                onExpandClicked: () {},
+                              ),
+                      ),
+                Positioned(
+                  bottom: 20,
+                  right: 10,
+                  child: Container(
+                    height: 30,
+                    width: 145,
+                    padding: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: Colors.transparent.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.my_location_sharp,
+                            color: AppColor.white,
+                            size: 15,
+                          ),
+                          const SizedBox(width: 4),
+                          SizedBox(
+                            width: 120,
+                            child: Text(
+                              '${post[index].location!} State',
+                              style: style.copyWith(
+                                fontSize: 8,
+                                color: AppColor.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )
+                        ]),
+                  ),
+                ),
+              ],
+            ),
           ),
           SizedBox(
             child: Text(
               post[index].writeUp.length > 250
                   ? '${post[index].writeUp.substring(0, 250)}...'
                   : post[index].writeUp,
-              style: style,
+              style: style.copyWith(
+                fontWeight: FontWeight.w500,
+                fontSize: 15,
+                color: AppColor.black.withOpacity(0.6),
+              ),
               textAlign: TextAlign.start,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 15),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -227,10 +242,10 @@ class FeedCard extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  '>>  READ MORE',
+                  'READ MORE',
                   style: style.copyWith(
                     fontSize: 13,
-                    color: AppColor.brown.withOpacity(0.6),
+                    color: AppColor.brown.withOpacity(0.8),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -247,12 +262,12 @@ class FeedCard extends StatelessWidget {
               InkWell(
                 onTap: () async {
                   if (post[index].downLike!.contains(
-                        provider.userData!.id,
+                        provider.userData.id,
                       )) {
                     await provider.removeDownLikePost(post[index].id);
                     await provider.upLikePost(post[index].id);
                   } else if (post[index].upLike!.contains(
-                        provider.userData!.id,
+                        provider.userData.id,
                       )) {
                     await provider.removeUpLikePost(post[index].id);
                   } else {
@@ -261,7 +276,7 @@ class FeedCard extends StatelessWidget {
                 },
                 child: Icon(
                   Icons.thumb_up_alt_outlined,
-                  color: post[index].upLike!.contains(provider.userData!.id)
+                  color: post[index].upLike!.contains(provider.userData.id)
                       ? AppColor.darkerYellow
                       : AppColor.grey,
                 ),
@@ -277,12 +292,12 @@ class FeedCard extends StatelessWidget {
               InkWell(
                 onTap: () async {
                   if (post[index].upLike!.contains(
-                        provider.userData!.id,
+                        provider.userData.id,
                       )) {
                     await provider.removeUpLikePost(post[index].id);
                     await provider.downLikePost(post[index].id);
                   } else if (post[index].downLike!.contains(
-                        provider.userData!.id,
+                        provider.userData.id,
                       )) {
                     await provider.removeDownLikePost(post[index].id);
                   } else {
@@ -291,7 +306,7 @@ class FeedCard extends StatelessWidget {
                 },
                 child: Icon(
                   Icons.thumb_down_alt_outlined,
-                  color: post[index].downLike!.contains(provider.userData!.id)
+                  color: post[index].downLike!.contains(provider.userData.id)
                       ? AppColor.darkerYellow
                       : AppColor.grey,
                 ),
@@ -317,7 +332,7 @@ class FeedCard extends StatelessWidget {
               InkWell(
                 onTap: () async {
                   if (post[index].savePost!.contains(
-                        provider.userData!.id,
+                        provider.userData.id,
                       )) {
                     await provider.removeSavePost(
                       post[index].id,
@@ -330,7 +345,7 @@ class FeedCard extends StatelessWidget {
                 },
                 child: Icon(
                   Icons.bookmark_outline,
-                  color: post[index].savePost!.contains(provider.userData!.id)
+                  color: post[index].savePost!.contains(provider.userData.id)
                       ? AppColor.darkerYellow
                       : AppColor.grey,
                 ),

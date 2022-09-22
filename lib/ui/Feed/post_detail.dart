@@ -257,12 +257,12 @@ class _PostDetailState extends State<PostDetail> {
                         InkWell(
                           onTap: () async {
                             if (post.downLike!.contains(
-                              provider.userData!.id,
+                              provider.userData.id,
                             )) {
                               await provider.removeDownLikePost(post.id);
                               await provider.upLikePost(post.id);
                             } else if (post.upLike!.contains(
-                              provider.userData!.id,
+                              provider.userData.id,
                             )) {
                               await provider.removeUpLikePost(post.id);
                             } else {
@@ -271,7 +271,7 @@ class _PostDetailState extends State<PostDetail> {
                           },
                           child: Icon(
                             Icons.thumb_up_alt_outlined,
-                            color: post.upLike!.contains(provider.userData!.id)
+                            color: post.upLike!.contains(provider.userData.id)
                                 ? AppColor.darkerYellow
                                 : AppColor.grey,
                           ),
@@ -287,12 +287,12 @@ class _PostDetailState extends State<PostDetail> {
                         InkWell(
                           onTap: () async {
                             if (post.upLike!.contains(
-                              provider.userData!.id,
+                              provider.userData.id,
                             )) {
                               await provider.removeUpLikePost(post.id);
                               await provider.downLikePost(post.id);
                             } else if (post.downLike!.contains(
-                              provider.userData!.id,
+                              provider.userData.id,
                             )) {
                               await provider.removeDownLikePost(post.id);
                             } else {
@@ -301,10 +301,9 @@ class _PostDetailState extends State<PostDetail> {
                           },
                           child: Icon(
                             Icons.thumb_down_alt_outlined,
-                            color:
-                                post.downLike!.contains(provider.userData!.id)
-                                    ? AppColor.darkerYellow
-                                    : AppColor.grey,
+                            color: post.downLike!.contains(provider.userData.id)
+                                ? AppColor.darkerYellow
+                                : AppColor.grey,
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -328,7 +327,7 @@ class _PostDetailState extends State<PostDetail> {
                         InkWell(
                           onTap: () async {
                             if (post.savePost!.contains(
-                              provider.userData!.id,
+                              provider.userData.id,
                             )) {
                               await provider.removeSavePost(
                                 post.id,
@@ -341,10 +340,9 @@ class _PostDetailState extends State<PostDetail> {
                           },
                           child: Icon(
                             Icons.bookmark_outline,
-                            color:
-                                post.savePost!.contains(provider.userData!.id)
-                                    ? AppColor.darkerYellow
-                                    : AppColor.grey,
+                            color: post.savePost!.contains(provider.userData.id)
+                                ? AppColor.darkerYellow
+                                : AppColor.grey,
                           ),
                         ),
                         //

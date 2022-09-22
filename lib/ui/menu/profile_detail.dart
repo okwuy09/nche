@@ -104,13 +104,12 @@ class _ProfileDetailState extends State<ProfileDetail> {
                           child: CircleAvatar(
                             backgroundColor: AppColor.white,
                             radius: 46,
-                            backgroundImage:
-                                provider.userData!.avarter!.isNotEmpty
-                                    ? NetworkImage(
-                                        provider.userData!.avarter!,
-                                      )
-                                    : const AssetImage('assets/avatar.png')
-                                        as ImageProvider,
+                            backgroundImage: provider.userData.avarter != null
+                                ? NetworkImage(
+                                    provider.userData.avarter ?? '',
+                                  )
+                                : const AssetImage('assets/avatar.png')
+                                    as ImageProvider,
                           ),
                         ),
                       ],

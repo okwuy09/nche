@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:nche/components/alert.dart';
 import 'package:nche/services/provider/userdata.dart';
 import 'package:nche/widget/button.dart';
 import 'package:nche/components/colors.dart';
@@ -19,7 +18,7 @@ class AddEmergencyContact extends StatefulWidget {
 }
 
 class _AddEmergencyContactState extends State<AddEmergencyContact> {
-  final GlobalKey<FormState> _FormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _fullName = TextEditingController();
   String phoneNumber = '';
 
@@ -28,7 +27,7 @@ class _AddEmergencyContactState extends State<AddEmergencyContact> {
     var provider = Provider.of<UserData>(context);
     return SingleChildScrollView(
       child: Form(
-        key: _FormKey,
+        key: _formKey,
         child: Container(
           padding: EdgeInsets.only(
             left: 20,
@@ -56,21 +55,22 @@ class _AddEmergencyContactState extends State<AddEmergencyContact> {
                       Text(
                         'Add Five(5) Emergency Contact',
                         style: style.copyWith(
+                          fontSize: 15,
+                          color: AppColor.black.withOpacity(0.6),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Container(
-                        height: 25,
-                        width: 25,
+                        height: 20,
+                        width: 20,
                         decoration: BoxDecoration(
                           color: Colors.green,
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Center(
                           child: Text(
-                            '${provider.userData!.emergencyContact!.isEmpty ? '0' : provider.userData!.emergencyContact!.length}',
+                            '${provider.userData.emergencyContact!.isEmpty ? '0' : provider.userData.emergencyContact!.length}',
                             style: style.copyWith(
-                              fontSize: 20,
                               color: AppColor.white,
                               fontWeight: FontWeight.bold,
                             ),
@@ -83,7 +83,7 @@ class _AddEmergencyContactState extends State<AddEmergencyContact> {
                 MyTextForm(
                   controller: _fullName,
                   obscureText: false,
-                  hintText: 'Fullname',
+                  hintText: 'Full name',
                   validatior: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please Enter Fullname*';
@@ -134,55 +134,33 @@ class _AddEmergencyContactState extends State<AddEmergencyContact> {
                   },
                 ),
                 //
-                const SizedBox(height: 30),
-                MainButton(
-                  borderColor: Colors.transparent,
-                  child: Text(
-                    'ADD CONTACT',
-                    style: style.copyWith(
-                      fontSize: 14,
-                      color: AppColor.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  backgroundColor: AppColor.primaryColor,
-                  onTap: () async {
-                    if (_FormKey.currentState!.validate()) {
-                      if (provider.userData!.emergencyContact!.length < 5) {
-                        await provider.addEmergencyContact(
-                          _fullName.text,
-                          phoneNumber,
-                        );
-                      } else {
-                        handleFireBaseAlert(
-                          message:
-                              ' Sorry You can\'t add more than Five(5) Emergency contact',
-                          context: context,
-                        );
-                      }
-                    }
-                  },
-                ),
-
-                //
 
                 Padding(
                   padding: const EdgeInsets.only(
-                    top: 10,
+                    top: 30,
                     bottom: 20,
                   ),
                   child: MainButton(
                     borderColor: Colors.transparent,
                     child: Text(
-                      'CANCEL',
+                      'Add Contact',
                       style: style.copyWith(
-                        fontSize: 14,
+                        fontSize: 15,
                         color: AppColor.black,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    backgroundColor: AppColor.lightGrey,
-                    onTap: () => Navigator.pop(context),
+                    backgroundColor: AppColor.primaryColor,
+                    onTap: () async {
+                      if (_formKey.currentState!.validate()) {
+                        await provider
+                            .addEmergencyContact(
+                              _fullName.text,
+                              phoneNumber,
+                            )
+                            .then((value) => successOperation(context));
+                        Navigator.pop(context);
+                      }
+                    },
                   ),
                 ),
               ],

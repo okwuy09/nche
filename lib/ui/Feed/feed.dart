@@ -167,8 +167,10 @@ class _FeedState extends State<Feed> {
                                           : post[0].writeUp,
                                       //'The Nigerian police force advices the Nigeria youths to stay indoors tomorrow to avoid clash with IPOB.',
                                       style: style.copyWith(
-                                          color: AppColor.lightGrey,
-                                          fontSize: 14),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 15,
+                                        color: AppColor.white,
+                                      ),
                                     ),
                                     Expanded(child: Container()),
                                     Row(
@@ -183,7 +185,7 @@ class _FeedState extends State<Feed> {
                                             ),
                                           ),
                                           child: Text(
-                                            '>>  READ MORE',
+                                            'READ MORE',
                                             style: style.copyWith(
                                               fontSize: 13,
                                               color: AppColor.lightGrey,

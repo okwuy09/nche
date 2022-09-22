@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nche/components/colors.dart';
+import 'package:nche/components/const_values.dart';
 
 class HomeContainer extends StatelessWidget {
   final Widget? icon;
@@ -18,27 +19,34 @@ class HomeContainer extends StatelessWidget {
     var screenSize = MediaQuery.of(context).size;
     return Container(
       height: screenSize.width > 600
-          ? screenSize.height * 0.15
-          : screenSize.height * 0.1,
-      width: screenSize.width * 0.4,
+          ? screenSize.height * 0.14
+          : screenSize.height * 0.09,
+      width: screenSize.width * 0.432,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: AppColor.white,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         children: [
           Container(
-            height: 37,
-            width: 37,
+            height: 35,
+            width: 35,
             decoration: BoxDecoration(
               color: iconBackgroundColor,
               borderRadius: BorderRadius.circular(45),
             ),
             child: icon,
           ),
-          const SizedBox(width: 10),
-          Text(title!)
+          const SizedBox(width: 8),
+          Text(
+            title!,
+            style: style.copyWith(
+              color: AppColor.black.withOpacity(0.6),
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+            ),
+          )
         ],
       ),
     );

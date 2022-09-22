@@ -19,7 +19,6 @@ class MyTapBar extends StatefulWidget {
 class _MyTapBarState extends State<MyTapBar> {
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
     var provider = Provider.of<UserData>(context);
     return DefaultTabController(
       length: 2,
@@ -59,10 +58,10 @@ class _MyTapBarState extends State<MyTapBar> {
                         child: Stack(
                           children: [
                             CircleAvatar(
-                              backgroundColor: AppColor.darkerYellow,
-                              backgroundImage: provider
-                                      .userData!.avarter!.isNotEmpty
-                                  ? NetworkImage(provider.userData!.avarter!)
+                              backgroundColor: AppColor.lightGrey,
+                              backgroundImage: provider.userData.avarter != null
+                                  ? NetworkImage(
+                                      provider.userData.avarter ?? '')
                                   : const AssetImage('assets/avatar.png')
                                       as ImageProvider,
                               maxRadius: 20,
@@ -143,16 +142,18 @@ class _MyTapBarState extends State<MyTapBar> {
                   border: Border.all(color: AppColor.lightGrey, width: 4),
                   borderRadius: BorderRadius.circular(6.0)),
               child: TabBar(
-                labelStyle: style,
+                labelStyle: style.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
                 indicator: BoxDecoration(
                   color: AppColor.white,
                   borderRadius: BorderRadius.circular(6.0),
                 ),
-                labelColor: AppColor.black,
+                labelColor: AppColor.black.withOpacity(0.7),
                 unselectedLabelColor: AppColor.grey,
                 tabs: const [
                   Tab(
-                    text: 'My feed',
+                    text: 'Feed',
                   ),
                   Tab(
                     text: 'Save',

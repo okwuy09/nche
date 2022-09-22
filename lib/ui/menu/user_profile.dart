@@ -103,13 +103,14 @@ class _UserProfileState extends State<UserProfile> {
                               backgroundColor: AppColor.white,
                               radius: 46,
                               backgroundImage: Provider.of<UserData>(context)
-                                      .userData!
-                                      .avarter!
-                                      .isNotEmpty
+                                          .userData
+                                          .avarter !=
+                                      null
                                   ? NetworkImage(
                                       Provider.of<UserData>(context)
-                                          .userData!
-                                          .avarter!,
+                                              .userData
+                                              .avarter ??
+                                          '',
                                     )
                                   : const AssetImage('assets/avatar.png')
                                       as ImageProvider,
